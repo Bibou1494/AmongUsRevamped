@@ -18,11 +18,13 @@ class FixedUpdateInGamePatch
                 {
                     AmongUsClient.Instance.KickPlayer(__instance.Data.ClientId, false);
                     Logger.Info($" {__instance.Data.PlayerName} was kicked for being under level {Options.KickLowLevelPlayer.GetInt()}", "KickLowLevelPlayer");
+                    Logger.SendInGame($" {__instance.Data.PlayerName} was kicked for being under level {Options.KickLowLevelPlayer.GetInt()}");
                 }
                 else
                 {
                     AmongUsClient.Instance.KickPlayer(__instance.Data.ClientId, true);
                     Logger.Info($" {__instance.Data.PlayerName} was banned for being under level {Options.KickLowLevelPlayer.GetInt()} ", "BanLowLevelPlayer");
+                    Logger.SendInGame($" {__instance.Data.PlayerName} was banned for being under level {Options.KickLowLevelPlayer.GetInt()}");
                 }
             }
         }

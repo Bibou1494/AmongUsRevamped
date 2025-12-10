@@ -32,6 +32,9 @@ namespace HNSRevamped
         public static OptionItem ApplyModeratorList;
 
         public static OptionItem AutoRejoinLobby;
+        public static OptionItem AutoStartTimer;
+        public static OptionItem WaitAutoStart;
+        public static OptionItem PlayerAutoStart;
 
         public static OptionItem NoGameEnd;
         
@@ -47,13 +50,12 @@ namespace HNSRevamped
         {
             if (IsLoaded) return;
 
-            //Main settings
+            //System Settings
             KickLowLevelPlayer = IntegerOptionItem.Create(60050, "Kick Players Under Level", new(0, 100, 1), 0, TabGroup.SystemSettings, false)
                 .SetValueFormat(OptionFormat.Level)
                 .SetHeader(true);
             TempBanLowLevelPlayer = BooleanOptionItem.Create(60051, "Ban Instead Of Kick", false, TabGroup.SystemSettings, false)
-                .SetParent(KickLowLevelPlayer)
-                .SetValueFormat(OptionFormat.Times);
+                .SetParent(KickLowLevelPlayer);
 
             KickInvalidFriendCodes = BooleanOptionItem.Create(60080, "Kick Invalid FriendCodes", true, TabGroup.SystemSettings, false);
             TempBanInvalidFriendCodes = BooleanOptionItem.Create(60081, "Ban Instead Of Kick", false, TabGroup.SystemSettings, false)
@@ -63,6 +65,11 @@ namespace HNSRevamped
             ApplyModeratorList = BooleanOptionItem.Create(60120, "Apply ModeratorList", false, TabGroup.SystemSettings, false);
 
             AutoRejoinLobby = BooleanOptionItem.Create(60210, "Auto Rejoin Lobby", false, TabGroup.SystemSettings, false);
+            AutoStartTimer = IntegerOptionItem.Create(44420, "Countdown For AutoStart", new(1, 600, 1), 5, TabGroup.SystemSettings, false)
+                .SetValueFormat(OptionFormat.Seconds);
+            WaitAutoStart = IntegerOptionItem.Create(44421, "AutoStart After", new(10, 600, 10), 5, TabGroup.SystemSettings, false)
+                .SetValueFormat(OptionFormat.Seconds);
+            PlayerAutoStart = IntegerOptionItem.Create(44422, "PlayerAutoStart", new(1, 15, 1), 5, TabGroup.SystemSettings, false);
 
             NoGameEnd = BooleanOptionItem.Create(60380, "No Game End", false, TabGroup.SystemSettings, false)
                 .SetColor(Color.red)

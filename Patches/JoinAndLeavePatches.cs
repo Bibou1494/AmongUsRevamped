@@ -7,6 +7,23 @@ using UnityEngine;
 
 namespace HNSRevamped;
 
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameJoined))]
+internal static class OnGameJoinedPatch
+{
+    public static bool AutoStartCheck;
+    public static void Postfix(AmongUsClient __instance)
+    {
+        if (!AmongUsClient.Instance.AmHost || !Main.AutoStart.Value) return;
+
+        LateTask.Tasks.Clear();
+
+        new LateTask(() =>
+        {
+            AutoStartCheck = true;
+        }, Options.AutoStartTimer.GetFloat(), "AutoStartTimer");
+    }
+}
+
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerJoined))]
 class OnPlayerJoinedPatch
 {
@@ -46,11 +63,13 @@ class OnPlayerJoinedPatch
                 {
                     AmongUsClient.Instance.KickPlayer(Client.Id, false);
                     Logger.Info($" {Client.PlayerName} Was kicked for having an invalid FriendCode", "KickInvalidFriendCode");
+                    Logger.SendInGame($" {Client.PlayerName} Was kicked for having an invalid FriendCode");
                 }
                 else
                 {
                     AmongUsClient.Instance.KickPlayer(Client.Id, true);
                     Logger.Info($" {Client.PlayerName} Was banned for having an invalid FriendCode", "BanInvalidFriendCode");
+                    Logger.SendInGame($" {Client.PlayerName} Was banned for having an invalid FriendCode");
                 }
             }
         }

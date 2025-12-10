@@ -51,13 +51,37 @@ namespace HNSRevamped
     {
         private static void Postfix(VersionShower __instance)
         {
-            Main.CredentialsText = $"<color=#FFD700>Hide And Seek Revamped</color><color=#c0c0c0> v0.1.0</color>";
+
+           OnGameJoinedPatch.AutoStartCheck = false;
+
+            Main.CredentialsText = $"<color=#FFD700>Hide And Seek Revamped</color><color=#ffffff> {Main.ModVersion}</color>";
+
+            var credentials = UnityEngine.Object.Instantiate(__instance.text);
+            credentials.text = Main.CredentialsText;
+            credentials.alignment = TextAlignmentOptions.Right;
+            credentials.transform.position = new Vector3(1f, 2.67f, -2f);
+            credentials.fontSize = credentials.fontSizeMax = credentials.fontSizeMin = 2f;
 
             ErrorText.Create(__instance.text);
-
             if (Main.HasArgumentException && ErrorText.Instance != null)
             {
                 ErrorText.Instance.AddError(ErrorCode.Main_DictionaryError);
+            }
+
+            GameObject t = GameObject.Find("Tint");
+            if (t != null)
+            {
+                t.SetActive(false);
+            }
+            GameObject b = GameObject.Find("BackgroundTexture");
+            if (b != null)
+            {
+                b.SetActive(false);
+            }
+            GameObject w = GameObject.Find("WindowShine");
+            if (w != null)
+            {
+                w.SetActive(false);
             }
         }
     }
@@ -74,7 +98,8 @@ namespace HNSRevamped
         {
             FpsSampler.TickFrame();
 
-            PingTracker instance = Instance ?? __instance;
+            if (!Instance) Instance = __instance;
+            var instance = Instance;
 
             if (AmongUsClient.Instance == null) return false;
 
@@ -90,8 +115,6 @@ namespace HNSRevamped
                 instance.text.alignment = TextAlignmentOptions.Center;
                 instance.text.text = Sb.ToString();
             }
-
-            if (Instance == null) Instance = __instance;
 
             long now = Utils.TimeStamp;
             if (now == LastUpdate) return false;

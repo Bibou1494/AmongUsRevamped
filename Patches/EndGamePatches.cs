@@ -10,6 +10,7 @@ public static class EndGameManagerPatch
 {
     public static void Postfix(EndGameManager __instance)
     {
+        OnGameJoinedPatch.AutoStartCheck = false;
         EndGameNavigation navigation = __instance.Navigation;
         if (!AmongUsClient.Instance.AmHost || __instance == null || navigation == null || !Options.AutoRejoinLobby.GetBool()) return;
         navigation.NextGame();
@@ -41,7 +42,6 @@ internal class ControllerManagerUpdatePatch
     {
         if (Input.GetKey(KeyCode.L) && Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Return))
         {
-            // Instead of a gigantic custom RPC, the game can just be ended in 3 lines of code
             MessageWriter writer = AmongUsClient.Instance.StartEndGame();
             writer.Write((byte)GameOverReason.ImpostorDisconnect);
             AmongUsClient.Instance.FinishEndGame(writer);

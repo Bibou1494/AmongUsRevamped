@@ -1,10 +1,21 @@
-﻿namespace HNSRevamped;
+﻿using System;
+
+namespace HNSRevamped;
 
 [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
 public static class GameStartManagerUpdatePatch
 {
     public static void Prefix(GameStartManager __instance)
     {
+        if (!AmongUsClient.Instance.AmHost || AmongUsClient.Instance == null) return;
+
         __instance.MinPlayers = 1;
+
+        if (Main.AutoStart.Value && OnGameJoinedPatch.AutoStartCheck && GameStartManager.InstanceExists && GameStartManager.Instance.startState != GameStartManager.StartingStates.Countdown && GameData.Instance?.PlayerCount >= Options.PlayerAutoStart.GetInt())
+        {
+        GameStartManager.Instance.startState = GameStartManager.StartingStates.Countdown;
+        GameStartManager.Instance.countDownTimer = Options.AutoStartTimer.GetFloat();
+        GameStartManager.Instance?.StartButton.gameObject.SetActive(false);
+        }
     }
 }

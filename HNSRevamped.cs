@@ -27,6 +27,7 @@ public partial class Main : BasePlugin
 
     public static bool HasArgumentException;
     public static string CredentialsText;
+    public const string ModVersion = "v0.2.0";
 
     public static PlayerControl[] AllPlayerControls
     {
