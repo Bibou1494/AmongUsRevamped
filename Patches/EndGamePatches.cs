@@ -10,7 +10,9 @@ public static class EndGameManagerPatch
 {
     public static void Postfix(EndGameManager __instance)
     {
+        RpcSetTasksPatch.GlobalTaskIds = null;
         OnGameJoinedPatch.AutoStartCheck = false;
+        
         EndGameNavigation navigation = __instance.Navigation;
         if (!AmongUsClient.Instance.AmHost || __instance == null || navigation == null || !Options.AutoRejoinLobby.GetBool()) return;
         navigation.NextGame();

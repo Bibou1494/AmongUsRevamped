@@ -2,6 +2,7 @@
 global using System.Collections.Generic;
 global using System.Linq;
 
+using AmongUs.GameOptions;
 using BepInEx;
 using BepInEx.Configuration;
 using BepInEx.Unity.IL2CPP;
@@ -25,6 +26,7 @@ public partial class Main : BasePlugin
     public static ConfigEntry<bool> DarkTheme { get; private set; }
     public static ConfigEntry<bool> LobbyMusic { get; private set; }
 
+    public static NormalGameOptionsV10 NormalOptions => GameOptionsManager.Instance != null ? GameOptionsManager.Instance.currentNormalGameOptions : null;
     public static bool HasArgumentException;
     public static string CredentialsText;
     public const string ModVersion = "v0.2.0";

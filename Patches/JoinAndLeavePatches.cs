@@ -20,7 +20,7 @@ internal static class OnGameJoinedPatch
         new LateTask(() =>
         {
             AutoStartCheck = true;
-        }, Options.AutoStartTimer.GetFloat(), "AutoStartTimer");
+        }, Options.WaitAutoStart.GetFloat(), "AutoStartTimer");
     }
 }
 

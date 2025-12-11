@@ -51,7 +51,7 @@ namespace HNSRevamped
     {
         private static void Postfix(VersionShower __instance)
         {
-
+           RpcSetTasksPatch.GlobalTaskIds = null;
            OnGameJoinedPatch.AutoStartCheck = false;
 
             Main.CredentialsText = $"<color=#FFD700>Hide And Seek Revamped</color><color=#ffffff> {Main.ModVersion}</color>";

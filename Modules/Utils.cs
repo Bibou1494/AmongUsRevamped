@@ -29,6 +29,13 @@ public static class Utils
     public static bool InGame => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started;
     public static bool isHideNSeek => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek;
 
+    public static bool IsShip => ShipStatus.Instance != null;
+    public static bool IsCanMove => PlayerControl.LocalPlayer?.CanMove is true;
+    public static bool IsDead => PlayerControl.LocalPlayer?.Data?.IsDead is true;
+
+    public static bool IsFreePlay => AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
+    public static bool IsMeeting => InGame && (MeetingHud.Instance);
+
     public static string ColorString(Color32 color, string str) => $"<#{color.r:x2}{color.g:x2}{color.b:x2}{color.a:x2}>{str}</color>";
     public static string ColorToHex(Color32 color) => $"#{color.r:x2}{color.g:x2}{color.b:x2}{color.a:x2}";
 
