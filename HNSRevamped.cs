@@ -25,6 +25,7 @@ public partial class Main : BasePlugin
     public static ConfigEntry<bool> AutoStart { get; private set; }
     public static ConfigEntry<bool> DarkTheme { get; private set; }
     public static ConfigEntry<bool> LobbyMusic { get; private set; }
+    public static ConfigEntry<bool> NoKcdMode { get; private set; }
 
     public static NormalGameOptionsV10 NormalOptions => GameOptionsManager.Instance != null ? GameOptionsManager.Instance.currentNormalGameOptions : null;
     public static bool HasArgumentException;
@@ -60,13 +61,14 @@ public partial class Main : BasePlugin
         HNSRevamped.Logger.Enable();
         Instance = this;
 
-        AutoStart = Config.Bind("Client Options", "AutoStart", false);
+        AutoStart = Config.Bind("Client Options", "Auto Start", false);
         GM = Config.Bind("Client Options", "GM", false);
-        UnlockFps = Config.Bind("Client Options", "UnlockFPS", false);
-        ShowFps = Config.Bind("Client Options", "ShowFPS", false);
-        AutoStart = Config.Bind("Client Options", "AutoStart", false);
-        DarkTheme = Config.Bind("Client Options", "DarkTheme", true);
-        LobbyMusic = Config.Bind("Client Options", "LobbyMusic", false);
+        UnlockFps = Config.Bind("Client Options", "Unlock FPS", false);
+        ShowFps = Config.Bind("Client Options", "Show FPS", false);
+        AutoStart = Config.Bind("Client Options", "Auto Start", false);
+        DarkTheme = Config.Bind("Client Options", "Dark Theme", true);
+        LobbyMusic = Config.Bind("Client Options", "Lobby Music", false);
+        NoKcdMode = Config.Bind("Client Options", "0Kcd Mode", false);
 
         BanManager.Init();
         
