@@ -1,4 +1,5 @@
-﻿using InnerNet;
+﻿using Hazel;
+using InnerNet;
 using System;
 using UnityEngine;
 
@@ -19,5 +20,36 @@ internal static class ChatControllerUpdatePatch
             __instance.quickChatField.text.color = Color.white;
         }
         else __instance.freeChatField.textArea.outputText.color = Color.black;
+    }
+}
+
+[HarmonyPatch(typeof(VoteBanSystem), nameof(VoteBanSystem.AddVote))]
+internal static class AddVotePatch
+{
+    public static bool Prefix(VoteBanSystem __instance, [HarmonyArgument(0)] int srcClient, [HarmonyArgument(1)] int clientId)
+    {
+        if (!AmongUsClient.Instance.AmHost) return true;
+
+        PlayerControl pc = Utils.GetClientById(srcClient)?.Character;
+        PlayerControl target = Utils.GetClientById(clientId)?.Character;
+
+        if (AmongUsClient.Instance.ClientId == srcClient)
+        {
+            AmongUsClient.Instance.KickPlayer(target.Data.ClientId, false);
+
+            Logger.Info($" Kicked {target.Data.PlayerName}, {target.Data.FriendCode}", "VoteKick");
+        }
+        return false;
+        
+    }
+}
+
+[HarmonyPatch(typeof(VoteBanSystem), nameof(VoteBanSystem.CmdAddVote))]
+internal static class CmdAddVotePatch
+{
+    public static bool Prefix([HarmonyArgument(0)] int clientId)
+    {
+        if (!AmongUsClient.Instance.AmHost) return true;
+        else return false;
     }
 }

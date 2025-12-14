@@ -28,7 +28,7 @@ namespace HNSRevamped
                 static void GMButtonToggle()
                 {
                     if (Main.GM.Value)
-                        HudManager.Instance.ShowPopUp("Hi there! GM hasn't been implemented yet. Sorry for the inconvenience! -MV");
+                        HudManager.Instance.ShowPopUp("You will now spectate games until GM is turned off.");
                 }
             }
 
@@ -68,7 +68,7 @@ namespace HNSRevamped
                 LobbyMusic = ClientOptionItem.Create("Lobby Music", Main.LobbyMusic, __instance);
 
             if (NoKcdMode == null || NoKcdMode.ToggleButton == null)
-                NoKcdMode = ClientOptionItem.Create("0Kcd Mode", Main.NoKcdMode, __instance);
+                NoKcdMode = ClientOptionItem.Create("0 Kill Cooldown", Main.NoKcdMode, __instance);
         }
     }
 

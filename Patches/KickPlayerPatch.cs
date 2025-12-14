@@ -11,15 +11,6 @@ internal class KickPlayerPatch
     public static bool Prefix(InnerNetClient __instance, int clientId, bool ban)
     {
         if (!AmongUsClient.Instance.AmHost) return true;
-
-        var HashedPuid = AmongUsClient.Instance.GetClient(clientId).GetHashedPuid();
-        if (!AttemptedKickPlayerList.ContainsKey(HashedPuid))
-            AttemptedKickPlayerList.Add(HashedPuid, 0);
-        else if (AttemptedKickPlayerList[HashedPuid] < 10)
-        {
-            Logger.Fatal($"Kick player Request was too fast and has been canceled.", "KickPlayerPatch");
-            return false;
-        }
         if (ban) BanManager.AddBanPlayer(AmongUsClient.Instance.GetRecentClient(clientId));
 
         return true;

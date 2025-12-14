@@ -30,7 +30,7 @@ public partial class Main : BasePlugin
     public static NormalGameOptionsV10 NormalOptions => GameOptionsManager.Instance != null ? GameOptionsManager.Instance.currentNormalGameOptions : null;
     public static bool HasArgumentException;
     public static string CredentialsText;
-    public const string ModVersion = "v0.2.0";
+    public const string ModVersion = "v0.4.0";
 
     public static PlayerControl[] AllPlayerControls
     {
@@ -68,7 +68,7 @@ public partial class Main : BasePlugin
         AutoStart = Config.Bind("Client Options", "Auto Start", false);
         DarkTheme = Config.Bind("Client Options", "Dark Theme", true);
         LobbyMusic = Config.Bind("Client Options", "Lobby Music", false);
-        NoKcdMode = Config.Bind("Client Options", "0Kcd Mode", false);
+        NoKcdMode = Config.Bind("Client Options", "0 Kill Cooldown", false);
 
         BanManager.Init();
         

@@ -158,4 +158,10 @@ public static class Utils
 
         return name;
     }
+    
+    public static ClientData GetClientById(int id)
+    {
+        try { return AmongUsClient.Instance.allClients.ToArray().FirstOrDefault(cd => cd.Id == id); }
+        catch { return null; }
+    }
 }

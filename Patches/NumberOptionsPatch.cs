@@ -50,7 +50,7 @@ public static class NumberOption_Initialize
 
         if (Main.NoKcdMode.Value && !Utils.isHideNSeek)
         {
-            Main.NormalOptions.KillCooldown = 0f;
+            Main.NormalOptions.KillCooldown = 0.01f;
 
             Main.NormalOptions.EmergencyCooldown = 0;
             Main.NormalOptions.DiscussionTime = 0;
@@ -58,6 +58,11 @@ public static class NumberOption_Initialize
             Main.NormalOptions.NumCommonTasks = 0;
             Main.NormalOptions.NumShortTasks = 1;
             Main.NormalOptions.NumLongTasks = 0;
+        }
+
+        if (!Main.NoKcdMode.Value && Main.NormalOptions.KillCooldown <= 0.01f)
+        {
+            Main.NormalOptions.KillCooldown = 25f;
         }
     }
 }

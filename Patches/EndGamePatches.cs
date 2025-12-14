@@ -48,5 +48,15 @@ internal class ControllerManagerUpdatePatch
             writer.Write((byte)GameOverReason.ImpostorDisconnect);
             AmongUsClient.Instance.FinishEndGame(writer);
         }
+        
+        if (Input.GetKey(KeyCode.M) && Input.GetKey(KeyCode.LeftShift) && Input.GetKeyDown(KeyCode.Return) && Utils.InGame)
+        {
+            if (Utils.IsMeeting)
+            {
+                MeetingHud.Instance.RpcClose();
+            }
+            else
+                PlayerControl.LocalPlayer.ReportDeadBody(PlayerControl.LocalPlayer.Data);
+            }
     }
 }

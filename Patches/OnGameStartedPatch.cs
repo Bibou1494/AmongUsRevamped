@@ -9,7 +9,22 @@ internal class ApplyCustomImpostorCount
 {
     public static void Postfix(AmongUsClient __instance)
     {
-        if (!AmongUsClient.Instance.AmHost || !Utils.isHideNSeek) return;
+        if (!AmongUsClient.Instance.AmHost) return;
+
+        // Normal game = Impostor to prevent blocking task win. HNS = Crewmate to prevent Seeker detection range bugging.
+        if (Main.GM.Value)
+        {
+            if (!Utils.isHideNSeek)
+            {
+            PlayerControl.LocalPlayer.RpcSetRole(AmongUs.GameOptions.RoleTypes.ImpostorGhost, false);
+            }
+            if (Utils.isHideNSeek)
+            {
+            PlayerControl.LocalPlayer.RpcSetRole(AmongUs.GameOptions.RoleTypes.CrewmateGhost, false);
+            }
+        }
+
+        if (!Utils.isHideNSeek) return;
 
         int seekersCount = Options.NumSeekers.GetInt();
 
@@ -18,7 +33,7 @@ internal class ApplyCustomImpostorCount
         var candidates = new List<PlayerControl>();
         foreach (var p in PlayerControl.AllPlayerControls)
         {
-            if (p.Data.Role.TeamType != RoleTeamTypes.Impostor)
+            if (p.Data.Role.TeamType != RoleTeamTypes.Impostor && !p.Data.IsDead)
                 candidates.Add(p);
         }
 
