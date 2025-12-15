@@ -21,7 +21,16 @@ namespace HNSRevamped
             taskOptionsLoad.Wait();
         }
 
+        public static readonly string[] gameModes =
+        {
+            "None", "0 Kill Cooldown", "Shift And Seek"
+        };
+
         //System
+        public static OptionItem Gamemode;
+
+        public static OptionItem TabGroupMain;
+
         public static OptionItem KickLowLevelPlayer;
         public static OptionItem TempBanLowLevelPlayer;
 
@@ -39,6 +48,11 @@ namespace HNSRevamped
         public static OptionItem NoGameEnd;
         
         //Mod
+        public static OptionItem DisableSabotage;
+        public static OptionItem DisableCloseDoor;
+
+        public static OptionItem DisableReport;
+
         public static OptionItem OverrideTaskSettings;
 
         public static OptionItem AllPlayersSameTasks;
@@ -156,7 +170,13 @@ namespace HNSRevamped
         {
             if (IsLoaded) return;
 
-            //System Settings
+            Gamemode = StringOptionItem.Create(1, "Gamemode", gameModes, 0, TabGroup.SystemSettings, false)
+                .SetColor(Color.green)
+                .SetHeader(true);
+
+            TabGroupMain = TextOptionItem.Create(2, "Main", TabGroup.SystemSettings)
+                .SetColor(Color.yellow);
+
             KickLowLevelPlayer = IntegerOptionItem.Create(60050, "Kick Players Under Level", new(0, 100, 1), 0, TabGroup.SystemSettings, false)
                 .SetValueFormat(OptionFormat.Level);
             TempBanLowLevelPlayer = BooleanOptionItem.Create(60051, "Ban Instead Of Kick", false, TabGroup.SystemSettings, false)
@@ -174,7 +194,7 @@ namespace HNSRevamped
                 .SetValueFormat(OptionFormat.Seconds);
             WaitAutoStart = IntegerOptionItem.Create(44421, "AutoStart After", new(10, 600, 10), 5, TabGroup.SystemSettings, false)
                 .SetValueFormat(OptionFormat.Seconds);
-            PlayerAutoStart = IntegerOptionItem.Create(44422, "PlayerAutoStart", new(1, 15, 1), 5, TabGroup.SystemSettings, false);
+            PlayerAutoStart = IntegerOptionItem.Create(44422, "Players Needed To Start", new(1, 15, 1), 5, TabGroup.SystemSettings, false);
 
             NoGameEnd = BooleanOptionItem.Create(60380, "No Game End", false, TabGroup.SystemSettings, false)
                 .SetColor(Color.red)
@@ -187,6 +207,16 @@ namespace HNSRevamped
                 .SetHeader(true);
 
             // Mod Settings
+            DisableSabotage = BooleanOptionItem.Create(60565, "Disable Critical Sabotages", false, TabGroup.ModSettings, false)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue))
+                .SetHeader(true);
+            DisableCloseDoor = BooleanOptionItem.Create(60566, "Disable Door Sabotages", false, TabGroup.ModSettings, false)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            DisableReport = BooleanOptionItem.Create(60520, "Disable Body Reports", false, TabGroup.ModSettings, false)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+
+
             OverrideTaskSettings = BooleanOptionItem.Create(22998, "<#ffd>Ove<#ffb>rri<#ff9>de T<#ffb>ask <#ffd>Set<#ffb>tin<#ff9>gs", false, TabGroup.ModSettings, false)
                 .SetColor(new Color32(239, 89, 175, byte.MaxValue))
                 .SetHeader(true);

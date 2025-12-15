@@ -25,7 +25,6 @@ public partial class Main : BasePlugin
     public static ConfigEntry<bool> AutoStart { get; private set; }
     public static ConfigEntry<bool> DarkTheme { get; private set; }
     public static ConfigEntry<bool> LobbyMusic { get; private set; }
-    public static ConfigEntry<bool> NoKcdMode { get; private set; }
 
     public static NormalGameOptionsV10 NormalOptions => GameOptionsManager.Instance != null ? GameOptionsManager.Instance.currentNormalGameOptions : null;
     public static bool HasArgumentException;
@@ -68,7 +67,6 @@ public partial class Main : BasePlugin
         AutoStart = Config.Bind("Client Options", "Auto Start", false);
         DarkTheme = Config.Bind("Client Options", "Dark Theme", true);
         LobbyMusic = Config.Bind("Client Options", "Lobby Music", false);
-        NoKcdMode = Config.Bind("Client Options", "0 Kill Cooldown", false);
 
         BanManager.Init();
         

@@ -46,7 +46,7 @@ public static class Zoom
 
     private static void SetZoomSize(bool times = false, bool reset = false)
     {
-        var size = 1.2f;
+        var size = 1.5f;
         if (!times) size = 1 / size;
         if (reset)
         {

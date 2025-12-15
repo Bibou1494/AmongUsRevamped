@@ -15,7 +15,6 @@ namespace HNSRevamped
         private static ClientOptionItem AutoStart;
         private static ClientOptionItem DarkTheme;
         private static ClientOptionItem LobbyMusic;
-        private static ClientOptionItem NoKcdMode;
 
         public static void Postfix(OptionsMenuBehaviour __instance)
         {
@@ -66,9 +65,6 @@ namespace HNSRevamped
 
             if (LobbyMusic == null || LobbyMusic.ToggleButton == null)
                 LobbyMusic = ClientOptionItem.Create("Lobby Music", Main.LobbyMusic, __instance);
-
-            if (NoKcdMode == null || NoKcdMode.ToggleButton == null)
-                NoKcdMode = ClientOptionItem.Create("0 Kill Cooldown", Main.NoKcdMode, __instance);
         }
     }
 
