@@ -2,7 +2,7 @@
 using UnityEngine;
 
 // https://github.com/tukasa0001/TownOfHost/blob/main/Modules/OptionHolder.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     [HarmonyPatch]
     public static class Options
@@ -161,8 +161,19 @@ namespace HNSRevamped
         public static OptionItem DisableSubmitScan;
         public static OptionItem DisableUploadData;
 
-        // HNS
+        // Gamemode
+        public static OptionItem TabGroupHNS;
         public static OptionItem NumSeekers;
+
+        public static OptionItem TabGroup0Kcd;
+        public static OptionItem NoKcdSettingsOverride;
+
+        public static OptionItem TabGroupSNS;
+        public static OptionItem SNSSettingsOverride;
+        public static OptionItem CrewAutoWinsGameAfter;
+        public static OptionItem CantKillTime;
+        public static OptionItem MisfiresToSuicide;
+
 
         public static bool IsLoaded = false;
 
@@ -174,7 +185,7 @@ namespace HNSRevamped
                 .SetColor(Color.green)
                 .SetHeader(true);
 
-            TabGroupMain = TextOptionItem.Create(2, "Main", TabGroup.SystemSettings)
+            TabGroupMain = TextOptionItem.Create(60000, "Main", TabGroup.SystemSettings)
                 .SetColor(Color.yellow);
 
             KickLowLevelPlayer = IntegerOptionItem.Create(60050, "Kick Players Under Level", new(0, 100, 1), 0, TabGroup.SystemSettings, false)
@@ -187,26 +198,42 @@ namespace HNSRevamped
                 .SetParent(KickInvalidFriendCodes);
 
             ApplyBanList = BooleanOptionItem.Create(60110, "Apply BanList", true, TabGroup.SystemSettings, true);
-            ApplyModeratorList = BooleanOptionItem.Create(60120, "Apply ModeratorList", false, TabGroup.SystemSettings, false);
+            ApplyModeratorList = BooleanOptionItem.Create(60120, "Apply ModeratorList", true, TabGroup.SystemSettings, false);
 
             AutoRejoinLobby = BooleanOptionItem.Create(60210, "Auto Rejoin Lobby", false, TabGroup.SystemSettings, false);
-            AutoStartTimer = IntegerOptionItem.Create(44420, "Countdown For AutoStart", new(1, 600, 1), 5, TabGroup.SystemSettings, false)
+            AutoStartTimer = IntegerOptionItem.Create(44420, "Countdown For Auto Start", new(1, 600, 1), 5, TabGroup.SystemSettings, false)
                 .SetValueFormat(OptionFormat.Seconds);
-            WaitAutoStart = IntegerOptionItem.Create(44421, "AutoStart After", new(10, 600, 10), 5, TabGroup.SystemSettings, false)
+            WaitAutoStart = IntegerOptionItem.Create(44421, "Auto Start After", new(10, 600, 10), 300, TabGroup.SystemSettings, false)
                 .SetValueFormat(OptionFormat.Seconds);
-            PlayerAutoStart = IntegerOptionItem.Create(44422, "Players Needed To Start", new(1, 15, 1), 5, TabGroup.SystemSettings, false);
+            PlayerAutoStart = IntegerOptionItem.Create(44422, "Players Needed To Auto Start", new(1, 15, 1), 1, TabGroup.SystemSettings, false);
 
             NoGameEnd = BooleanOptionItem.Create(60380, "No Game End", false, TabGroup.SystemSettings, false)
                 .SetColor(Color.red)
                 .SetHeader(true);
 
 
-            // HNS Settings
-            NumSeekers = IntegerOptionItem.Create(70000, "# Seekers", new(0, 15, 1), 1, TabGroup.HNSSettings, false)
-                .SetValueFormat(OptionFormat.Level)
-                .SetHeader(true);
+            // Gamemode Settings
+            TabGroupHNS = TextOptionItem.Create(70000, "Hide and Seek", TabGroup.GamemodeSettings)
+                .SetColor(Color.green);
+            NumSeekers = IntegerOptionItem.Create(70001, "# Seekers", new(0, 15, 1), 1, TabGroup.GamemodeSettings, false)
+                .SetValueFormat(OptionFormat.Level);
 
-            // Mod Settings
+
+            TabGroup0Kcd = TextOptionItem.Create(70025, "0 Kill Cooldown", TabGroup.GamemodeSettings)
+                .SetColor(Color.red);
+            NoKcdSettingsOverride = BooleanOptionItem.Create(70026, "Auto Update Settings", true, TabGroup.GamemodeSettings, false);
+
+            TabGroupSNS = TextOptionItem.Create(70050, "Shift and Seek", TabGroup.GamemodeSettings)
+                .SetColor(Color.yellow);
+            SNSSettingsOverride = BooleanOptionItem.Create(70051, "Auto Update Settings", true, TabGroup.GamemodeSettings, false);
+            CantKillTime = IntegerOptionItem.Create(70053, "After Misfiring, Can't kill for", new(0, 60, 5), 20, TabGroup.GamemodeSettings, false)
+                .SetValueFormat(OptionFormat.Seconds);
+            MisfiresToSuicide = IntegerOptionItem.Create(70052, "Suicide After Amount Of Misfires", new(1, 15, 1), 2, TabGroup.GamemodeSettings, false);
+            CrewAutoWinsGameAfter = IntegerOptionItem.Create(70054, "Crewmates Automatically Win After", new(0, 600, 10), 300, TabGroup.GamemodeSettings, false)
+                .SetValueFormat(OptionFormat.Seconds);
+
+
+            // Gameplay Settings
             DisableSabotage = BooleanOptionItem.Create(60565, "Disable Critical Sabotages", false, TabGroup.ModSettings, false)
                 .SetColor(new Color32(255, 153, 153, byte.MaxValue))
                 .SetHeader(true);

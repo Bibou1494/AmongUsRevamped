@@ -9,7 +9,7 @@ using BepInEx.Unity.IL2CPP;
 using System;
 using UnityEngine;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 [BepInAutoPlugin]
 [BepInProcess("Among Us.exe")]
@@ -29,7 +29,9 @@ public partial class Main : BasePlugin
     public static NormalGameOptionsV10 NormalOptions => GameOptionsManager.Instance != null ? GameOptionsManager.Instance.currentNormalGameOptions : null;
     public static bool HasArgumentException;
     public static string CredentialsText;
-    public const string ModVersion = "v0.4.0";
+    public const string ModVersion = "v1.0.0";
+
+    public static float GameTimer;
 
     public static PlayerControl[] AllPlayerControls
     {
@@ -55,17 +57,17 @@ public partial class Main : BasePlugin
 
     public override void Load()
     {
-        var handler = HNSRevamped.Logger.Handler("GitVersion");        
-        Logger = BepInEx.Logging.Logger.CreateLogSource("HNSRevamped");
-        HNSRevamped.Logger.Enable();
+        var handler = AmongUsRevamped.Logger.Handler("GitVersion");        
+        Logger = BepInEx.Logging.Logger.CreateLogSource("AmongUsRevamped");
+        AmongUsRevamped.Logger.Enable();
         Instance = this;
 
         AutoStart = Config.Bind("Client Options", "Auto Start", false);
-        GM = Config.Bind("Client Options", "GM", false);
+        GM = Config.Bind("Client Options", "Game Master", false);
         UnlockFps = Config.Bind("Client Options", "Unlock FPS", false);
         ShowFps = Config.Bind("Client Options", "Show FPS", false);
         AutoStart = Config.Bind("Client Options", "Auto Start", false);
-        DarkTheme = Config.Bind("Client Options", "Dark Theme", true);
+        DarkTheme = Config.Bind("Client Options", "Dark Theme", false);
         LobbyMusic = Config.Bind("Client Options", "Lobby Music", false);
 
         BanManager.Init();

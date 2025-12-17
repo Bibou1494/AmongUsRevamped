@@ -3,13 +3,13 @@ using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using UnityEngine;
 
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     // https://github.com/tukasa0001/TownOfHost
     [HarmonyPatch(typeof(OptionsMenuBehaviour), nameof(OptionsMenuBehaviour.Start))]
     public static class OptionsMenuBehaviourStartPatch
     {
-        private static ClientOptionItem GM; // Currently not used yet
+        private static ClientOptionItem GM;
         private static ClientOptionItem UnlockFPS;
         private static ClientOptionItem ShowFPS;
         private static ClientOptionItem AutoStart;
@@ -22,7 +22,7 @@ namespace HNSRevamped
 
             if (GM == null || GM.ToggleButton == null)
             {
-                GM = ClientOptionItem.Create("GM", Main.GM, __instance, GMButtonToggle);
+                GM = ClientOptionItem.Create("Game Master", Main.GM, __instance, GMButtonToggle);
 
                 static void GMButtonToggle()
                 {
@@ -33,7 +33,7 @@ namespace HNSRevamped
 
             if (UnlockFPS == null || UnlockFPS.ToggleButton == null)
             {
-                UnlockFPS = ClientOptionItem.Create("UnlockFPS", Main.UnlockFps, __instance, UnlockFPSButtonToggle);
+                UnlockFPS = ClientOptionItem.Create("Unlock FPS", Main.UnlockFps, __instance, UnlockFPSButtonToggle);
 
                 static void UnlockFPSButtonToggle()
                 {
@@ -43,11 +43,11 @@ namespace HNSRevamped
             }
 
             if (ShowFPS == null || ShowFPS.ToggleButton == null)
-                ShowFPS = ClientOptionItem.Create("ShowFPS", Main.ShowFps, __instance);
+                ShowFPS = ClientOptionItem.Create("Show FPS", Main.ShowFps, __instance);
 
             if (AutoStart == null || AutoStart.ToggleButton == null)
             {
-                AutoStart = ClientOptionItem.Create("AutoStart", Main.AutoStart, __instance, AutoStartButtonToggle);
+                AutoStart = ClientOptionItem.Create("Auto Start", Main.AutoStart, __instance, AutoStartButtonToggle);
 
                 static void AutoStartButtonToggle()
                 {

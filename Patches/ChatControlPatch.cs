@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 // https://github.com/SuperNewRoles/SuperNewRoles/blob/master/SuperNewRoles/Patches/LobbyBehaviourPatch.cs
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
 internal static class ChatControllerUpdatePatch

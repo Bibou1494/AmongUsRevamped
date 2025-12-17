@@ -5,7 +5,7 @@ using System.Text.RegularExpressions;
 using TMPro;
 using UnityEngine;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 [HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnGameJoined))]
 internal static class OnGameJoinedPatch

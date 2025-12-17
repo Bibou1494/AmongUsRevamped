@@ -1,5 +1,5 @@
 // https://github.com/tukasa0001/TownOfHost/blob/main/Modules/OptionItems/IntegerOptionItem.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     public class IntegerOptionItem : OptionItem
     {

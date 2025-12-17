@@ -7,19 +7,19 @@ using System.Text.RegularExpressions;
 using System.Reflection;
 
 // https://github.com/EnhancedNetwork/TownofHost-Enhanced/blob/main/Modules/BanManager.cs
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 public static class BanManager
 {
     public static string RemoveHtmlTags(this string str) => Regex.Replace(str, "<[^>]*?>", "");
-    private static string BanListPath = "./HNSR-DATA/BanList.txt";
-    private static string ModeratorListPath = "./HNSR-DATA/ModeratorList.txt";
+    private static string BanListPath = "./AUR-DATA/BanList.txt";
+    private static string ModeratorListPath = "./AUR-DATA/ModeratorList.txt";
     public static List<string> TempBanWhiteList = [];
     public static void Init()
     {
         try
         {
-            Directory.CreateDirectory("HNSR-DATA");
+            Directory.CreateDirectory("AUR-DATA");
 
             if (!File.Exists(BanListPath))
             {
@@ -114,7 +114,7 @@ public static class BanManager
 
         try
         {
-            Directory.CreateDirectory("HNSR-DATA");
+            Directory.CreateDirectory("AUR-DATA");
             if (!File.Exists(BanListPath)) File.Create(BanListPath).Close();
             using StreamReader sr = new(BanListPath);
             string line;

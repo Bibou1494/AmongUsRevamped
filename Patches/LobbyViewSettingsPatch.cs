@@ -5,7 +5,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 // https://github.com/Rabek009/MoreGamemodes/blob/master/Patches/LobbyViewSettingsPatch.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     [HarmonyPatch(typeof(LobbyViewSettingsPane))]
     public class LobbyViewPatch

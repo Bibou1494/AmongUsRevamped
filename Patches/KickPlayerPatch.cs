@@ -2,7 +2,7 @@
 using UnityEngine;
 
 // https://github.com/tukasa0001/TownOfHost/blob/main/Patches/ClientPatch.cs
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 [HarmonyPatch(typeof(InnerNetClient), nameof(InnerNetClient.KickPlayer))]
 internal class KickPlayerPatch

@@ -4,7 +4,7 @@ using BepInEx.Configuration;
 using UnityEngine;
 
 // https://github.com/tukasa0001/TownOfHost/blob/main/Modules/OptionItems/OptionItem.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     public abstract class OptionItem
     {
@@ -215,7 +215,7 @@ namespace HNSRevamped
     {
         SystemSettings,
         ModSettings,
-        HNSSettings,
+        GamemodeSettings,
 
     }
     

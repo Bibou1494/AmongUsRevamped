@@ -1,5 +1,5 @@
 // https://github.com/Yumenopai/TownOfHost_Y/blob/main/Modules/OptionItem/TextOptionItem.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     public class TextOptionItem : OptionItem
     {

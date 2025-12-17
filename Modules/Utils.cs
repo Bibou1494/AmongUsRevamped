@@ -14,7 +14,7 @@ using AmongUs.InnerNet.GameDataMessages;
 
 using Object = UnityEngine.Object;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 public static class Utils
 {
@@ -43,7 +43,7 @@ public static class Utils
     {
         if (friendCode == "") return false;
 
-        var friendCodesFilePath = @"./HNSR-DATA/Moderators.txt";
+        var friendCodesFilePath = @"./AUR-DATA/Moderators.txt";
         var friendCodes = File.ReadAllLines(friendCodesFilePath);
         return friendCodes.Any(code => code.Contains(friendCode));
     }
@@ -55,9 +55,9 @@ public static class Utils
             case TabGroup.SystemSettings:
                 return "System Settings";
             case TabGroup.ModSettings:
-                return "Mod Settings";
-            case TabGroup.HNSSettings:
-                return "HNS Settings";
+                return "Gameplay Settings";
+            case TabGroup.GamemodeSettings:
+                return "Gamemode Settings";
             default:
                 return "";
         }

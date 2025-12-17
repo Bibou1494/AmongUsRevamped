@@ -1,7 +1,7 @@
 using System;
 
 // https://github.com/tukasa0001/TownOfHost/blob/main/Modules/OptionItems/ValueRule.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     public abstract class ValueRule<T>
     {

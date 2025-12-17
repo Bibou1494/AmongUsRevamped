@@ -1,7 +1,7 @@
 using System;
 using UnityEngine;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 // https://github.com/Yumenopai/TownOfHost_Y
 [HarmonyPatch(typeof(HudManager), nameof(HudManager.Update))]

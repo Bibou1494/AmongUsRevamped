@@ -4,7 +4,7 @@ using TMPro;
 using UnityEngine;
 
 //https://github.com/Gurge44/EndlessHostRoles/blob/main/Patches/CredentialsPatch.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     public enum ErrorCode
     {
@@ -51,10 +51,13 @@ namespace HNSRevamped
     {
         private static void Postfix(VersionShower __instance)
         {
-           RpcSetTasksPatch.GlobalTaskIds = null;
-           OnGameJoinedPatch.AutoStartCheck = false;
+            RpcSetTasksPatch.GlobalTaskIds = null;
+            OnGameJoinedPatch.AutoStartCheck = false;
+            Main.GameTimer = 0f;
+            MurderPlayerPatch.misfireCount.Clear();
+            LateTask.Tasks.Clear();
 
-            Main.CredentialsText = $"<color=#FFD700>Hide And Seek Revamped</color><color=#ffffff> {Main.ModVersion}</color>";
+            Main.CredentialsText = $"<color=#FFD700>Among Us Revamped</color><color=#ffffff> {Main.ModVersion}</color>";
 
             var credentials = UnityEngine.Object.Instantiate(__instance.text);
             credentials.text = Main.CredentialsText;

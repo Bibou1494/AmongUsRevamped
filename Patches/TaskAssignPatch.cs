@@ -2,7 +2,7 @@ using AmongUs.GameOptions;
 using Il2CppInterop.Runtime.InteropTypes.Arrays;
 using Random = UnityEngine.Random;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 //  https://github.com/Gurge44/EndlessHostRoles/blob/main/Patches/TaskAssignPatch.cs
 

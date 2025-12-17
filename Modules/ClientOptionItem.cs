@@ -2,7 +2,7 @@ using System;
 using BepInEx.Configuration;
 using UnityEngine;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 // Credit: https://github.com/tukasa0001/TownOfHost
 public class ClientOptionItem
@@ -65,8 +65,8 @@ public class ClientOptionItem
 
                 ToggleButtonBehaviour modOptionsButton = UnityEngine.Object.Instantiate(mouseMoveToggle, generalTab);
                 modOptionsButton.transform.localPosition = leaveButton?.transform.localPosition ?? new(0f, -2.4f, 1f);
-                modOptionsButton.name = "HNSR Options";
-                modOptionsButton.Text.text = "HNSR Options";
+                modOptionsButton.name = "AUR Options";
+                modOptionsButton.Text.text = "AUR Options";
                 modOptionsButton.Background.color = new Color32(0, 165, 255, byte.MaxValue);
                 var modOptionsPassiveButton = modOptionsButton.GetComponent<PassiveButton>();
                 modOptionsPassiveButton.OnClick = new();

@@ -6,7 +6,7 @@ using AmongUs.GameOptions;
 
 using Object = UnityEngine.Object;
 
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     public enum CustomRPC
     {

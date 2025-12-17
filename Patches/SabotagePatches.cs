@@ -2,7 +2,7 @@
 using InnerNet;
 using UnityEngine;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 [HarmonyPatch(typeof(SabotageSystemType), nameof(SabotageSystemType.UpdateSystem))] // SetInitialSabotageCooldown - set sabotage cooldown in start game
 public static class SabotageSystemTypeRepairDamagePatch

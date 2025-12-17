@@ -2,7 +2,7 @@ using System;
 using AmongUs.GameOptions;
 
 // https://github.com/tukasa0001/TownOfHost/blob/main/Modules/OptionBackup/OptionBackupData.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     public class OptionBackupData
     {

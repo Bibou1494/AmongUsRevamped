@@ -2,7 +2,7 @@ using System;
 using System.Runtime.CompilerServices;
 
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 class LateTask
 {

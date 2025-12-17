@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 [HarmonyPatch(typeof(GameStartManager), nameof(GameStartManager.Update))]
 public static class GameStartManagerUpdatePatch

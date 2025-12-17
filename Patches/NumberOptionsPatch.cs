@@ -1,6 +1,6 @@
 ﻿using AmongUs.GameOptions;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 // https://github.com/astra1dev/AUnlocker/blob/main/src/OptionsPatches.cs
 

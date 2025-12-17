@@ -3,7 +3,7 @@ using Hazel;
 using InnerNet;
 using UnityEngine;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 [HarmonyPatch(typeof(EndGameManager), nameof(EndGameManager.ShowButtons))]
 public static class EndGameManagerPatch
@@ -12,6 +12,9 @@ public static class EndGameManagerPatch
     {
         RpcSetTasksPatch.GlobalTaskIds = null;
         OnGameJoinedPatch.AutoStartCheck = false;
+        Main.GameTimer = 0f;
+        MurderPlayerPatch.misfireCount.Clear();
+        LateTask.Tasks.Clear();
         
         EndGameNavigation navigation = __instance.Navigation;
         if (!AmongUsClient.Instance.AmHost || __instance == null || navigation == null || !Options.AutoRejoinLobby.GetBool()) return;

@@ -5,7 +5,7 @@ using System.Net.Http;
 using System.Runtime.CompilerServices;
 using LogLevel = BepInEx.Logging.LogLevel;
 
-namespace HNSRevamped;
+namespace AmongUsRevamped;
 
 public interface ILogHandler
 {

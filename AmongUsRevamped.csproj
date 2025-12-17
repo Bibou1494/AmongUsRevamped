@@ -6,8 +6,8 @@
 
         <VersionPrefix>1.0.0</VersionPrefix>
         <VersionSuffix>dev</VersionSuffix>
-        <Description>Mod generated using Reactor Template</Description>
-        <!-- <Authors>your name</Authors> -->
+        <Description>The ultimate Host-Only mod without Modded Protocol</Description>
+        <Authors>Most Various</Authors>
     </PropertyGroup>
 
     <ItemGroup>

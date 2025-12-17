@@ -5,7 +5,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 // https://github.com/Yumenopai/TownOfHost_Y/blob/main/Patches/GameOptionsPatch.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     public static class ModGameOptionsMenu
     {

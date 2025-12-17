@@ -4,7 +4,7 @@ using UnityEngine;
 using Object = UnityEngine.Object;
 
 // https://github.com/Yumenopai/TownOfHost_Y/blob/main/Patches/GameSettingMenuPatch.cs
-namespace HNSRevamped
+namespace AmongUsRevamped
 {
     [HarmonyPatch(typeof(GameSettingMenu))]
     public class GameSettingMenuPatch
@@ -114,13 +114,13 @@ namespace HNSRevamped
                     switch ((TabGroup)(tabNum - 3))
                     {
                         case TabGroup.SystemSettings:
-                            __instance.MenuDescriptionText.text = "System Settings";
+                            __instance.MenuDescriptionText.text = "Quality settings to improve comfort and testing";
                             break;
                         case TabGroup.ModSettings:
-                            __instance.MenuDescriptionText.text = "Mod Settings";
+                            __instance.MenuDescriptionText.text = "Gameplay Settings to improve the in-game experience";
                             break;
-                        case TabGroup.HNSSettings:
-                            __instance.MenuDescriptionText.text = "HNS Settings";
+                        case TabGroup.GamemodeSettings:
+                            __instance.MenuDescriptionText.text = "Situational settings to apply for specific gamemodes";
                             break;
                     }
                 }
