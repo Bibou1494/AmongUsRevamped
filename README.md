@@ -28,7 +28,7 @@
 - <b>🔷 Technical settings:</b>
 - Kick/Ban players under a certain level
 - Kick/Ban invalid FriendCodes
-- Kick\Ban command using names instead of ID's
+- Kick/Ban command using names instead of ID's
 - Moderator system
 - Enable No Game End
 - Banlist
