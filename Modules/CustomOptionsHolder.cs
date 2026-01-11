@@ -23,7 +23,7 @@ namespace AmongUsRevamped
 
         public static readonly string[] gameModes =
         {
-            "None", "0 Kill Cooldown", "Shift And Seek"
+            "None", "0 Kill Cooldown", "Shift And Seek", "Speedrun"
         };
 
         //System
@@ -174,6 +174,10 @@ namespace AmongUsRevamped
         public static OptionItem CantKillTime;
         public static OptionItem MisfiresToSuicide;
 
+        public static OptionItem TabGroupSpeedrun;
+        public static OptionItem SpeedrunSettingsOverride;
+        public static OptionItem GameAutoEndsAfter;
+
 
         public static bool IsLoaded = false;
 
@@ -230,6 +234,12 @@ namespace AmongUsRevamped
                 .SetValueFormat(OptionFormat.Seconds);
             MisfiresToSuicide = IntegerOptionItem.Create(70052, "Suicide After Amount Of Misfires", new(1, 15, 1), 2, TabGroup.GamemodeSettings, false);
             CrewAutoWinsGameAfter = IntegerOptionItem.Create(70054, "Crewmates Automatically Win After", new(0, 600, 10), 300, TabGroup.GamemodeSettings, false)
+                .SetValueFormat(OptionFormat.Seconds);
+
+            TabGroupSpeedrun = TextOptionItem.Create(70075, "Speedrun", TabGroup.GamemodeSettings)
+                .SetColor(Color.blue);
+            SpeedrunSettingsOverride = BooleanOptionItem.Create(70076, "Auto Update Settings", true, TabGroup.GamemodeSettings, false);
+            GameAutoEndsAfter = IntegerOptionItem.Create(70077, "Game automatically ends after", new(0, 600, 10), 300, TabGroup.GamemodeSettings, false)
                 .SetValueFormat(OptionFormat.Seconds);
 
 

@@ -11,6 +11,7 @@ public static class EndGameManagerPatch
     public static void Postfix(EndGameManager __instance)
     {
         RpcSetTasksPatch.GlobalTaskIds = null;
+        Utils.HandlingGameEnd = false;
         OnGameJoinedPatch.AutoStartCheck = false;
         Main.GameTimer = 0f;
         MurderPlayerPatch.misfireCount.Clear();
@@ -27,7 +28,7 @@ class NormalGameEndChecker
 {
     public static bool Prefix()
     {
-        if (Options.NoGameEnd.GetBool()) return false;
+        if (Options.NoGameEnd.GetBool() || Options.Gamemode.GetValue() == 3) return false;
         else return true;
     }
 }
@@ -60,6 +61,6 @@ internal class ControllerManagerUpdatePatch
             }
             else
                 PlayerControl.LocalPlayer.ReportDeadBody(PlayerControl.LocalPlayer.Data);
-            }
+        }
     }
 }

@@ -47,6 +47,27 @@ class FixedUpdateInGamePatch
             }
         }
 
+        // Speedrun
+        if (Options.Gamemode.GetValue() == 3 && !Utils.isHideNSeek)
+        {
+            Main.NormalOptions.NumEmergencyMeetings = 0;
+
+            Main.NormalOptions.TaskBarMode = 0;
+
+            if (__instance.AllTasksCompleted() && Utils.InGame && Utils.GamePastRoleSelection && !Utils.HandlingGameEnd)
+            {
+                Utils.HandlingGameEnd = true;
+                __instance.RpcSetRole(AmongUs.GameOptions.RoleTypes.ImpostorGhost, false);
+
+                new LateTask(() =>
+                {
+                MessageWriter writer = AmongUsClient.Instance.StartEndGame();
+                writer.Write((byte)GameOverReason.ImpostorsByVote);
+                AmongUsClient.Instance.FinishEndGame(writer);
+                }, 1f, "SpeedrunSetWinner");
+            }
+        }
+
         if (Options.Gamemode.GetValue() == 0 && Main.NormalOptions.KillCooldown <= 0.01f)
         {
             Main.NormalOptions.KillCooldown = 25f;

@@ -37,9 +37,24 @@ public static class FixedUpdate
                     Main.GameTimer = 0f;
 
                     MessageWriter writer = AmongUsClient.Instance.StartEndGame();
+                    writer.Write((byte)GameOverReason.ImpostorDisconnect);
+                    AmongUsClient.Instance.FinishEndGame(writer);
+                    Logger.Info($" Crewmates won because the game took longer than {Options.CrewAutoWinsGameAfter.GetInt()}s", "SNSManager");
+                }
+            }
+            // 3 = Speedrun
+            if (Options.Gamemode.GetValue() == 3 && !Utils.isHideNSeek && Options.GameAutoEndsAfter.GetInt() != 0 && !Options.NoGameEnd.GetBool())
+            {
+                Main.GameTimer += Time.fixedDeltaTime;
+                        
+                if (Main.GameTimer > Options.GameAutoEndsAfter.GetInt())
+                {
+                    Main.GameTimer = 0f;
+
+                    MessageWriter writer = AmongUsClient.Instance.StartEndGame();
                     writer.Write((byte)GameOverReason.CrewmatesByVote);
                     AmongUsClient.Instance.FinishEndGame(writer);
-                    Logger.Info($" Crewmates win because the game took longer than {Options.CrewAutoWinsGameAfter.GetInt()}s", "SNSManager");
+                    Logger.Info($" No one won because the game took longer than {Options.GameAutoEndsAfter.GetInt()}s", "SpeedrunManager");
                 }
             }
         }

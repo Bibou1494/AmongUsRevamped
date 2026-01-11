@@ -52,6 +52,7 @@ namespace AmongUsRevamped
         private static void Postfix(VersionShower __instance)
         {
             RpcSetTasksPatch.GlobalTaskIds = null;
+            Utils.HandlingGameEnd = false;
             OnGameJoinedPatch.AutoStartCheck = false;
             Main.GameTimer = 0f;
             MurderPlayerPatch.misfireCount.Clear();

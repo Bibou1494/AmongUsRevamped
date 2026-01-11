@@ -56,6 +56,10 @@ class OnPlayerJoinedPatch
         {
             BanManager.CheckBanPlayer(Client);
 
+            if (Utils.IsPlayerModerator(Client.FriendCode) && Options.ApplyModeratorList.GetBool())
+            {
+                Logger.Info($" {Client.PlayerName} is moderator", "ModeratorCheck");
+            }
 
             if (HasInvalidFriendCode(Client.FriendCode) && Options.KickInvalidFriendCodes.GetBool())
             {

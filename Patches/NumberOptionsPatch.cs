@@ -47,6 +47,8 @@ public static class NumberOption_Initialize
 {
     public static void Postfix(NumberOption __instance)
     {
+        if (ModGameOptionsMenu.TabIndex >= 3) return;
+
         if (Utils.isHideNSeek || !Utils.isHideNSeek && __instance.Title != StringNames.GameNumImpostors && __instance.Title != StringNames.GamePlayerSpeed)
         {
             __instance.ValidRange = new FloatRange(-900f, 900f);

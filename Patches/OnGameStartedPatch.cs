@@ -24,6 +24,23 @@ internal class ApplyCustomImpostorCount
             }
         }
 
+        if (Options.Gamemode.GetValue() == 3 && !Utils.isHideNSeek)
+        {
+            foreach (var p in PlayerControl.AllPlayerControls)
+            {
+                p.RpcSetRole(AmongUs.GameOptions.RoleTypes.Crewmate, false);
+
+                new LateTask(() =>
+                {
+                    p.RpcSetRole(AmongUs.GameOptions.RoleTypes.Crewmate, false);
+                }, 5f, "Speedrun Secondary RPCSetRole");
+
+                new LateTask(() =>
+                {
+                    p.RpcSetRole(AmongUs.GameOptions.RoleTypes.Crewmate, false);
+                }, 9f, "Speedrun Tertiary RPCSetRole");
+            }
+        }
 
         if (Utils.isHideNSeek)
         {
@@ -61,12 +78,12 @@ internal class ApplyCustomImpostorCount
                         new LateTask(() =>
                         {
                             p.RpcSetRole(AmongUs.GameOptions.RoleTypes.Impostor, false);
-                        }, 5f, "Secondary RPCSetRole");
+                        }, 5f, "HNS Secondary RPCSetRole");
 
                         new LateTask(() =>
                         {
                             p.RpcSetRole(AmongUs.GameOptions.RoleTypes.Impostor, false);
-                        }, 9f, "Tertairy RPCSetRole");
+                        }, 9f, "HNS Tertiary RPCSetRole");
                     }
                 }
             }

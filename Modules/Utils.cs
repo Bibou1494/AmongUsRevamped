@@ -35,6 +35,8 @@ public static class Utils
 
     public static bool IsFreePlay => AmongUsClient.Instance.NetworkMode == NetworkModes.FreePlay;
     public static bool IsMeeting => InGame && (MeetingHud.Instance);
+    public static bool GamePastRoleSelection => Main.GameTimer > 10f;
+    public static bool HandlingGameEnd;
 
     public static string ColorString(Color32 color, string str) => $"<#{color.r:x2}{color.g:x2}{color.b:x2}{color.a:x2}>{str}</color>";
     public static string ColorToHex(Color32 color) => $"#{color.r:x2}{color.g:x2}{color.b:x2}{color.a:x2}";
@@ -43,7 +45,7 @@ public static class Utils
     {
         if (friendCode == "") return false;
 
-        var friendCodesFilePath = @"./AUR-DATA/Moderators.txt";
+        var friendCodesFilePath = @"./AUR-DATA/ModeratorList.txt";
         var friendCodes = File.ReadAllLines(friendCodesFilePath);
         return friendCodes.Any(code => code.Contains(friendCode));
     }
@@ -61,6 +63,11 @@ public static class Utils
             default:
                 return "";
         }
+    }
+
+    public static bool IsCustomOption(NumberOption option)
+    {
+        return option.GetComponent<OptionItem>() != null;
     }
 
     public static void DestroyTranslator(this GameObject obj)
