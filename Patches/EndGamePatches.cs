@@ -10,12 +10,7 @@ public static class EndGameManagerPatch
 {
     public static void Postfix(EndGameManager __instance)
     {
-        RpcSetTasksPatch.GlobalTaskIds = null;
-        Utils.HandlingGameEnd = false;
-        OnGameJoinedPatch.AutoStartCheck = false;
-        Main.GameTimer = 0f;
-        MurderPlayerPatch.misfireCount.Clear();
-        LateTask.Tasks.Clear();
+        Utils.ClearLeftoverData();
         
         EndGameNavigation navigation = __instance.Navigation;
         if (!AmongUsClient.Instance.AmHost || __instance == null || navigation == null || !Options.AutoRejoinLobby.GetBool()) return;
@@ -28,7 +23,7 @@ class NormalGameEndChecker
 {
     public static bool Prefix()
     {
-        if (Options.NoGameEnd.GetBool() || Options.Gamemode.GetValue() == 3) return false;
+        if (Options.NoGameEnd.GetBool() || Options.Gamemode.GetValue() == 3 || Options.Gamemode.GetValue() == 2 && Main.NormalOptions.NumImpostors*2 < Utils.allAlivePlayersCount ) return false;
         else return true;
     }
 }

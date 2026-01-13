@@ -51,12 +51,7 @@ namespace AmongUsRevamped
     {
         private static void Postfix(VersionShower __instance)
         {
-            RpcSetTasksPatch.GlobalTaskIds = null;
-            Utils.HandlingGameEnd = false;
-            OnGameJoinedPatch.AutoStartCheck = false;
-            Main.GameTimer = 0f;
-            MurderPlayerPatch.misfireCount.Clear();
-            LateTask.Tasks.Clear();
+            Utils.ClearLeftoverData();
 
             Main.CredentialsText = $"<color=#FFD700>Among Us Revamped</color><color=#ffffff> {Main.ModVersion}</color>";
 

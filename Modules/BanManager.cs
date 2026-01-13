@@ -12,6 +12,7 @@ namespace AmongUsRevamped;
 public static class BanManager
 {
     public static string RemoveHtmlTags(this string str) => Regex.Replace(str, "<[^>]*?>", "");
+    private static readonly string DenyNameListPath = "./AUR-DATA/DenyNameList.txt";
     private static string BanListPath = "./AUR-DATA/BanList.txt";
     private static string ModeratorListPath = "./AUR-DATA/ModeratorList.txt";
     public static List<string> TempBanWhiteList = [];
@@ -21,6 +22,11 @@ public static class BanManager
         {
             Directory.CreateDirectory("AUR-DATA");
 
+            if (!File.Exists(DenyNameListPath))
+            {
+                Logger.Warn("Creating a new DenyNameList.txt file", "BanManager");
+                File.Create(DenyNameListPath).Close();
+            }
             if (!File.Exists(BanListPath))
             {
                 Logger.Warn("Creating a new BanList.txt file", "BanManager");

@@ -38,6 +38,7 @@ namespace AmongUsRevamped
         public static OptionItem TempBanInvalidFriendCodes;
 
         public static OptionItem ApplyBanList;
+        public static OptionItem ApplyDenyNameList;
         public static OptionItem ApplyModeratorList;
 
         public static OptionItem AutoRejoinLobby;
@@ -202,7 +203,8 @@ namespace AmongUsRevamped
                 .SetParent(KickInvalidFriendCodes);
 
             ApplyBanList = BooleanOptionItem.Create(60110, "Apply BanList", true, TabGroup.SystemSettings, true);
-            ApplyModeratorList = BooleanOptionItem.Create(60120, "Apply ModeratorList", true, TabGroup.SystemSettings, false);
+            ApplyDenyNameList = BooleanOptionItem.Create(60120, "Apply DenyName List", true, TabGroup.SystemSettings, false);
+            ApplyModeratorList = BooleanOptionItem.Create(60121, "Apply Moderator List", true, TabGroup.SystemSettings, false);
 
             AutoRejoinLobby = BooleanOptionItem.Create(60210, "Auto Rejoin Lobby", false, TabGroup.SystemSettings, false);
             AutoStartTimer = IntegerOptionItem.Create(44420, "Countdown For Auto Start", new(1, 600, 1), 5, TabGroup.SystemSettings, false)

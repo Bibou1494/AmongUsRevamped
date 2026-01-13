@@ -3,6 +3,7 @@ using AmongUs.GameOptions;
 using Hazel;
 using InnerNet;
 using System;
+using UnityEngine;
 
 namespace AmongUsRevamped;
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
@@ -12,12 +13,14 @@ class FixedUpdateInGamePatch
     {
         if (__instance == null || __instance.PlayerId == 255) return;
 
+        GameObject g = GameObject.Find("GameSettingsLabel");
+
         // 0Kc
         if (Options.Gamemode.GetValue() == 1 && !Utils.isHideNSeek && Main.NormalOptions.KillCooldown != 0.01f)
         {
             Main.NormalOptions.KillCooldown = 0.01f;
 
-            if (Options.NoKcdSettingsOverride.GetBool())
+            if (Options.NoKcdSettingsOverride.GetBool() && g == null)
             {
                 Main.NormalOptions.EmergencyCooldown = 0;
                 Main.NormalOptions.DiscussionTime = 0;
@@ -35,7 +38,7 @@ class FixedUpdateInGamePatch
         {
             Main.NormalOptions.KillCooldown = 2.5f;
 
-            if (Options.SNSSettingsOverride.GetBool())
+            if (Options.SNSSettingsOverride.GetBool() && g == null)
             {
                 Main.NormalOptions.NumEmergencyMeetings = 0;
 
@@ -48,7 +51,7 @@ class FixedUpdateInGamePatch
         }
 
         // Speedrun
-        if (Options.Gamemode.GetValue() == 3 && !Utils.isHideNSeek)
+        if (Options.Gamemode.GetValue() == 3 && !Utils.isHideNSeek && g == null)
         {
             Main.NormalOptions.NumEmergencyMeetings = 0;
 
@@ -149,7 +152,7 @@ internal static class MurderPlayerPatch
                     if (!__instance.Data.IsDead) {__instance.RpcSetRole(RoleTypes.Shapeshifter, false);}
                 }, Options.CantKillTime.GetInt(), "SNSResetRole");
 
-                if (misfireCount[__instance.Data.PlayerId] >= Options.MisfiresToSuicide.GetValue())
+                if (misfireCount[__instance.Data.PlayerId] >= Options.MisfiresToSuicide.GetFloat())
                 {
                     __instance.RpcSetRole(RoleTypes.ImpostorGhost);
                     Logger.Info($" {__instance.Data.PlayerName} misfired {misfireCount[playerId]} times and suicided", "SNSKillManager");

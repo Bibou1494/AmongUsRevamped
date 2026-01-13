@@ -25,6 +25,8 @@ public static class Utils
 
     public static long TimeStamp => EpochStartSeconds + (long)Stopwatch.Elapsed.TotalSeconds;
 
+    public static int allAlivePlayersCount => AllAlivePlayerControls.Count();
+
     public static bool IsLobby => AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Joined;
     public static bool InGame => AmongUsClient.Instance && AmongUsClient.Instance.GameState == InnerNetClient.GameStates.Started;
     public static bool isHideNSeek => GameOptionsManager.Instance.CurrentGameOptions.GameMode == GameModes.HideNSeek;
@@ -48,6 +50,23 @@ public static class Utils
         var friendCodesFilePath = @"./AUR-DATA/ModeratorList.txt";
         var friendCodes = File.ReadAllLines(friendCodesFilePath);
         return friendCodes.Any(code => code.Contains(friendCode));
+    }
+
+    public static bool IsPlayerInDenyName(ClientData client, string name)
+    {
+        if (name == "" || !AmongUsClient.Instance.AmHost || !Options.ApplyDenyNameList.GetBool()) return false;
+
+        var denyNameFilePath = @"./AUR-DATA/DenyNameList.txt";
+        var deniedNames = File.ReadAllLines(denyNameFilePath);
+
+        if (deniedNames.Where(code => !string.IsNullOrWhiteSpace(code)).Any(code => name.Contains(code, StringComparison.OrdinalIgnoreCase)))
+        {
+            AmongUsClient.Instance.KickPlayer(client.Id, false);    
+            Logger.Info($" {name} was kicked because their name was in DenyNameList.txt", "Kick");      
+            Logger.SendInGame($" {name} was kicked because their name was in DenyNameList.txt");    
+            return true;
+        }
+        else return false;
     }
 
     public static string GetTabName(TabGroup tab)
@@ -170,5 +189,37 @@ public static class Utils
     {
         try { return AmongUsClient.Instance.allClients.ToArray().FirstOrDefault(cd => cd.Id == id); }
         catch { return null; }
+    }
+
+    public static void ClearLeftoverData()
+    {
+        RpcSetTasksPatch.GlobalTaskIds = null;
+        HandlingGameEnd = false;
+        OnGameJoinedPatch.AutoStartCheck = false;
+        Main.GameTimer = 0f;
+        MurderPlayerPatch.misfireCount.Clear();
+        LateTask.Tasks.Clear();        
+    }
+
+    public static PlayerControl[] AllAlivePlayerControls
+    {
+        get
+        {
+            int count = PlayerControl.AllPlayerControls.Count;
+            var result = new PlayerControl[count];
+            var i = 0;
+
+            foreach (PlayerControl pc in PlayerControl.AllPlayerControls)
+            {
+                if (pc == null || pc.Data == null || pc.PlayerId >= 254 || pc.Data.IsDead || (pc.Data.Disconnected)) continue;
+
+                result[i++] = pc;
+            }
+
+            if (i == 0) return [];
+
+            Array.Resize(ref result, i);
+            return result;
+        }
     }
 }
