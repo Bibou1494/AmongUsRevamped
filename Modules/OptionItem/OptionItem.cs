@@ -68,7 +68,7 @@ namespace AmongUsRevamped
 
             Children = new();
 
-            AllConfigEntries = new ConfigEntry<int>[10];
+            AllConfigEntries = new ConfigEntry<int>[5];
             if (Id == 0)
             {
                 singleEntry = Main.Instance.Config.Bind("Current Preset", id.ToString(), DefaultValue);
@@ -80,7 +80,7 @@ namespace AmongUsRevamped
             }
             else
             {
-                for (int i = 0; i < 10; i++)
+                for (int i = 0; i < 5; i++)
                 {
                     AllConfigEntries[i] = Main.Instance.Config.Bind($"Preset{i + 1}", id.ToString(), DefaultValue);
                 }

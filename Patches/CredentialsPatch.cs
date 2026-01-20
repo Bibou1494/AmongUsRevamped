@@ -67,22 +67,6 @@ namespace AmongUsRevamped
             {
                 ErrorText.Instance.AddError(ErrorCode.Main_DictionaryError);
             }
-
-            GameObject t = GameObject.Find("Tint");
-            if (t != null)
-            {
-                t.SetActive(false);
-            }
-            GameObject b = GameObject.Find("BackgroundTexture");
-            if (b != null)
-            {
-                b.SetActive(false);
-            }
-            GameObject w = GameObject.Find("WindowShine");
-            if (w != null)
-            {
-                w.SetActive(false);
-            }
         }
     }
 
@@ -179,6 +163,71 @@ namespace AmongUsRevamped
                 if (LastFPS.Count > 10) LastFPS.RemoveAt(0);
                 Frames = 0;
                 Elapsed = 0f;
+            }
+        }
+    }
+}
+
+// https://github.com/3X3CODE/MainMenuEnhanced/blob/main/MainMenuEnhanced/VisualPatch.cs
+[HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start))]
+public static class MainMenuManagerStartPatch
+{
+    public static void Postfix(MainMenuManager __instance)
+    {
+        if (__instance == null) return;
+
+        var bg = GameObject.Find("BackgroundTexture");
+        if (bg != null)
+        {
+            bg.SetActive(false);
+        }
+
+        Transform tintTrans = __instance.transform.Find("MainUI/Tint");
+        var tint = tintTrans.gameObject;
+        if (tint != null)
+        {
+            tint.SetActive(false);
+        }
+
+        DisableObject("WindowShine");
+        DisableComponent("RightPanel");
+        DisableComponent("MaskedBlackScreen");
+
+        Transform playTransform = __instance.transform.Find("MainUI/AspectScaler/LeftPanel/Main Buttons/PlayButton/FontPlacer/Text_TMP");
+        if (playTransform != null) 
+        {
+            var playbutton = playTransform.gameObject;
+            if (playbutton != null)
+            {
+                if (playbutton.TryGetComponent<TextTranslatorTMP>(out var tmp))
+                {
+                    tmp.enabled = false;
+                }
+                if (playbutton.TryGetComponent<TextMeshPro>(out var text))
+                {
+                    text.text = "Start";
+                }
+            }
+        }
+            
+        static void DisableObject(string name)
+        {
+            var obj = GameObject.Find(name);
+            if (obj != null)
+            {
+                obj.SetActive(false);
+            }
+        }
+
+        static void DisableComponent(string name)
+        {
+            var obj = GameObject.Find(name);
+            if (obj != null)
+            {
+                if (obj.TryGetComponent<SpriteRenderer>(out var renderer))
+                {
+                    renderer.enabled = false;
+                }
             }
         }
     }
