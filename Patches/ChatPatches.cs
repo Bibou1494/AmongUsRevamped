@@ -14,9 +14,8 @@ internal static class ChatControllerUpdatePatch
 
     public static void Postfix(ChatController __instance)
     {
-        if (__instance == null || __instance.freeChatField == null || __instance.freeChatField.textArea == null || __instance.freeChatField.background == null || __instance.freeChatField.textArea.compoText == null || __instance.freeChatField.textArea.outputText == null) return;
-
-        if (__instance.quickChatField == null || __instance.quickChatField.background == null || __instance.quickChatField.text == null) return;
+        if (!__instance||!__instance.freeChatField||!__instance.freeChatField.textArea||!__instance.freeChatField.background||__instance.freeChatField.textArea.compoText == null||!__instance.freeChatField.textArea.outputText) return;
+        if (!__instance.quickChatField||!__instance.quickChatField.background||__instance.quickChatField.text==null) return;
 
         if (Main.DarkTheme.Value)
         {
@@ -44,9 +43,8 @@ internal static class ChatBubbleSetNamePatch
 {
     public static void Postfix(ChatBubble __instance, [HarmonyArgument(2)] bool voted)
     {
-        if (__instance == null || __instance.playerInfo == null || __instance.playerInfo.Object == null || __instance.playerInfo?.Object?.Data == null || __instance.TextArea == null) return;
+        if (!__instance||!__instance.playerInfo||!__instance.playerInfo.Object||!__instance.playerInfo.Object.Data||!__instance.TextArea||!__instance.Background) return;
 
-        PlayerControl seer = PlayerControl.LocalPlayer;
         PlayerControl target = __instance.playerInfo.Object;
 
         if (Main.DarkTheme.Value)

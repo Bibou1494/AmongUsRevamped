@@ -12,10 +12,9 @@ public static class GameStartManagerUpdatePatch
 
     public static void Prefix(GameStartManager __instance)
     {
-        if (__instance == null) return;
+        if (__instance == null || MeetingHud.Instance != null) return;
         if (AmongUsClient.Instance == null || !AmongUsClient.Instance.AmHost) return;
 
-        // Only run our custom logic when safe
         if (__instance.StartButton == null || __instance.GameStartText == null) return;
 
         __instance.MinPlayers = 1;
@@ -49,7 +48,7 @@ public static class GameStartManagerUpdatePatch
     {
         string warningMessage = "";
 
-        if (!AmongUsClient.Instance.AmHost) return;
+        if (!AmongUsClient.Instance.AmHost || __instance.GameStartText == null) return;
 
         if (GameStartManagerStartPatch.warningText != null)
         {

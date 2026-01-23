@@ -12,9 +12,9 @@ class ReportDeadBodyPatch
 {
     public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] NetworkedPlayerInfo target)
     {
-        if (!AmongUsClient.Instance.AmHost) return true;
+        if (!AmongUsClient.Instance.AmHost || target == null || __instance == null) return true;
 
-        if (Options.DisableReport.GetBool() && target != null || Options.Gamemode.GetValue() == 2 || Options.Gamemode.GetValue() == 3)
+        if (Options.DisableReport.GetBool() || Options.Gamemode.GetValue() == 2 || Options.Gamemode.GetValue() == 3)
         {
             Logger.Info($" Stopped {__instance.Data.PlayerName} reporting the body of {target.PlayerName}", "ReportDeadBodyPatch");
             return false;
