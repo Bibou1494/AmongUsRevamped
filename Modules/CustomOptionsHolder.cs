@@ -4,23 +4,6 @@ using UnityEngine;
 // https://github.com/tukasa0001/TownOfHost/blob/main/Modules/OptionHolder.cs
 namespace AmongUsRevamped
 {
-    [HarmonyPatch]
-    public static class Options
-    {
-        static Task taskOptionsLoad;
-
-        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.Initialize)), HarmonyPostfix]
-        public static void OptionsLoadStart()
-        {
-            taskOptionsLoad = Task.Run(Load);
-        }
-
-        [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
-        public static void WaitOptionsLoad()
-        {
-            taskOptionsLoad.Wait();
-        }
-
     public static class CL
     {
         public static Color32 Hex(string hex)
@@ -41,8 +24,26 @@ namespace AmongUsRevamped
             byte b = byte.Parse(hex.Substring(4, 2), System.Globalization.NumberStyles.HexNumber);
 
             return new Color32(r, g, b, 255);
+        }
     }
-}
+
+    [HarmonyPatch]
+    public static class Options
+    {
+        static Task taskOptionsLoad;
+
+        [HarmonyPatch(typeof(TranslationController), nameof(TranslationController.Initialize)), HarmonyPostfix]
+        public static void OptionsLoadStart()
+        {
+            taskOptionsLoad = Task.Run(Load);
+        }
+
+        [HarmonyPatch(typeof(MainMenuManager), nameof(MainMenuManager.Start)), HarmonyPostfix]
+        public static void WaitOptionsLoad()
+        {
+            taskOptionsLoad.Wait();
+        }
+
         public const int PresetId = 0;
 
         private static readonly string[] presets =
@@ -227,6 +228,7 @@ namespace AmongUsRevamped
 
         // Roles
         public static OptionItem TabGroupCrewmate;
+        public static OptionItem MayorPerc;
 
         public static OptionItem TabGroupNeutral;
         public static OptionItem JesterPerc;        
@@ -291,6 +293,9 @@ namespace AmongUsRevamped
             // Custom role settings
             TabGroupCrewmate = TextOptionItem.Create(100000, "Crewmate Roles", TabGroup.CustomRoleSettings)
                 .SetColor(CL.Hex("#8cffff"));
+            MayorPerc = IntegerOptionItem.Create(100001, "PLACEHOLDER", new(0, 100, 5), 0, TabGroup.CustomRoleSettings, false)
+                .SetValueFormat(OptionFormat.Percent)
+                .SetColor(CL.Hex("#204d42"));
 
             TabGroupNeutral = TextOptionItem.Create(101000, "Neutral Roles", TabGroup.CustomRoleSettings)
                 .SetColor(CL.Hex("#FFFF99"));

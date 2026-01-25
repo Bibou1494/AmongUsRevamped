@@ -1,4 +1,5 @@
-﻿using InnerNet;
+﻿using Il2CppSystem.Collections;
+using InnerNet;
 using System;
 using UnityEngine;
 
@@ -24,5 +25,34 @@ internal static class LobbyBehaviourUpdatePatch
             if (mapThemeSound != null) return;
             SoundManager.Instance.CrossFadeSound("MapTheme", __instance.MapTheme, 0.5f);
         }
+    }
+}
+
+[HarmonyPatch(typeof(LobbyBehaviour), nameof(LobbyBehaviour.Start))]
+public class LobbyStartPatch
+{
+    private static GameObject LobbyPaintObject;
+    private static Sprite LobbyPaintSprite;
+
+    public static void Prefix()
+    {
+        LobbyPaintSprite = Utils.LoadSprite("AmongUsRevamped.Resources.Images.doger.png", 290f);
+    }
+
+    public static void Postfix(LobbyBehaviour __instance)
+    {
+        _ = new LateTask(() =>
+        {
+            var LeftBox = GameObject.Find("Leftbox");
+            if (LeftBox != null)
+            {
+                LobbyPaintObject = UnityEngine.Object.Instantiate(LeftBox, LeftBox.transform.parent);
+                LobbyPaintObject.name = "Lobby Paint";
+                LobbyPaintObject.transform.localPosition = new Vector3(0.042f, -2.59f, -10.5f);
+
+                SpriteRenderer renderer = LobbyPaintObject.GetComponent<SpriteRenderer>();
+                renderer.sprite = LobbyPaintSprite;
+            }
+        }, 0.25f, "Co Load Dropship Decorations");
     }
 }

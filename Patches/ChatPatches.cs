@@ -5,7 +5,6 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 
-// https://github.com/SuperNewRoles/SuperNewRoles/blob/master/SuperNewRoles/Patches/LobbyBehaviourPatch.cs
 namespace AmongUsRevamped;
 
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.Update))]
@@ -60,18 +59,10 @@ internal static class ChatBubbleSetNamePatch
 [HarmonyPatch(typeof(ChatController), nameof(ChatController.SendChat))]
 internal static class SendChatPatch
 {
-    public static string noKcdMode => "0 Kill Cooldown:\n\nImpostors have no kill cooldown, Crewmates have low tasks\nThink fast and pay attention!";
-    public static string SnSModeOne => "Shift and Seek:\n\nImpostors can only kill someone while shapeshifted as them\nSabotages & Meetings = Off";
-    public static string SnSModeTwo => $"Crew wins by tasks/surviving {Options.CrewAutoWinsGameAfter.GetInt()}s\nImp wins by killing\nOne wrong kill = Can't kill for {Options.CantKillTime.GetInt()}s\n{Utils.BasicIntToWord(Options.MisfiresToSuicide.GetInt())} wrong kills = suicide";
-    public static string speedrunMode => $"Speedrun:\n\nEveryone is a crewmate The 1st player to finish tasks wins the game Game auto ends after {Options.GameAutoEndsAfter.GetInt()}s";
-
-    public static string allCommandsFull => "Commands:\n/r - Current mode description\n/0kc, /sns, /sp - Specific mode description\n/l - Shows last winner info\n/kick, /ban - Bans or kicks a player by name\n/ckick, /cban - Bans or kicks a player by color";
-    public static string allCommandsOne => "Commands:\n/r - Current mode description\n/0kc, /sns, /sp - Specific mode description\n/l - Shows last winner info";
-    public static string allCommandsTwo => "/kick, /ban - Bans or kicks a player by name\n/ckick, /cban - Bans or kicks a player by color";
-
     public static bool Prefix(ChatController __instance)
     {
-        string text = __instance.freeChatField.textArea.text.Trim();
+        string msgtext = __instance.freeChatField.textArea.text.Trim();
+        string text = msgtext.ToLower();
 
         if (!AmongUsClient.Instance.AmHost) return true;
 
@@ -85,7 +76,7 @@ internal static class SendChatPatch
 
         if (text == "/h" || text == "/help" || text == "/cmd" || text == "/commands")
         {
-            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{allCommandsFull}");
+            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{String.allCommandsFull}");
             __instance.freeChatField.textArea.Clear();
             __instance.freeChatField.textArea.SetText(string.Empty);
             return false;
@@ -100,21 +91,27 @@ internal static class SendChatPatch
             return false;
         }
 
+        if (text == "/aur" || text == "/amongusrevamped")
+        {
+            Utils.ChatCommand(__instance, $"{String.SocialsAll}", "", false);
+            return false;
+        }
+
         if (text == "/0kc" || text == "/0kcd" || text == "/0killcooldown")
         {
-            Utils.ChatCommand(__instance, $"{noKcdMode}", "", false);
+            Utils.ChatCommand(__instance, $"{String.noKcdMode}", "", false);
             return false;
         }
 
         if (text == "/sns" || text == "/shiftandseek" || text == "/shift&seek")
         {
-            Utils.ChatCommand(__instance, $"{SnSModeOne}", $"{SnSModeTwo}", true);
+            Utils.ChatCommand(__instance, $"{String.SnSModeOne}", $"{String.SnSModeTwo}", true);
             return false;
         }
 
         if (text == "/sp" || text == "/sr" || text == "/speedrun")
         {
-            Utils.ChatCommand(__instance, $"{speedrunMode}", "", false);
+            Utils.ChatCommand(__instance, $"{String.speedrunMode}", "", false);
             return false;
         }
 
@@ -130,15 +127,15 @@ internal static class SendChatPatch
                 break;
 
                 case 1:
-                Utils.ChatCommand(__instance, $"{noKcdMode}", "", false);
+                Utils.ChatCommand(__instance, $"{String.noKcdMode}", "", false);
                 break;
 
                 case 2:
-                Utils.ChatCommand(__instance, $"{SnSModeOne}", $"{SnSModeTwo}", true);              
+                Utils.ChatCommand(__instance, $"{String.SnSModeOne}", $"{String.SnSModeTwo}", true);              
                 break;
 
                 case 3:
-                Utils.ChatCommand(__instance, $"{speedrunMode}", "", false);
+                Utils.ChatCommand(__instance, $"{String.speedrunMode}", "", false);
                 break;
 
             }
@@ -176,7 +173,7 @@ internal static class SendChatPatch
 
             if (!isKick && !isBan && !isColorKick && !isColorBan)
             {
-                Logger.Info($" {PlayerControl.LocalPlayer.Data.PlayerName}: {text}", "SendChat");
+                Logger.Info($" {PlayerControl.LocalPlayer.Data.PlayerName}: {msgtext}", "SendChat");
                 return true;
             }
 
@@ -230,8 +227,10 @@ public static class RPCHandlerPatch
         {
             case RpcCalls.SendChat:
             {
-                string text = subReader.ReadString();
-                Logger.Info($" {__instance.Data.PlayerName}: {text}", "SendChat");
+                string msgtext = subReader.ReadString();
+                string text = msgtext.ToLower();
+
+                Logger.Info($" {__instance.Data.PlayerName}: {msgtext}", "SendChat");
 
                 if (text == "/h" || text == "/help" || text == "/cmd" || text == "/commands")
                 {
@@ -240,12 +239,12 @@ public static class RPCHandlerPatch
 
                     new LateTask(() =>
                     {
-                        Utils.SendPrivateMessage(__instance, $"{SendChatPatch.allCommandsOne}");
+                        Utils.SendPrivateMessage(__instance, $"{String.allCommandsOne}");
                     }, 2.2f, "MHP1");
 
                     new LateTask(() =>
                     {
-                        Utils.SendPrivateMessage(__instance, $"{SendChatPatch.allCommandsTwo}");
+                        Utils.SendPrivateMessage(__instance, $"{String.allCommandsTwo}");
                     }, 4.4f, "MHP2");
 
                     new LateTask(() =>
@@ -264,18 +263,18 @@ public static class RPCHandlerPatch
                 if (text == "/0kc" || text == "/0kcd" || text == "/0killcooldown")
                 {
                     if (!Utils.IsPlayerModerator(__instance.Data.FriendCode) || !Options.ModeratorCanUseCommand.GetBool()) return;
-                    Utils.ModeratorChatCommand($"{SendChatPatch.noKcdMode}", "", false);
+                    Utils.ModeratorChatCommand($"{String.noKcdMode}", "", false);
                 }
                 if (text == "/sns" || text == "/shiftandseek" || text == "/shift&seek")
                 {
                     if (!Utils.IsPlayerModerator(__instance.Data.FriendCode) || !Options.ModeratorCanUseCommand.GetBool()) return;
-                    Utils.ModeratorChatCommand($"{SendChatPatch.SnSModeOne}", $"{SendChatPatch.SnSModeTwo}", true);   
+                    Utils.ModeratorChatCommand($"{String.SnSModeOne}", $"{String.SnSModeTwo}", true);   
                 }
 
                 if (text == "/sp" || text == "/sr" || text == "/speedrun")
                 {
                     if (!Utils.IsPlayerModerator(__instance.Data.FriendCode) || !Options.ModeratorCanUseCommand.GetBool()) return;
-                    Utils.ModeratorChatCommand($"{SendChatPatch.speedrunMode}", "", false);
+                    Utils.ModeratorChatCommand($"{String.speedrunMode}", "", false);
                 }
 
                 if (text == "/r" || text == "/roles" || text == "/gamemode" || text == "/gm")
@@ -287,15 +286,15 @@ public static class RPCHandlerPatch
                         break;
 
                         case 1:
-                        Utils.ModeratorChatCommand($"{SendChatPatch.noKcdMode}", "", false);
+                        Utils.ModeratorChatCommand($"{String.noKcdMode}", "", false);
                         break;
 
                         case 2:
-                        Utils.ModeratorChatCommand($"{SendChatPatch.SnSModeOne}", $"{SendChatPatch.SnSModeTwo}", true);              
+                        Utils.ModeratorChatCommand($"{String.SnSModeOne}", $"{String.SnSModeTwo}", true);              
                         break;
 
                         case 3:
-                        Utils.ModeratorChatCommand($"{SendChatPatch.speedrunMode}", "", false);
+                        Utils.ModeratorChatCommand($"{String.speedrunMode}", "", false);
                         break;
 
                     }

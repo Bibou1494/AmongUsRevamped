@@ -16,6 +16,11 @@ internal class ApplyCustomImpostorCount
         NormalGameEndChecker.imps.Clear();
         NormalGameEndChecker.LastWinReason = "";
 
+        if ((Options.Gamemode.GetValue() == 0 || Options.Gamemode.GetValue() == 1) && !Utils.isHideNSeek)
+        {
+            CustomRolesAssigner.AssignRoles();
+        }
+
         if (Main.GM.Value)
         {
             if (Options.Gamemode.GetValue() == 3)
