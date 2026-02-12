@@ -99,11 +99,45 @@ namespace AmongUsRevamped
         public static OptionItem NoGameEnd;
         
         //Gameplay
-        public static OptionItem TabGroupGameplayGeneral;
+        public static OptionItem TabGroupSabotages;
         public static OptionItem DisableSabotage;
+        public static OptionItem DisableReactor;
+        public static OptionItem DisableOxygen;
+        public static OptionItem DisableLights;
+        public static OptionItem DisableComms;
+        public static OptionItem DisableHeli;
+        public static OptionItem DisableMushroomMixup;
         public static OptionItem DisableCloseDoor;
 
+        public static OptionItem TabGroupGameplayGeneral;
         public static OptionItem DisableReport;
+
+        public static OptionItem ChangeDecontaminationTime;
+        public static OptionItem DecontaminationTimeOnMiraHQ;
+        public static OptionItem DecontaminationDoorOpenTimeOnMiraHQ;
+        public static OptionItem DecontaminationTimeOnPolus;
+        public static OptionItem DecontaminationDoorOpenTimeOnPolus;
+
+        public static OptionItem DisableDevices;
+        private static OptionItem DisableSkeldDevices;
+        public static OptionItem DisableSkeldAdmin;
+        public static OptionItem DisableSkeldCamera;
+        private static OptionItem DisableMiraHQDevices;
+        public static OptionItem DisableMiraHQAdmin;
+        public static OptionItem DisableMiraHQDoorLog;
+        private static OptionItem DisablePolusDevices;
+        public static OptionItem DisablePolusAdmin;
+        public static OptionItem DisablePolusCamera;
+        public static OptionItem DisablePolusVital;
+        private static OptionItem DisableAirshipDevices;
+        public static OptionItem DisableAirshipCockpitAdmin;
+        public static OptionItem DisableAirshipRecordsAdmin;
+        public static OptionItem DisableAirshipCamera;
+        public static OptionItem DisableAirshipVital;
+        private static OptionItem DisableFungleDevices;
+        public static OptionItem DisableFungleCamera;
+        public static OptionItem DisableFungleVital;
+
 
         public static OptionItem TabGroupTasks;
         public static OptionItem OverrideTaskSettings;
@@ -226,6 +260,14 @@ namespace AmongUsRevamped
         public static OptionItem CrewAutoWinsGameAfter;
         public static OptionItem CantKillTime;
         public static OptionItem MisfiresToSuicide;
+        public static OptionItem SNSDisableSabotage;
+        public static OptionItem SNSDisableReactor;
+        public static OptionItem SNSDisableOxygen;
+        public static OptionItem SNSDisableLights;
+        public static OptionItem SNSDisableComms;
+        public static OptionItem SNSDisableHeli;
+        public static OptionItem SNSDisableMushroomMixup;
+        public static OptionItem SNSDisableCloseDoor;
 
         public static OptionItem TabGroupSpeedrun;
         public static OptionItem SpeedrunSettingsOverride;
@@ -341,6 +383,28 @@ namespace AmongUsRevamped
             MisfiresToSuicide = IntegerOptionItem.Create(70052, "Suicide After Amount Of Misfires", new(1, 10, 1), 2, TabGroup.GamemodeSettings, false);
             CrewAutoWinsGameAfter = IntegerOptionItem.Create(70054, "Crewmates Automatically Win After", new(0, 600, 10), 300, TabGroup.GamemodeSettings, false)
                 .SetValueFormat(OptionFormat.Seconds);
+            SNSDisableSabotage = BooleanOptionItem.Create(70055, "Disable SnS Critical Sabotages", true, TabGroup.GamemodeSettings, false)
+                .SetColor(Color.red);
+            SNSDisableReactor = BooleanOptionItem.Create(70056, "Disable Reactor Sabotage", true, TabGroup.GamemodeSettings, false)
+                .SetParent(SNSDisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            SNSDisableOxygen = BooleanOptionItem.Create(70057, "Disable O2 Sabotage", true, TabGroup.GamemodeSettings, false)
+                .SetParent(SNSDisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            SNSDisableLights = BooleanOptionItem.Create(70058, "Disable Lights Sabotage", true, TabGroup.GamemodeSettings, false)
+                .SetParent(SNSDisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            SNSDisableComms = BooleanOptionItem.Create(70059, "Disable Communications Sabotage", true, TabGroup.GamemodeSettings, false)
+                .SetParent(SNSDisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            SNSDisableHeli = BooleanOptionItem.Create(70060, "Disable Crash Course Sabotage", true, TabGroup.GamemodeSettings, false)
+                .SetParent(SNSDisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            SNSDisableMushroomMixup = BooleanOptionItem.Create(70061, "Disable Mushroom Mixup Sabotage", true, TabGroup.GamemodeSettings, false)
+                .SetParent(SNSDisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            SNSDisableCloseDoor = BooleanOptionItem.Create(70062, "Disable SnS Door Sabotages", true, TabGroup.GamemodeSettings, false)
+                .SetColor(Color.red);
 
             TabGroupSpeedrun = TextOptionItem.Create(70075, "Speedrun", TabGroup.GamemodeSettings)
                 .SetColor(Color.blue);
@@ -348,15 +412,129 @@ namespace AmongUsRevamped
             GameAutoEndsAfter = IntegerOptionItem.Create(70077, "Game automatically ends after", new(0, 600, 10), 300, TabGroup.GamemodeSettings, false)
                 .SetValueFormat(OptionFormat.Seconds);
 
-
             // Gameplay Settings
-            TabGroupGameplayGeneral = TextOptionItem.Create(60564, "General", TabGroup.ModSettings)
-                .SetColor(Color.blue);
-            DisableSabotage = BooleanOptionItem.Create(60565, "Disable Critical Sabotages", false, TabGroup.ModSettings, false)
+            TabGroupSabotages = TextOptionItem.Create(60455, "Sabotages", TabGroup.ModSettings)
+                .SetColor(Color.red);
+            DisableSabotage = BooleanOptionItem.Create(60456, "Disable Critical Sabotages", false, TabGroup.ModSettings, false)
+                .SetColor(Color.red);
+            DisableReactor = BooleanOptionItem.Create(60457, "Disable Reactor Sabotage", false, TabGroup.ModSettings, false)
+                .SetParent(DisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            DisableOxygen = BooleanOptionItem.Create(60458, "Disable O2 Sabotage", false, TabGroup.ModSettings, false)
+                .SetParent(DisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            DisableLights = BooleanOptionItem.Create(60459, "Disable Lights Sabotage", false, TabGroup.ModSettings, false)
+                .SetParent(DisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            DisableComms = BooleanOptionItem.Create(60460, "Disable Communications Sabotage", false, TabGroup.ModSettings, false)
+                .SetParent(DisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            DisableHeli = BooleanOptionItem.Create(60461, "Disable Crash Course Sabotage", false, TabGroup.ModSettings, false)
+                .SetParent(DisableSabotage)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+            DisableMushroomMixup = BooleanOptionItem.Create(60462, "Disable Mushroom Mixup Sabotage", false, TabGroup.ModSettings, false)
+                .SetParent(DisableSabotage)
                 .SetColor(new Color32(255, 153, 153, byte.MaxValue));
             DisableCloseDoor = BooleanOptionItem.Create(60566, "Disable Door Sabotages", false, TabGroup.ModSettings, false)
-                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+                .SetColor(Color.red);
+
+            TabGroupGameplayGeneral = TextOptionItem.Create(60564, "General", TabGroup.ModSettings)
+                .SetColor(Color.blue);
             DisableReport = BooleanOptionItem.Create(60520, "Disable Body Reports", false, TabGroup.ModSettings, false)
+                .SetColor(Color.blue);
+
+            ChangeDecontaminationTime = BooleanOptionItem.Create(60550, "Override Decontamination Time", false, TabGroup.ModSettings, false)
+                .SetColor(new Color32(19, 188, 233, byte.MaxValue));
+            DecontaminationTimeOnMiraHQ = FloatOptionItem.Create(60551, "Mira HQ Decon Duration", new(0.5f, 10f, 0.25f), 3f, TabGroup.ModSettings, false)
+                .SetParent(ChangeDecontaminationTime)
+                .SetValueFormat(OptionFormat.Seconds)
+                .SetColor(new Color32(19, 188, 233, byte.MaxValue));
+            DecontaminationDoorOpenTimeOnMiraHQ = FloatOptionItem.Create(60552, "Mira HQ Door Open Duration", new(0.5f, 10f, 0.25f), 3f, TabGroup.ModSettings, false)
+                .SetParent(ChangeDecontaminationTime)
+                .SetValueFormat(OptionFormat.Seconds)
+                .SetColor(new Color32(19, 188, 233, byte.MaxValue));
+            DecontaminationTimeOnPolus = FloatOptionItem.Create(60553, "Polus Decon Duration", new(0.5f, 10f, 0.25f), 3f, TabGroup.ModSettings, false)
+                .SetParent(ChangeDecontaminationTime)
+                .SetValueFormat(OptionFormat.Seconds)
+                .SetColor(new Color32(19, 188, 233, byte.MaxValue));
+            DecontaminationDoorOpenTimeOnPolus = FloatOptionItem.Create(60554, "Polus Door Open Duration", new(0.5f, 10f, 0.25f), 3f, TabGroup.ModSettings, false)
+                .SetParent(ChangeDecontaminationTime)
+                .SetValueFormat(OptionFormat.Seconds)
+                .SetColor(new Color32(19, 188, 233, byte.MaxValue));
+
+            DisableDevices = BooleanOptionItem.Create(22900, "Disable Devices", false, TabGroup.ModSettings, false)
+                .SetColor(Color.red);
+
+            DisableSkeldDevices = BooleanOptionItem.Create(22905, "Disable Skeld Devices", false, TabGroup.ModSettings, false)
+                .SetParent(DisableDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableSkeldAdmin = BooleanOptionItem.Create(22906, "Disable Skeld Admin", false, TabGroup.ModSettings, false)
+                .SetParent(DisableSkeldDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableSkeldCamera = BooleanOptionItem.Create(22907, "Disable Skeld Camera", false, TabGroup.ModSettings, false)
+                .SetParent(DisableSkeldDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableMiraHQDevices = BooleanOptionItem.Create(22908, "Disable Mira HQ Devices", false, TabGroup.ModSettings, false)
+                .SetParent(DisableDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableMiraHQAdmin = BooleanOptionItem.Create(22909, "Disable Mira HQ Admin", false, TabGroup.ModSettings, false)
+                .SetParent(DisableMiraHQDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableMiraHQDoorLog = BooleanOptionItem.Create(22910, "Disable Mira HQ DoorLogs", false, TabGroup.ModSettings, false)
+                .SetParent(DisableMiraHQDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisablePolusDevices = BooleanOptionItem.Create(22911, "Disable Polus Devices", false, TabGroup.ModSettings, false)
+                .SetParent(DisableDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisablePolusAdmin = BooleanOptionItem.Create(22912, "Disable Polus Admin", false, TabGroup.ModSettings, false)
+                .SetParent(DisablePolusDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisablePolusCamera = BooleanOptionItem.Create(22913, "Disable Polus Camera", false, TabGroup.ModSettings, false)
+                .SetParent(DisablePolusDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisablePolusVital = BooleanOptionItem.Create(22914, "Disable Polus Vitals", false, TabGroup.ModSettings, false)
+                .SetParent(DisablePolusDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableAirshipDevices = BooleanOptionItem.Create(22915, "Disable Airship Devices", false, TabGroup.ModSettings, false)
+                .SetParent(DisableDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableAirshipCockpitAdmin = BooleanOptionItem.Create(22916, "Disable Airship Cockpit Admin", false, TabGroup.ModSettings, false)
+                .SetParent(DisableAirshipDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableAirshipRecordsAdmin = BooleanOptionItem.Create(22917, "Disable Airship Records Admin", false, TabGroup.ModSettings, false)
+                .SetParent(DisableAirshipDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableAirshipCamera = BooleanOptionItem.Create(22918, "Disable Airship Camera", false, TabGroup.ModSettings, false)
+                .SetParent(DisableAirshipDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableAirshipVital = BooleanOptionItem.Create(22919, "Disable Airship Vitals", false, TabGroup.ModSettings, false)
+                .SetParent(DisableAirshipDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableFungleDevices = BooleanOptionItem.Create(22925, "Disable Fungle Devices", false, TabGroup.ModSettings, false)
+                .SetParent(DisableDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableFungleCamera = BooleanOptionItem.Create(22926, "Disable Fungle Camera", false, TabGroup.ModSettings, false)
+                .SetParent(DisableFungleDevices)
+                .SetColor(new Color32(255, 153, 153, byte.MaxValue));
+
+            DisableFungleVital = BooleanOptionItem.Create(22927, "Disable Fungle Vitals", false, TabGroup.ModSettings, false)
+                .SetParent(DisableFungleDevices)
                 .SetColor(new Color32(255, 153, 153, byte.MaxValue));
 
 

@@ -221,6 +221,87 @@ public static class Utils
         }
     }
 
+    public static bool IsActive(SystemTypes type)
+    {
+        try
+        {
+            if (Utils.IsLobby || !ShipStatus.Instance || !ShipStatus.Instance.Systems.TryGetValue(type, out ISystemType systemType)) return false;
+
+            int mapId = Main.NormalOptions.MapId;
+
+            switch (type)
+            {
+                case SystemTypes.Electrical:
+                {
+                    if (mapId == 5) return false;
+
+                    var switchSystem = systemType.CastFast<SwitchSystem>();
+                    return switchSystem is { IsActive: true };
+                }
+                case SystemTypes.Reactor:
+                {
+                    switch (mapId)
+                    {
+                        case 2:
+                            return false;
+                        case 4:
+                            var heliSabotageSystem = systemType.CastFast<HeliSabotageSystem>();
+                            return heliSabotageSystem != null && heliSabotageSystem.IsActive;
+                        default:
+                            var reactorSystemType = systemType.CastFast<ReactorSystemType>();
+                            return reactorSystemType is { IsActive: true };
+                    }
+                }
+                case SystemTypes.Laboratory:
+                {
+                    if (mapId != 2) return false;
+
+                    var reactorSystemType = systemType.CastFast<ReactorSystemType>();
+                    return reactorSystemType is { IsActive: true };
+                }
+                case SystemTypes.LifeSupp:
+                {
+                    if (mapId is 2 or 4 or 5) return false;
+
+                    var lifeSuppSystemType = systemType.CastFast<LifeSuppSystemType>();
+                    return lifeSuppSystemType is { IsActive: true };
+                }
+                case SystemTypes.Comms:
+                {
+                    if (mapId is 1 or 5)
+                    {
+                        var hqHudSystemType = systemType.TryCast<HqHudSystemType>();
+                        return hqHudSystemType != null && hqHudSystemType.IsActive;
+                    }
+
+                    var hudOverrideSystemType = systemType.CastFast<HudOverrideSystemType>();
+                    return hudOverrideSystemType is { IsActive: true };
+                }
+                case SystemTypes.HeliSabotage:
+                {
+                    if (mapId != 4) return false;
+
+                    var heliSabotageSystem = systemType.CastFast<HeliSabotageSystem>();
+                    return heliSabotageSystem != null && heliSabotageSystem.IsActive;
+                }
+                case SystemTypes.MushroomMixupSabotage:
+                {
+                    if (mapId != 5) return false;
+
+                    var mushroomMixupSabotageSystem = systemType.CastFast<MushroomMixupSabotageSystem>();
+                    return mushroomMixupSabotageSystem != null && mushroomMixupSabotageSystem.IsActive;
+                }
+                default:
+                    return false;
+            }
+        }
+        catch (Exception e)
+        {
+            Logger.Exception(e, "IsActive");
+            return false;
+        }
+    }
+
     public static void ShowLastResult(byte playerId = byte.MaxValue)
     {
         if (InGame)

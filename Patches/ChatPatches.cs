@@ -238,7 +238,7 @@ internal static class SendChatPatch
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.HandleRpc))]
 public static class RPCHandlerPatch
 {
-	public static void Prefix(PlayerControl __instance, byte callId, MessageReader reader)
+    public static void Prefix(PlayerControl __instance, [HarmonyArgument(0)] byte callId, [HarmonyArgument(1)] MessageReader reader)
 	{
         if (!AmongUsClient.Instance.AmHost) return;
 
@@ -266,7 +266,8 @@ public static class RPCHandlerPatch
                 {
                     c = keywords.Any(k => text == k);
                 }
-                if (c && !Utils.IsPlayerModerator(__instance.Data.FriendCode) && Options.AutoKickStart.GetBool())
+                
+                if (c && !Utils.IsPlayerModerator(__instance.Data.FriendCode) && Options.AutoKickStart.GetBool() && !Utils.InGame)
                 {
                     int clientId = __instance.Data.ClientId;
 

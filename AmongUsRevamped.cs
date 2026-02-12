@@ -38,9 +38,11 @@ public partial class Main : BasePlugin
 
     public static NormalGameOptionsV10 NormalOptions => GameOptionsManager.Instance != null ? GameOptionsManager.Instance.currentNormalGameOptions : null;
     public static HideNSeekGameOptionsV10 HideNSeekOptions => GameOptionsManager.Instance != null ? GameOptionsManager.Instance.currentHideNSeekGameOptions : null;
+    public static MapNames CurrentMap => (MapNames)NormalOptions.MapId;
+
     public static bool HasArgumentException;
     public static string CredentialsText;
-    public const string ModVersion = "v1.5.1";
+    public const string ModVersion = "v1.5.2";
 
     public static float GameTimer;
 

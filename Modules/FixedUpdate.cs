@@ -27,6 +27,9 @@ public static class FixedUpdate
         {
             nr.SetActive(false);
         }
+
+        if (!AmongUsClient.Instance.AmHost) return;
+        DisableDevice.FixedUpdate();
     }
 }
 

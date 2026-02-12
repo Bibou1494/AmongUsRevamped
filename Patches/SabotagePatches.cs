@@ -9,8 +9,6 @@ public static class SabotageSystemTypeRepairDamagePatch
 {
     private static bool Prefix([HarmonyArgument(0)] PlayerControl player, [HarmonyArgument(1)] MessageReader msgReader)
     {
-        if (!AmongUsClient.Instance.AmHost) return true;
-
         byte amount;
         {
             var newReader = MessageReader.Get(msgReader);
@@ -18,12 +16,27 @@ public static class SabotageSystemTypeRepairDamagePatch
             newReader.Recycle();
         }
         var Sabo = (SystemTypes)amount;
-
         Logger.Info($" {player.Data.PlayerName} is trying to sabotage: {Sabo}", "SabotageCheck");
-        if (Options.DisableSabotage.GetBool() || Options.Gamemode.GetValue() == 2)
+        
+        if (player.Data.ClientId == AmongUsClient.Instance.HostId) return true;
+
+        if (Options.Gamemode.GetValue() == 0 || Options.Gamemode.GetValue() == 1)
         {
-            Logger.Info($" Sabotage {Sabo} by: {player.Data.PlayerName} was blocked", "SabotageCheck");
-            return false;
+            if (Sabo == SystemTypes.LifeSupp && Options.DisableOxygen.GetBool() || Sabo == SystemTypes.Reactor && Options.DisableReactor.GetBool() || Sabo == SystemTypes.Electrical && Options.DisableLights.GetBool() || Sabo == SystemTypes.Comms && Options.DisableComms.GetBool() || Sabo == SystemTypes.HeliSabotage && Options.DisableHeli.GetBool() || Sabo == SystemTypes.MushroomMixupSabotage && Options.DisableMushroomMixup.GetBool())
+            {
+                Logger.Info($" Sabotage {Sabo} by: {player.Data.PlayerName} was blocked", "SabotageCheck");
+                return false;
+            }
+            return true;
+        }
+        if (Options.Gamemode.GetValue() == 2)
+        {
+            if (Sabo == SystemTypes.LifeSupp && Options.SNSDisableOxygen.GetBool() || Sabo == SystemTypes.Reactor && Options.SNSDisableReactor.GetBool() || Sabo == SystemTypes.Electrical && Options.SNSDisableLights.GetBool() || Sabo == SystemTypes.Comms && Options.SNSDisableComms.GetBool() || Sabo == SystemTypes.HeliSabotage && Options.SNSDisableHeli.GetBool() || Sabo == SystemTypes.MushroomMixupSabotage && Options.SNSDisableMushroomMixup.GetBool())
+            {
+                Logger.Info($" Sabotage {Sabo} by: {player.Data.PlayerName} was blocked", "SnSSabotageCheck");
+                return false;
+            }
+            return true;
         }
         else return true;
     }
@@ -59,6 +72,8 @@ public static class MessageReaderUpdateSystemPatch
             or SystemTypes.Decontamination2
             or SystemTypes.Decontamination3
             or SystemTypes.MedBay) return true;
+
+        if (player.Data.ClientId == AmongUsClient.Instance.HostId) return true;
 
         var amount = MessageReader.Get(reader).ReadByte();
         if (EACR.RpcUpdateSystemCheck(player, systemType, amount))
