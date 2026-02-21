@@ -93,6 +93,7 @@ internal static class SendChatPatch
 
         if (text == "/reload" || text == "/translatereload" || text == "/reset" || text == "/translatereset")
         {
+            HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{Translator.Get("translationReloaded")}");
             Translator.Reload();
             __instance.freeChatField.textArea.Clear();
             __instance.freeChatField.textArea.SetText(string.Empty);
@@ -303,7 +304,7 @@ public static class RPCHandlerPatch
                     c = keywords.Any(k => text == k);
                 }
                 
-                if (c && !Utils.IsPlayerModerator(__instance.Data.FriendCode) && Options.AutoKickStart.GetBool() && !Utils.InGame)
+                if (c && Utils.CheckAccessLevel(__instance.Data.FriendCode) >= 1 && Options.AutoKickStart.GetBool() && !Utils.InGame)
                 {
                     int clientId = __instance.Data.ClientId;
 
@@ -330,7 +331,7 @@ public static class RPCHandlerPatch
 
                     if (Utils.TryGetColorId(argCol, out byte colId))
                     {
-                        if (Options.ColorCommandLevel.GetValue() == 0 && Utils.IsPlayerModerator(__instance.Data.FriendCode) || Options.ColorCommandLevel.GetValue() == 1)
+                        if (Utils.CheckAccessLevel(__instance.Data.FriendCode) >= Options.SlashColorCmd.GetValue())
                         {
                             if (colId > 17 && !Options.AllowFortegreen.GetBool()) return;
                             __instance.RpcSetColor(colId);
@@ -349,7 +350,7 @@ public static class RPCHandlerPatch
 
                 if (isKick || isBan || isColorKick || isColorBan)
                 {
-                    if (Utils.IsPlayerModerator(__instance.Data.FriendCode))
+                    if (Utils.CheckAccessLevel(__instance.Data.FriendCode) >= Options.SlashKickCmd.GetValue())
                     {
                         string arg = text.Substring(isKick ? 6 : isBan ? 5 : isColorKick ? 7 : isColorBan ? 6 : 0).Trim();
 
@@ -357,7 +358,7 @@ public static class RPCHandlerPatch
 
                         foreach (PlayerControl p in PlayerControl.AllPlayerControls)
                         {
-                            if (p.Data == null || p == PlayerControl.LocalPlayer || Utils.IsPlayerModerator(p.Data.FriendCode)) continue;
+                            if (p.Data == null || p == PlayerControl.LocalPlayer || Utils.CheckAccessLevel(p.Data.FriendCode) >= 1) continue;
 
                             if ((isKick || isBan) && p.Data.PlayerName.Equals(arg, StringComparison.OrdinalIgnoreCase))
                             {
@@ -374,6 +375,7 @@ public static class RPCHandlerPatch
                                 }
                             }
                         }
+                        if (banLog && Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashBanCmd.GetValue()) return;
 
                         if (target != null)
                         {
@@ -387,7 +389,7 @@ public static class RPCHandlerPatch
 
                 if (text == "/h" || text == "/help" || text == "/cmd" || text == "/commands")
                 {
-                    if (!Utils.IsPlayerModerator(__instance.Data.FriendCode) || !Options.ModeratorCanUseCommand.GetBool()) return;
+                    if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashHelpAndAurCmd.GetValue()) return;
                     OnGameJoinedPatch.WaitingForChat = true;
 
                     new LateTask(() =>
@@ -406,36 +408,60 @@ public static class RPCHandlerPatch
                     }, 6.6f, "MHP3");
                 }
 
+                if (text == "/eg" || text == "/endgame" || text == "/finishgame" || text == "/stop")
+                {
+                    if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashStartAndEndGameCmd.GetValue()) return;
+                    MessageWriter writer = AmongUsClient.Instance.StartEndGame();
+                    writer.Write((byte)GameOverReason.ImpostorDisconnect);
+                    AmongUsClient.Instance.FinishEndGame(writer);
+                }
+
+                if (text == "/em" || text == "/endmeeting" || text == "/finishmeeting" || text == "/stopmeeting")
+                {
+                    if (Utils.IsMeeting)
+                    {
+                        if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashEndMeetingCmd.GetValue()) return;
+                        MeetingHud.Instance.RpcClose();
+                    }
+                }
+
+                if (text == "/s" || text == "/start" || text == "/startgame" || text == "/begin")
+                {
+                    if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashStartAndEndGameCmd.GetValue()) return;
+                    GameStartManager.Instance.BeginGame();
+                }
+
                 if (text == "/l" || text == "/lastgame" || text == "/win" || text == "/winner")
                 {
-                    if (!Utils.IsPlayerModerator(__instance.Data.FriendCode) || !Options.ModeratorCanUseCommand.GetBool()) return;
+                    if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashLastGameCmd.GetValue()) return;
                     if (string.IsNullOrEmpty(NormalGameEndChecker.LastWinReason) || Utils.InGame) return;
                     Utils.ModeratorChatCommand($"{NormalGameEndChecker.LastWinReason}", "", false);
                 }
 
                 if (text == "/0kc" || text == "/0kcd" || text == "/0killcooldown")
                 {
-                    if (!Utils.IsPlayerModerator(__instance.Data.FriendCode) || !Options.ModeratorCanUseCommand.GetBool()) return;
+                    if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashRolesAndGamemodeCmd.GetValue()) return;
                     Utils.ModeratorChatCommand(Translator.Get("noKcdMode"), "", false);
                 }
                 if (text == "/sns" || text == "/shiftandseek" || text == "/shift&seek")
                 {
-                    if (!Utils.IsPlayerModerator(__instance.Data.FriendCode) || !Options.ModeratorCanUseCommand.GetBool()) return;
+                    if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashRolesAndGamemodeCmd.GetValue()) return;
                     Utils.ModeratorChatCommand(Translator.Get("SnSModeOne"), Translator.Get("SnSModeTwo", Options.CrewAutoWinsGameAfter.GetInt(), Options.CantKillTime.GetInt(), Options.MisfiresToSuicide.GetInt()), true);
                 }
 
                 if (text == "/sp" || text == "/sr" || text == "/speedrun")
                 {
-                    if (!Utils.IsPlayerModerator(__instance.Data.FriendCode) || !Options.ModeratorCanUseCommand.GetBool()) return;
+                    if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashRolesAndGamemodeCmd.GetValue()) return;
                     Utils.ModeratorChatCommand(Translator.Get("speedrunMode", Options.GameAutoEndsAfter.GetInt()), "", false);
                 }
 
                 if (text == "/r" || text == "/roles" || text == "/gamemode" || text == "/gm")
                 {
-                    if (!Utils.IsPlayerModerator(__instance.Data.FriendCode) || !Options.ModeratorCanUseCommand.GetBool()) return;
+                    if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashRolesAndGamemodeCmd.GetValue()) return;
                     switch (Options.Gamemode.GetValue())
                     {
                         case 0:
+                        Utils.ModeratorChatCommand($"Enabled Custom Roles:\n\n{CustomRoleManagement.GetActiveRoles()}", "", false);
                         break;
 
                         case 1:

@@ -79,13 +79,8 @@ class OnPlayerJoinedPatch
         if (AmongUsClient.Instance.AmHost)
         {
             BanManager.CheckBanPlayer(Client);
-
             BanManager.IsPlayerInDenyName(Client, Client.PlayerName);
-
-            if (Utils.IsPlayerModerator(Client.FriendCode) && Options.ApplyModeratorList.GetBool())
-            {
-                Logger.Info($" {Client.PlayerName} is moderator", "ModeratorCheck");
-            }
+            Logger.Info($" {Client.PlayerName} has access level {Utils.CheckAccessLevel(Client.FriendCode)}", "AccessCheck");
 
             if (HasInvalidFriendCode(Client.FriendCode) && Options.KickInvalidFriendCodes.GetBool())
             {
@@ -103,15 +98,5 @@ class OnPlayerJoinedPatch
                 }
             }
         }
-    }
-}
-
-[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerLeft))]
-class OnPlayerLeftPatch
-{
-    static void Prefix([HarmonyArgument(0)] ClientData client)
-    {
-        if (client?.Character == null) return;
-        FixedUpdateInGamePatch.ProcessedModerators.Remove(client.Character.PlayerId);
     }
 }

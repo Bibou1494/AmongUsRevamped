@@ -86,7 +86,7 @@ class PlayerControlSetRolePatch
             Seekers.Clear();
             FirstAssign = false;
             i = 0;
-            Logger.Info("PCSRP successful", ".");
+            Logger.Info("PCSRP successful", "RoleManaging");
         }
 
         return true;

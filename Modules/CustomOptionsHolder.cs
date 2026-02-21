@@ -62,6 +62,11 @@ namespace AmongUsRevamped
             "Moderators", "Everyone", "Nobody"
         };
 
+        public static readonly string[] accessLevels =
+        {
+            "Everyone", "<color=yellow>VIP</color> And Above", "<color=purple>Moderator</color> And Above", "<color=red>Admin</color>", "Only You"
+        };
+
         //System
         public static OptionItem Gamemode;
 
@@ -97,6 +102,16 @@ namespace AmongUsRevamped
         public static OptionItem ColorCommandLevel;
         public static OptionItem AllowFortegreen;
         public static OptionItem NoGameEnd;
+
+        public static OptionItem TabGroupAccess;
+        public static OptionItem SlashColorCmd;
+        public static OptionItem SlashRolesAndGamemodeCmd;
+        public static OptionItem SlashLastGameCmd;
+        public static OptionItem SlashHelpAndAurCmd;
+        public static OptionItem SlashKickCmd;
+        public static OptionItem SlashBanCmd;
+        public static OptionItem SlashEndMeetingCmd;
+        public static OptionItem SlashStartAndEndGameCmd;
         
         //Gameplay
         public static OptionItem TabGroupSabotages;
@@ -345,7 +360,16 @@ namespace AmongUsRevamped
             NoGameEnd = BooleanOptionItem.Create(60383, Translator.Get("noGameEnd"), false, TabGroup.SystemSettings, false)
                 .SetColor(Color.red);
 
-
+            TabGroupAccess = TextOptionItem.Create(60400, Translator.Get("tabGroupAccess"), TabGroup.SystemSettings)
+                .SetColor(Color.red);
+            SlashColorCmd = StringOptionItem.Create(60401, Translator.Get("slashColorCmd"), accessLevels, 1, TabGroup.SystemSettings, false);
+            SlashRolesAndGamemodeCmd = StringOptionItem.Create(60402, Translator.Get("slashRolesAndGamemodeCmd"), accessLevels, 1, TabGroup.SystemSettings, false);
+            SlashLastGameCmd = StringOptionItem.Create(60403, Translator.Get("slashLastGameCmd"), accessLevels, 1, TabGroup.SystemSettings, false);
+            SlashHelpAndAurCmd = StringOptionItem.Create(60404, Translator.Get("slashHelpAndAurCmd"), accessLevels, 1, TabGroup.SystemSettings, false);
+            SlashKickCmd = StringOptionItem.Create(60405, Translator.Get("slashKickCmd"), accessLevels, 2, TabGroup.SystemSettings, false);
+            SlashBanCmd = StringOptionItem.Create(60406, Translator.Get("slashBanCmd"), accessLevels, 2, TabGroup.SystemSettings, false);
+            SlashEndMeetingCmd = StringOptionItem.Create(60407, Translator.Get("slashEndMeetingCmd"), accessLevels, 3, TabGroup.SystemSettings, false);
+            SlashStartAndEndGameCmd = StringOptionItem.Create(60403, Translator.Get("slashStartAndEndGameCmd"), accessLevels, 3, TabGroup.SystemSettings, false);
 
 
             // Custom role settings

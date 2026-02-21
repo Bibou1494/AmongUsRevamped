@@ -47,13 +47,24 @@ public static class Utils
     public static string ColorToHex(Color32 color) => $"#{color.r:x2}{color.g:x2}{color.b:x2}{color.a:x2}";
     public static byte GetActiveMapId() => GameOptionsManager.Instance.CurrentGameOptions.MapId;
 
-    public static bool IsPlayerModerator(string friendCode)
+    public static int CheckAccessLevel(string friendCode)
     {
-        if (friendCode == "") return false;
+        if (friendCode == "") return 0;
 
-        var friendCodesFilePath = @$"{BanManager.DataPath}/AUR-DATA/ModeratorList.txt";
-        var friendCodes = File.ReadAllLines(friendCodesFilePath);
-        return friendCodes.Any(code => code.Contains(friendCode));
+        var vipFilePath = @$"{BanManager.DataPath}/AUR-DATA/VIP.txt";
+        var vipFriendCodes = File.ReadAllLines(vipFilePath);
+
+        var moderatorFilePath = @$"{BanManager.DataPath}/AUR-DATA/Moderator.txt";
+        var moderatorFriendCodes = File.ReadAllLines(moderatorFilePath);
+
+        var adminFilePath = @$"{BanManager.DataPath}/AUR-DATA/Admin.txt";
+        var adminFriendCodes = File.ReadAllLines(adminFilePath);
+
+        if (adminFriendCodes.Any(code => code.Contains(friendCode))) return 3;
+        if (moderatorFriendCodes.Any(code => code.Contains(friendCode))) return 2;
+        if (vipFriendCodes.Any(code => code.Contains(friendCode))) return 1;
+
+        return 0;
     }
 
     public static string GetTabName(TabGroup tab)
@@ -194,8 +205,7 @@ public static class Utils
         OnGameJoinedPatch.AutoStartCheck = false;
         Main.GameTimer = 0f;
         MurderPlayerPatch.misfireCount.Clear();
-        LateTask.Tasks.Clear();
-        FixedUpdateInGamePatch.ProcessedModerators.Clear();   
+        LateTask.Tasks.Clear(); 
         NormalGameEndChecker.ImpCheckComplete = false;
         CreateOptionsPickerPatch.SetDleks2 = false;
         CanCallMeetings = true;

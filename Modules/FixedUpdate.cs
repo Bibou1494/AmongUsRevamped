@@ -36,17 +36,28 @@ public static class FixedUpdate
 [HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.FixedUpdate))]
 class FixedUpdateInGamePatch
 {
-    public static readonly HashSet<byte> ProcessedModerators = new HashSet<byte>();
-
     public static void Postfix(PlayerControl __instance)
     {
         if (__instance == null || __instance.PlayerId == 255 || !AmongUsClient.Instance.AmHost) return;
         
-        if (Utils.IsPlayerModerator(__instance.Data.FriendCode) && !ProcessedModerators.Contains(__instance.PlayerId))
+        int access = Utils.CheckAccessLevel(__instance.Data.FriendCode);
+        string color = access switch
         {
-            __instance.SetName($"★{__instance.Data.PlayerName}★");
-            ProcessedModerators.Add(__instance.PlayerId);
+            1 => "yellow",
+            2 => "purple",
+            3 => "red",
+            _ => "white"
+        };
+
+        if (!__instance.cosmetics.nameText.text.Contains($"{color}") && Utils.IsLobby)
+        {
+            __instance.cosmetics.nameText.text = $"<color={color}>{__instance.Data.PlayerName}</color>";
         }
+        if (!Utils.IsLobby && __instance.cosmetics.nameText.text != __instance.Data.PlayerName)
+        {
+            __instance.cosmetics.nameText.text = __instance.Data.PlayerName;           
+        }
+        
 
         GameObject g = GameObject.Find("GameSettingsLabel");
 
@@ -84,7 +95,7 @@ class FixedUpdateInGamePatch
                 if (__instance == PlayerControl.LocalPlayer && Main.GM.Value) return;
 
                 Utils.CustomWinnerEndGame(__instance, 1);
-                NormalGameEndChecker.LastWinReason = $"★ {__instance.Data.PlayerName} Wins! (Completed tasks first)";
+                NormalGameEndChecker.LastWinReason = $"{__instance.Data.PlayerName} Wins! (Completed tasks first)";
 
             }
         }
@@ -121,7 +132,7 @@ class FixedUpdateInGamePatch
 
                     Utils.ContinueEndGame((byte)GameOverReason.CrewmatesByVote);
                     Logger.Info($" Crewmates won because the game took longer than {Options.CrewAutoWinsGameAfter.GetInt()}s", "SNSManager");
-                    NormalGameEndChecker.LastWinReason = $"★ Crewmates win! (Timer)\n\nImpostors:\n" + string.Join("\n", NormalGameEndChecker.imps.Select(p => p.Data.PlayerName));
+                    NormalGameEndChecker.LastWinReason = $"Crewmates win! (Timer)\n\nImpostors:\n" + string.Join("\n", NormalGameEndChecker.imps.Select(p => p.Data.PlayerName));
                 }
             }
             // 3 = Speedrun
@@ -133,7 +144,7 @@ class FixedUpdateInGamePatch
 
                     Utils.CustomWinnerEndGame(PlayerControl.LocalPlayer, 0);
                     Logger.Info($" No one won because the game took longer than {Options.GameAutoEndsAfter.GetInt()}s", "SpeedrunManager");
-                    NormalGameEndChecker.LastWinReason = $"★ No one wins! (Timer)";
+                    NormalGameEndChecker.LastWinReason = $"No one wins! (Timer)";
                 }
             }
         }

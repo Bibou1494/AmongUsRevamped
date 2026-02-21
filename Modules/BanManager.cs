@@ -21,8 +21,10 @@ public static class BanManager
 
     public static string RemoveHtmlTags(this string str) => Regex.Replace(str, "<[^>]*?>", "");
     private static readonly string DenyNameListPath = $"{DataPath}/AUR-DATA/DenyNameList.txt";
-    private static string BanListPath = $"{DataPath}/AUR-DATA/BanList.txt";
-    private static string ModeratorListPath = $"{DataPath}/AUR-DATA/ModeratorList.txt";
+    private static string BanListPath = $"{DataPath}/AUR-DATA/Banlist.txt";
+    private static string VipListPath = $"{DataPath}/AUR-DATA/VIP.txt";
+    private static string ModeratorListPath = $"{DataPath}/AUR-DATA/Moderator.txt";
+    private static string AdminListPath = $"{DataPath}/AUR-DATA/Admin.txt";
     public static List<string> TempBanWhiteList = [];
     public static void Init()
     {
@@ -37,13 +39,23 @@ public static class BanManager
             }
             if (!File.Exists(BanListPath))
             {
-                Logger.Warn("Creating a new BanList.txt file", "BanManager");
+                Logger.Warn("Creating a new Banlist.txt file", "BanManager");
                 File.Create(BanListPath).Close();
+            }
+            if (!File.Exists(VipListPath))
+            {
+                Logger.Warn("Creating a new VIP.txt file", "BanManager");
+                File.Create(VipListPath).Close();
             }
             if (!File.Exists(ModeratorListPath))
             {
-                Logger.Warn("Creating a new ModeratorList.txt file", "BanManager");
+                Logger.Warn("Creating a new Moderator.txt file", "BanManager");
                 File.Create(ModeratorListPath).Close();
+            }
+            if (!File.Exists(AdminListPath))
+            {
+                Logger.Warn("Creating a new Admin.txt file", "BanManager");
+                File.Create(AdminListPath).Close();
             }
 
         }

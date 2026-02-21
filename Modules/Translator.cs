@@ -77,7 +77,7 @@ public static class Translator
         }
     }
 
-    private static void LoadLanguage(SupportedLangs lang)
+    private static void LoadLanguage(SupportedLangs lang, bool reset = false)
     {
         string path = GetLanguagePath(lang);
 
@@ -121,6 +121,23 @@ public static class Translator
 
     public static void Reload()
     {
+        string path = GetLanguagePath(_currentLang);
+        var assembly = Assembly.GetExecutingAssembly();
+        string targetFile = $"{_currentLang}.json";
+
+        foreach (var name in assembly.GetManifestResourceNames())
+        {
+            if (name.EndsWith(targetFile, StringComparison.OrdinalIgnoreCase))
+            {
+                using var stream = assembly.GetManifestResourceStream(name);
+                using var reader = new StreamReader(stream);
+                string json = reader.ReadToEnd();
+
+                File.WriteAllText(path, json);
+
+                break;
+            }
+        }
         LoadLanguage(_currentLang);
     }
 }

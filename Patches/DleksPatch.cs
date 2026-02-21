@@ -22,6 +22,7 @@ class CreateOptionsPickerPatch
 {
     public static bool SetDleks = false;
     public static bool SetDleks2;
+    private static bool InitiatedDleks;
     private static MapSelectButton DleksButton;
     [HarmonyPatch]
     public static class GameOptionsMapPickerPatch
@@ -30,7 +31,17 @@ class CreateOptionsPickerPatch
         [HarmonyPostfix]
         public static void Postfix_Initialize(CreateGameMapPicker __instance)
         {
-            float delay = SceneManager.GetActiveScene().name == "MainMenu" ? 0.2f : 0f;
+            float delay;
+            if (SceneManager.GetActiveScene().name == "MainMenu" && InitiatedDleks)
+            {
+                delay = 0.2f;
+            }
+            else
+            {
+                delay = 0f;
+                InitiatedDleks = true;
+            }
+
             if (SceneManager.GetActiveScene().name == "FindAGame") return;
 
             new LateTask(() =>
