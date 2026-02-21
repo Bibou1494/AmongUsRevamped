@@ -199,6 +199,7 @@ public static class Utils
         NormalGameEndChecker.ImpCheckComplete = false;
         CreateOptionsPickerPatch.SetDleks2 = false;
         CanCallMeetings = true;
+        PlayerControlSetRolePatch.FirstAssign = true;
     }
 
     public static PlayerControl[] AllAlivePlayerControls

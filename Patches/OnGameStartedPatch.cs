@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AmongUs.GameOptions;
+using System;
 using InnerNet;
 using UnityEngine;
 
@@ -12,53 +13,82 @@ internal class CoStartGamePatch
         if (!AmongUsClient.Instance.AmHost) return;
 
         Logger.Info(" -------- GAME STARTED --------", "StartGame");
+        Logger.Info($" Gamemode: {Options.Gamemode.GetValue()}", "StartGame");
 
         NormalGameEndChecker.imps.Clear();
         NormalGameEndChecker.LastWinReason = "";
 
-        if (Options.Gamemode.GetValue() == 3 && !Utils.isHideNSeek)
+    }
+}
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.RpcSetRole))]
+class PlayerControlSetRolePatch
+{
+    private static int i;
+    public static bool FirstAssign;
+    private static HashSet<byte> Seekers = new();
+    private static readonly System.Random rand = new System.Random();
+
+    public static bool Prefix(PlayerControl __instance, ref RoleTypes roleType, ref bool canOverrideRole)
+    {
+        if (!FirstAssign || !AmongUsClient.Instance.AmHost) return true;
+
+        canOverrideRole = false;
+
+        if (Main.GM.Value && __instance == PlayerControl.LocalPlayer)
         {
+            roleType = RoleTypes.CrewmateGhost;
+        }
+
+        if (Utils.isHideNSeek && i == 0)
+        {
+            int seekersCount = Options.NumSeekers.GetInt();
+
+            var candidates = new List<PlayerControl>();
             foreach (var p in PlayerControl.AllPlayerControls)
             {
-                if (p != PlayerControl.LocalPlayer)
-                {
-                    p.RpcSetRole(AmongUs.GameOptions.RoleTypes.Crewmate, false);
-                }
-                if (p == PlayerControl.LocalPlayer)
-                {
-                    p.CoSetRole(AmongUs.GameOptions.RoleTypes.Crewmate, false);
-                }
+                if (Main.GM.Value && p != PlayerControl.LocalPlayer) candidates.Add(p);
+            }
+
+            seekersCount = Math.Min(seekersCount, candidates.Count);
+
+            for (int j = candidates.Count - 1; j > 0; j--)
+            {
+                int k = rand.Next(j + 1);
+                (candidates[j], candidates[k]) = (candidates[k], candidates[j]);
+            }
+
+            for (int j = 0; j < seekersCount; j++)
+            {
+                Seekers.Add(candidates[j].PlayerId);
             }
         }
 
         if (Utils.isHideNSeek)
         {
-            int seekersCount = Options.NumSeekers.GetInt();
-
-            int toAdd = Math.Max(0, seekersCount - 1);
-
-            var candidates = new List<PlayerControl>();
-            foreach (var p in PlayerControl.AllPlayerControls)
-            {
-                if (p.Data.Role.TeamType != RoleTeamTypes.Impostor && !p.Data.IsDead)
-                    candidates.Add(p);
-            }
-
-            toAdd = Math.Min(toAdd, candidates.Count);
-
-            System.Random rand = new System.Random();
-            for (int i = candidates.Count - 1; i > 0; i--)
-            {
-                int j = rand.Next(i + 1);
-                (candidates[i], candidates[j]) = (candidates[j], candidates[i]);
-            }
-
-            for (int i = 0; i < toAdd; i++)
-            {
-                var player = candidates[i];
-
-                player.RpcSetRole(AmongUs.GameOptions.RoleTypes.Impostor, false);
-            }
+            if (Seekers.Contains(__instance.PlayerId)) roleType = RoleTypes.Impostor;
+            else roleType = RoleTypes.Crewmate;
         }
+
+        if (Options.Gamemode.GetValue() == 3 && !Utils.isHideNSeek)
+        {
+            if (__instance == PlayerControl.LocalPlayer && Main.GM.Value)
+            {
+                PlayerControl.LocalPlayer.myTasks.Clear();
+                return true;
+            }
+            roleType = RoleTypes.Crewmate;
+        }
+
+        i++;
+        if (i >= PlayerControl.AllPlayerControls.Count)
+        {
+            Seekers.Clear();
+            FirstAssign = false;
+            i = 0;
+            Logger.Info("PCSRP successful", ".");
+        }
+
+        return true;
     }
 }

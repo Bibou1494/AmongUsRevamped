@@ -11,7 +11,7 @@ internal static class CoShowIntroPatch
 {
     public static void Postfix(IntroCutscene __instance)
     {
-        Logger.Info("Intro initiated", "CoShowIntro");
+        Logger.Info(" Intro initiated", "CoShowIntro");
 
         if (!AmongUsClient.Instance.AmHost) return;
 
@@ -26,12 +26,6 @@ internal static class CoShowIntroPatch
             { "Mayor", Translator.Get("MayorPriv")}
         });
 
-        if (Main.GM.Value)
-        {
-            PlayerControl.LocalPlayer.RpcSetRole(AmongUs.GameOptions.RoleTypes.CrewmateGhost, false);
-            PlayerControl.LocalPlayer.myTasks.Clear();
-        }
-
         if (Options.DisableAnnoyingMeetingCalls.GetBool())
         {
             Utils.CanCallMeetings = false;
@@ -39,16 +33,6 @@ internal static class CoShowIntroPatch
             {       
                 Utils.CanCallMeetings = true;
             }, 33f, "MeetingEnabled");     
-        }
-
-        if (!Utils.isHideNSeek) return;
-        
-        foreach (var p in PlayerControl.AllPlayerControls)
-        {
-            if (p.Data.Role.TeamType == RoleTeamTypes.Impostor)
-            {
-                p.RpcSetRole(AmongUs.GameOptions.RoleTypes.Impostor, false);
-            }
         }
     }
 }
