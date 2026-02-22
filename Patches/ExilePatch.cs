@@ -24,12 +24,18 @@ class ExileControllerWrapUpPatch
 
             Logger.Info($" {ejectedPlayer.PlayerName} was ejected", "ExileController");
 
-            if (!CustomRoleManagement.PlayerRoles.TryGetValue(ejectedPlayer.PlayerId, out var role)) return;
-
-            if (role == "Jester")
+            if (CustomRoleManagement.PlayerRoles.TryGetValue(ejectedPlayer.PlayerId, out var role) && role == "Jester")
             {
                 Utils.CustomWinnerEndGame(pc, 1);
+                NormalGameEndChecker.LastWinReason = $"Jester wins! (Voted)\n\nImpostors: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
+                return;
             }
+
+            CustomRoleManagement.SendRoleMessages(new Dictionary<string, string>
+            {
+                { "Jester", Translator.Get("JesterPriv")},
+                { "Mayor", Translator.Get("MayorPriv", Options.MayorExtraVoteCount.GetInt())}
+            });
         }
     }
 }

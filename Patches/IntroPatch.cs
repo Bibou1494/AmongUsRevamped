@@ -15,15 +15,10 @@ internal static class CoShowIntroPatch
 
         if (!AmongUsClient.Instance.AmHost) return;
 
-        if ((Options.Gamemode.GetValue() == 0 || Options.Gamemode.GetValue() == 1) && !Utils.isHideNSeek)
-        {
-            CustomRoleManagement.AssignRoles();
-        }
-
         CustomRoleManagement.SendRoleMessages(new Dictionary<string, string>
         {
             { "Jester", Translator.Get("JesterPriv")},
-            { "Mayor", Translator.Get("MayorPriv")}
+            { "Mayor", Translator.Get("MayorPriv", Options.MayorExtraVoteCount.GetInt())}
         });
 
         if (Options.DisableAnnoyingMeetingCalls.GetBool())
@@ -51,7 +46,7 @@ class BeginCrewmatePatch
                 PlayerControl.LocalPlayer.CmdReportDeadBody(null);
                 MeetingHud.Instance.RpcClose(); 
 
-            }, 6.5f, "SetChatVisible");  
+            }, 7f, "SetChatVisible");  
         }
 
         if (Main.GM.Value)

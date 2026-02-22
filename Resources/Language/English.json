@@ -38,9 +38,7 @@
   "slashStartAndEndGameCmd": "Who Can Use /startgame And /endgame",
 
   "tabGroupCrewmate": "Crewmate Roles",
-  "mayorPerc": "PLACEHOLDER",
   "tabGroupNeutral": "Neutral Roles",
-  "jesterPerc": "PLACEHOLDER",
   "tabGroupImpostor": "Impostor Roles",
 
   "tabGroupStandard": "Standard",
@@ -203,16 +201,24 @@
 
   "noKcdMode": "0 Kill Cooldown:\n\nImpostors have no kill cooldown, Crewmates have low tasks\nThink fast and pay attention!",
   "SnSModeOne": "Shift and Seek:\n\nImpostors can only kill someone while shapeshifted as them\nEmergency Meetings = Off",
-  "SnSModeTwo": "Crew wins by tasks/surviving {0}s\nImp wins by killing\nOne wrong kill = Can't kill for {1}s\n{2} wrong kills = suicide",
+  "SnSModeTwo": "Crew wins by tasks/surviving {0}s\nImp wins by killing\nOne wrong kill = Can't kill for {1}s\n{2} wrong kill(s) = suicide",
   "speedrunMode": "Speedrun:\n\nEveryone is a crewmate. The 1st player to finish tasks wins the game. Game auto ends after {0}s",
   "allCommandsFull": "Commands:\n/r - Current mode description\n/0kc, /sns, /sp - Specific mode description\n/l - Shows last winner info\n/kick, /ban - Bans or kicks a player by name\n/ckick, /cban - Bans or kicks a player by color",
   "allCommandsOne": "Commands:\n/r - Current mode description\n/0kc, /sns, /sp - Specific mode description\n/l - Shows last winner info",
   "allCommandsTwo": "/kick, /ban - Bans or kicks a player by name\n/ckick, /cban - Bans or kicks a player by color",
   "socialsAll": "AUR socials:\n\ng i t h u b . c o m /\nApeMV/AmongUsRevamped\n\nd i s c o r d . g g /\n83Zhzhyhya",
   "translationReloaded": "Your file has successfully been reset.\nTo apply the changes, restart your game.",
+
   "Mayor": "Mayor",
-  "MayorPriv": "PRIVATE:\n\nYour role is Mayor!\n\nYou are a crewmate with i total votes. Use your voting power to eject Impostors.",
+  "MayorPublic": "Mayor:\n\nThe Mayor is a crewmate with {0} extra vote(s). Depending on settings, they can vent to call a meeting.",
+  "MayorPriv": "Your role is Mayor!\n\nYou are a crewmate with {0} extra vote(s). If you are an Engineer, vent to call a meeting.",
+  "mayorExtraVoteCount": "Extra Votes",
+  "mayorVentToMeeting": "Can Vent To Call Meetings",
 
   "Jester": "Jester",
-  "JesterPriv": "PRIVATE:\n\nYour role is Jester!\nYou are NOT a crewmate!\n\nYou win by getting voted. Act as suspicious as possible."
+  "JesterPublic": "Jester:\n\nThe Jester wins alone by getting voted. Their goal is to act as suspicious as possible.",
+  "JesterPriv": "Your role is Jester!\nYou are NOT a crewmate!\n\nYou win by getting voted. Act as suspicious as possible.",
+  "jesterCanVent": "Can Vent",
+
+  "roleDescriptionHelp": "Your Role can be seen at the start of meetings. It is shown by a private text, looking like the host."
 }

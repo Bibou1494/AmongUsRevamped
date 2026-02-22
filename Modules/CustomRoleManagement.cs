@@ -73,7 +73,7 @@ public static class CustomRoleManagement
                 sb.Append(c);
         }
         return sb.ToString();
-}
+    }
 
     public static string GetActiveRoles()
     {
@@ -123,7 +123,15 @@ public static class CustomRoleManagement
             PendingRoleMessages++;
             new LateTask(() => 
             {
-                Utils.SendPrivateMessage(player, roleMessages[role]);
+                if (Utils.InGame)
+                {
+                    Utils.SendPrivateMessage(player, roleMessages[role]);
+                }
+                else
+                {
+                    Logger.Info("Role sending was forcefully canceled. This should not happen.", "SendRoleMessages")
+                }
+
                 PendingRoleMessages--;
 
                 if (PendingRoleMessages <= 0)

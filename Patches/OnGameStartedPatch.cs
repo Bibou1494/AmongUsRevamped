@@ -15,6 +15,10 @@ internal class CoStartGamePatch
         Logger.Info(" -------- GAME STARTED --------", "StartGame");
         Logger.Info($" Gamemode: {Options.Gamemode.GetValue()}", "StartGame");
 
+        if ((Options.Gamemode.GetValue() == 0 || Options.Gamemode.GetValue() == 1) && !Utils.isHideNSeek)
+        {
+            CustomRoleManagement.AssignRoles();
+        }
         NormalGameEndChecker.imps.Clear();
         NormalGameEndChecker.LastWinReason = "";
 
@@ -38,6 +42,31 @@ class PlayerControlSetRolePatch
         if (Main.GM.Value && __instance == PlayerControl.LocalPlayer)
         {
             roleType = RoleTypes.CrewmateGhost;
+        }
+
+        if (CustomRoleManagement.PlayerRoles.TryGetValue(__instance.PlayerId, out var role) && role == "Mayor")
+        {
+            if (Options.MayorVentToMeeting.GetBool())
+            {
+                roleType = RoleTypes.Engineer;
+                Logger.Info($"{__instance.Data.PlayerName} is Engineer due to being Mayor", "SetRolePatch");
+            }
+            else
+            {
+                roleType = RoleTypes.Crewmate;
+            }
+        }
+        if (CustomRoleManagement.PlayerRoles.TryGetValue(__instance.PlayerId, out var r) && r == "Jester")
+        {
+            if (Options.JesterCanVent.GetBool())
+            {
+                roleType = RoleTypes.Engineer;
+                Logger.Info($"{__instance.Data.PlayerName} is Engineer due to being Jester", "SetRolePatch");
+            }
+            else
+            {
+                roleType = RoleTypes.Crewmate;
+            }
         }
 
         if (Utils.isHideNSeek && i == 0)

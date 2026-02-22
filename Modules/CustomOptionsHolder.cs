@@ -297,9 +297,12 @@ namespace AmongUsRevamped
         // Roles
         public static OptionItem TabGroupCrewmate;
         public static OptionItem MayorPerc;
+        public static OptionItem MayorExtraVoteCount;
+        public static OptionItem MayorVentToMeeting;        
 
         public static OptionItem TabGroupNeutral;
         public static OptionItem JesterPerc;        
+        public static OptionItem JesterCanVent;        
 
         public static OptionItem TabGroupImpostor;
 
@@ -379,15 +382,22 @@ namespace AmongUsRevamped
             // Custom role settings
             TabGroupCrewmate = TextOptionItem.Create(100000, Translator.Get("tabGroupCrewmate"), TabGroup.CustomRoleSettings)
                 .SetColor(CL.Hex("#8cffff"));
-            MayorPerc = IntegerOptionItem.Create(100001, Translator.Get("mayorPerc"), new(0, 100, 5), 0, TabGroup.CustomRoleSettings, false)
+            MayorPerc = IntegerOptionItem.Create(100001, Translator.Get("Mayor"), new(0, 100, 5), 0, TabGroup.CustomRoleSettings, false)
                 .SetValueFormat(OptionFormat.Percent)
                 .SetColor(CL.Hex("#204d42"));
+            MayorExtraVoteCount = IntegerOptionItem.Create(100002, Translator.Get("mayorExtraVoteCount"), new(1, 15, 1), 1, TabGroup.CustomRoleSettings, false)
+                .SetValueFormat(OptionFormat.Level)
+                .SetParent(MayorPerc);
+            MayorVentToMeeting = BooleanOptionItem.Create(100003, Translator.Get("mayorVentToMeeting"), true, TabGroup.CustomRoleSettings, false)
+                .SetParent(MayorPerc);
 
             TabGroupNeutral = TextOptionItem.Create(101000, Translator.Get("tabGroupNeutral"), TabGroup.CustomRoleSettings)
                 .SetColor(CL.Hex("#FFFF99"));
-            JesterPerc = IntegerOptionItem.Create(101001, Translator.Get("jesterPerc"), new(0, 100, 5), 0, TabGroup.CustomRoleSettings, false)
+            JesterPerc = IntegerOptionItem.Create(101001, Translator.Get("Jester"), new(0, 100, 5), 0, TabGroup.CustomRoleSettings, false)
                 .SetValueFormat(OptionFormat.Percent)
                 .SetColor(CL.Hex("#ec62a5"));
+            JesterCanVent = BooleanOptionItem.Create(101002, Translator.Get("jesterCanVent"), false, TabGroup.CustomRoleSettings, false)
+                .SetParent(MayorPerc);
 
             TabGroupImpostor = TextOptionItem.Create(102000, Translator.Get("tabGroupImpostor"), TabGroup.CustomRoleSettings)
                 .SetColor(CL.Hex("#ff1919"));
