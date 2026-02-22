@@ -43,11 +43,15 @@
   "jesterPerc": "PLACEHOLDER",
   "tabGroupImpostor": "Impostor Roles",
 
+  "tabGroupStandard": "Standard",
+  "chatBeforeFirstMeeting": "Force chat 1st round to see roles (experimental)",
+
   "tabGroupHNS": "Hide and Seek",
   "numSeekers": "# Seekers",
   "tabGroup0Kcd": "0 Kill Cooldown",
   "noKcdSettingsOverride": "Auto Update Settings",
   "tabGroupSNS": "Shift and Seek",
+  "snsChatInGame": "Chat during gameplay (experimental)",
   "snsSettingsOverride": "Auto Update Settings",
   "cantKillTime": "After Misfiring, Can't kill for",
   "misfiresToSuicide": "Suicide After Amount Of Misfires",

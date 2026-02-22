@@ -32,7 +32,7 @@ internal static class CoShowIntroPatch
             _ = new LateTask(() =>
             {       
                 Utils.CanCallMeetings = true;
-            }, 33f, "MeetingEnabled");     
+            }, Options.ChatBeforeFirstMeeting.GetBool() ? 39.5f : 33f, "MeetingEnabled");     
         }
     }
 }
@@ -43,6 +43,16 @@ class BeginCrewmatePatch
     public static void Postfix(IntroCutscene __instance)
     {
         if (!AmongUsClient.Instance.AmHost) return;
+
+        if (Options.Gamemode.GetValue() == 2 && Options.SNSChatInGame.GetBool() || Options.Gamemode.GetValue() == 0 && Options.ChatBeforeFirstMeeting.GetBool())
+        {
+            _ = new LateTask(() =>
+            {  
+                PlayerControl.LocalPlayer.CmdReportDeadBody(null);
+                MeetingHud.Instance.RpcClose(); 
+
+            }, 6.5f, "SetChatVisible");  
+        }
 
         if (Main.GM.Value)
         {

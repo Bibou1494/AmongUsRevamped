@@ -526,4 +526,10 @@ public static class Utils
         }
         return null;
     }
+
+    public static void SetChatVisible()
+    {
+        PlayerControl.LocalPlayer.CmdReportDeadBody(null);
+        MeetingHud.Instance.RpcClose(); 
+    }
 }

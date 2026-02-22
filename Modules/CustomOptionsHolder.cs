@@ -266,6 +266,9 @@ namespace AmongUsRevamped
         public static OptionItem DisableUploadData;
 
         // Gamemode
+        public static OptionItem TabGroupStandard;
+        public static OptionItem ChatBeforeFirstMeeting;
+
         public static OptionItem TabGroupHNS;
         public static OptionItem NumSeekers;
 
@@ -274,6 +277,7 @@ namespace AmongUsRevamped
 
         public static OptionItem TabGroupSNS;
         public static OptionItem SNSSettingsOverride;
+        public static OptionItem SNSChatInGame;
         public static OptionItem CrewAutoWinsGameAfter;
         public static OptionItem CantKillTime;
         public static OptionItem MisfiresToSuicide;
@@ -389,6 +393,10 @@ namespace AmongUsRevamped
                 .SetColor(CL.Hex("#ff1919"));
 
             // Gamemode Settings
+            TabGroupStandard = TextOptionItem.Create(69998, Translator.Get("tabGroupStandard"), TabGroup.GamemodeSettings)
+                .SetColor(Color.white);
+            ChatBeforeFirstMeeting = BooleanOptionItem.Create(69999, Translator.Get("chatBeforeFirstMeeting"), true, TabGroup.GamemodeSettings, false);
+
             TabGroupHNS = TextOptionItem.Create(70000, Translator.Get("tabGroupHNS"), TabGroup.GamemodeSettings)
                 .SetColor(Color.green);
             NumSeekers = IntegerOptionItem.Create(70001, Translator.Get("numSeekers"), new(1, 15, 1), 1, TabGroup.GamemodeSettings, false)
@@ -401,6 +409,7 @@ namespace AmongUsRevamped
             TabGroupSNS = TextOptionItem.Create(70050, Translator.Get("tabGroupSNS"), TabGroup.GamemodeSettings)
                 .SetColor(Color.yellow);
             SNSSettingsOverride = BooleanOptionItem.Create(70051, Translator.Get("snsSettingsOverride"), true, TabGroup.GamemodeSettings, false);
+            SNSChatInGame = BooleanOptionItem.Create(70063, Translator.Get("snsChatInGame"), false, TabGroup.GamemodeSettings, false);
             CantKillTime = IntegerOptionItem.Create(70053, Translator.Get("cantKillTime"), new(0, 60, 5), 20, TabGroup.GamemodeSettings, false)
                 .SetValueFormat(OptionFormat.Seconds);
             MisfiresToSuicide = IntegerOptionItem.Create(70052, Translator.Get("misfiresToSuicide"), new(1, 10, 1), 2, TabGroup.GamemodeSettings, false);
