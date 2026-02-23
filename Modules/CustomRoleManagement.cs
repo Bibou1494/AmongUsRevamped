@@ -1,4 +1,5 @@
 using AmongUs.GameOptions;
+using Hazel;
 using System;
 using InnerNet;
 using UnityEngine;
@@ -40,14 +41,14 @@ public static class CustomRoleManagement
 
             foreach (var (roleName, percentage) in rolesToAssign)
             {
-                if (attemptedRoles.Contains(roleName)) continue;
+                if (attemptedRoles.Contains(roleName) || percentage == 0) continue;
 
                 attemptedRoles.Add(roleName);
 
                 int randomValue = random.Next(0, 101);
                 Logger.Info($"{roleName}, Value: {randomValue}, Percentage: {percentage}", "StartGameCustomRole1");
 
-                if (randomValue >= percentage) continue;
+                if (randomValue > percentage) continue;
                 if (PlayerRoles.ContainsKey(player.PlayerId)) continue;
 
                 PlayerRoles[player.PlayerId] = roleName;
@@ -107,16 +108,23 @@ public static class CustomRoleManagement
     private static int PendingRoleMessages = 0;
     public static void SendRoleMessages(Dictionary<string, string> roleMessages)
     {
+        if (PlayerRoles.Count == 0) return;
+
         HashSet<string> sentRoles = new HashSet<string>();
 
         var players = PlayerControl.AllPlayerControls.ToArray().ToList();
-        float delay = 0f;
+        float delay = 2.2f;
 
         PendingRoleMessages = 0;
-        HandlingRoleMessages = false;
+        HandlingRoleMessages = true;
+
+        PlayerControl.LocalPlayer.RpcSendChat($"{Translator.Get("customRoleAnnouncement")}");
+
         foreach (var player in players)
         {
-            if (!PlayerRoles.TryGetValue(player.PlayerId, out string role)) continue;
+            PlayerRoles.TryGetValue(player.PlayerId, out string role);
+
+            if (string.IsNullOrEmpty(role)) continue;
             if (!roleMessages.ContainsKey(role)) continue;
             if (sentRoles.Contains(role)) continue;
 
@@ -129,7 +137,7 @@ public static class CustomRoleManagement
                 }
                 else
                 {
-                    Logger.Info("Role sending was forcefully canceled. This should not happen.", "SendRoleMessages")
+                    Logger.Info("Role sending was forcefully canceled. This should not happen.", "SendRoleMessages");
                 }
 
                 PendingRoleMessages--;
@@ -138,6 +146,7 @@ public static class CustomRoleManagement
                 {
                     PendingRoleMessages = 0;
                     HandlingRoleMessages = false;
+                    sentRoles.Clear();
                 }
             }, delay, "SendRoleMessage");
 

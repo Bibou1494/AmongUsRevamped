@@ -39,8 +39,22 @@ class NormalGameEndChecker
             ImpCheckComplete = true;
         }
 
+        CheckWinnerText("Default");
+
+        return true;
+    }
+
+    public static void CheckWinnerText(string Winner)
+    {
         var customRoles = CustomRoleManagement.PlayerToCustomRole();
         var impostorList = string.Join(", ", imps.Select(p => p.Data.PlayerName));
+
+        if (Winner == "Jester")
+        {
+            LastWinReason = $"Jester wins! (Voted)\n\nImpostors: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
+        }
+
+        if (Winner != "Default") return;
 
         if (Utils.AliveImpostors == 0) 
         {
@@ -58,7 +72,6 @@ class NormalGameEndChecker
         {
             LastWinReason = $"Impostors win! (Sabotage)\n\nImpostors: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
         }
-        return true;
     }
 }
 

@@ -57,11 +57,6 @@ namespace AmongUsRevamped
             "None", "0 Kill Cooldown", "Shift And Seek", "Speedrun"
         };
 
-        public static readonly string[] colorLevels =
-        {
-            "Moderators", "Everyone", "Nobody"
-        };
-
         public static readonly string[] accessLevels =
         {
             "Everyone", "<color=yellow>VIP</color> And Above", "<color=purple>Moderator</color> And Above", "<color=red>Admin</color>", "Only You"
@@ -77,11 +72,6 @@ namespace AmongUsRevamped
 
         public static OptionItem KickInvalidFriendCodes;
         public static OptionItem TempBanInvalidFriendCodes;
-
-        public static OptionItem ApplyBanList;
-        public static OptionItem ApplyDenyNameList;
-        public static OptionItem ApplyModeratorList;
-        public static OptionItem ModeratorCanUseCommand;
 
         public static OptionItem AutoKickStart;
         public static OptionItem AutoKickStartAsBan;
@@ -127,7 +117,6 @@ namespace AmongUsRevamped
 
         public static OptionItem TabGroupGameplayGeneral;
         public static OptionItem DisableAnnoyingMeetingCalls;
-        public static OptionItem DisableReport;
 
         public static OptionItem ChangeDecontaminationTime;
         public static OptionItem DecontaminationTimeOnMiraHQ;
@@ -332,11 +321,6 @@ namespace AmongUsRevamped
             TempBanInvalidFriendCodes = BooleanOptionItem.Create(60081, Translator.Get("tempBanInvalidFriendCodes"), false, TabGroup.SystemSettings, false)
                 .SetParent(KickInvalidFriendCodes);
 
-            ApplyBanList = BooleanOptionItem.Create(60110, Translator.Get("applyBanList"), true, TabGroup.SystemSettings, true);
-            ApplyDenyNameList = BooleanOptionItem.Create(60120, Translator.Get("applyDenyNameList"), true, TabGroup.SystemSettings, false);
-            ApplyModeratorList = BooleanOptionItem.Create(60121, Translator.Get("applyModeratorList"), true, TabGroup.SystemSettings, false);
-            ModeratorCanUseCommand = BooleanOptionItem.Create(60122, Translator.Get("moderatorCanUseCommand"), true, TabGroup.SystemSettings, false);
-
             AutoKickStart = BooleanOptionItem.Create(60123, Translator.Get("autoKickStart"), false, TabGroup.SystemSettings, false);
             AutoKickStartAsBan = BooleanOptionItem.Create(60124, Translator.Get("autoKickStartAsBan"), false, TabGroup.SystemSettings, false)
                 .SetParent(AutoKickStart);
@@ -362,7 +346,6 @@ namespace AmongUsRevamped
 
             StartCountdown = IntegerOptionItem.Create(60380, Translator.Get("startCountdown"), new(1, 600, 1), 5, TabGroup.SystemSettings, false)
                 .SetValueFormat(OptionFormat.Seconds);
-            ColorCommandLevel = StringOptionItem.Create(60381, Translator.Get("colorCommandLevel"), colorLevels, 0, TabGroup.SystemSettings, false);
             AllowFortegreen = BooleanOptionItem.Create(60382, Translator.Get("allowFortegreen"), false, TabGroup.SystemSettings, false);
             NoGameEnd = BooleanOptionItem.Create(60383, Translator.Get("noGameEnd"), false, TabGroup.SystemSettings, false)
                 .SetColor(Color.red);
@@ -397,7 +380,7 @@ namespace AmongUsRevamped
                 .SetValueFormat(OptionFormat.Percent)
                 .SetColor(CL.Hex("#ec62a5"));
             JesterCanVent = BooleanOptionItem.Create(101002, Translator.Get("jesterCanVent"), false, TabGroup.CustomRoleSettings, false)
-                .SetParent(MayorPerc);
+                .SetParent(JesterPerc);
 
             TabGroupImpostor = TextOptionItem.Create(102000, Translator.Get("tabGroupImpostor"), TabGroup.CustomRoleSettings)
                 .SetColor(CL.Hex("#ff1919"));
@@ -485,8 +468,6 @@ namespace AmongUsRevamped
             TabGroupGameplayGeneral = TextOptionItem.Create(60564, Translator.Get("tabGroupGameplayGeneral"), TabGroup.ModSettings)
                 .SetColor(Color.blue);
             DisableAnnoyingMeetingCalls = BooleanOptionItem.Create(60565, Translator.Get("disableAnnoyingMeetingCalls"), false, TabGroup.ModSettings, false)
-                .SetColor(new Color32(19, 188, 233, byte.MaxValue));
-            DisableReport = BooleanOptionItem.Create(60520, Translator.Get("disableReport"), false, TabGroup.ModSettings, false)
                 .SetColor(new Color32(19, 188, 233, byte.MaxValue));
 
             ChangeDecontaminationTime = BooleanOptionItem.Create(60550, Translator.Get("changeDecontaminationTime"), false, TabGroup.ModSettings, false)

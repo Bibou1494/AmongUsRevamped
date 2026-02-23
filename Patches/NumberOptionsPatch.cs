@@ -15,7 +15,7 @@ public static class NumberOption_Increase
         float increment = Hotkeys.IncrementMultiplier * __instance.Increment;
 #endif
 
-        if (Utils.isHideNSeek || Utils.IsLobby && !Utils.isHideNSeek && __instance.Title != StringNames.GameNumImpostors && __instance.Title != StringNames.GamePlayerSpeed)
+        if (Utils.IsLobby)
         {
             if (__instance.Value <= __instance.ValidRange.min)
             {
@@ -53,7 +53,7 @@ public static class NumberOption_Decrease
         float increment = Hotkeys.IncrementMultiplier * __instance.Increment;
 #endif
 
-        if (Utils.isHideNSeek || Utils.IsLobby && !Utils.isHideNSeek && __instance.Title != StringNames.GameNumImpostors && __instance.Title != StringNames.GamePlayerSpeed)
+        if (Utils.IsLobby)
         {
             if (__instance.Value >= __instance.ValidRange.max)
             {

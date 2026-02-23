@@ -17,9 +17,14 @@ internal static class CoShowIntroPatch
 
         CustomRoleManagement.SendRoleMessages(new Dictionary<string, string>
         {
-            { "Jester", Translator.Get("JesterPriv")},
-            { "Mayor", Translator.Get("MayorPriv", Options.MayorExtraVoteCount.GetInt())}
+            { "Jester", Translator.Get("jesterPriv")},
+            { "Mayor", Translator.Get("mayorPriv", Options.MayorExtraVoteCount.GetInt())},
         });
+        
+        foreach (var p in PlayerControl.AllPlayerControls)
+        {
+            p.cosmetics.nameText.text = p.Data.PlayerName;
+        }
 
         if (Options.DisableAnnoyingMeetingCalls.GetBool())
         {

@@ -107,7 +107,6 @@ internal static class SendChatPatch
             __instance.freeChatField.textArea.SetText(string.Empty);
             return false;
         }
-
         if (text == "/h" || text == "/help" || text == "/cmd" || text == "/commands")
         {
             HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{Translator.Get("allCommandsFull")}");
@@ -146,6 +145,14 @@ internal static class SendChatPatch
             Utils.ChatCommand(__instance, $"{NormalGameEndChecker.LastWinReason}", "", false);
             return false;
         }
+        
+        if (text == "/r jester"){
+            Utils.ChatCommand(__instance, Translator.Get("jesterPublic"), "", false);
+            return false;}
+
+        if (text == "/r mayor"){
+            Utils.ChatCommand(__instance, Translator.Get("mayorPublic", Options.MayorExtraVoteCount.GetInt()), "", false);
+            return false;}
 
         if (text == "/aur" || text == "/amongusrevamped" || text == "/socials" || text == "/github" || text == "/discord")
         {

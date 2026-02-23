@@ -27,15 +27,22 @@ class ExileControllerWrapUpPatch
             if (CustomRoleManagement.PlayerRoles.TryGetValue(ejectedPlayer.PlayerId, out var role) && role == "Jester")
             {
                 Utils.CustomWinnerEndGame(pc, 1);
-                NormalGameEndChecker.LastWinReason = $"Jester wins! (Voted)\n\nImpostors: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
+                NormalGameEndChecker.CheckWinnerText("Jester");
                 return;
             }
 
-            CustomRoleManagement.SendRoleMessages(new Dictionary<string, string>
+            if (CustomRoleManagement.HandlingRoleMessages)
             {
-                { "Jester", Translator.Get("JesterPriv")},
-                { "Mayor", Translator.Get("MayorPriv", Options.MayorExtraVoteCount.GetInt())}
-            });
+                Logger.Info(" SRM2 is called before SRM1 finished. This should not happen.", "ExileController");
+            }
+            else
+            {
+                CustomRoleManagement.SendRoleMessages(new Dictionary<string, string>
+                {
+                    { "Jester", Translator.Get("jesterPriv")},
+                    { "Mayor", Translator.Get("mayorPriv", Options.MayorExtraVoteCount.GetInt())},
+                });
+            }
         }
     }
 }

@@ -205,11 +205,13 @@ public static class Utils
         OnGameJoinedPatch.AutoStartCheck = false;
         Main.GameTimer = 0f;
         MurderPlayerPatch.misfireCount.Clear();
+        MurderPlayerPatch.killCount.Clear();
         LateTask.Tasks.Clear(); 
         NormalGameEndChecker.ImpCheckComplete = false;
         CreateOptionsPickerPatch.SetDleks2 = false;
         CanCallMeetings = true;
         PlayerControlSetRolePatch.FirstAssign = true;
+        PlayerControlCompleteTaskPatch.playerTasksCompleted.Clear();
     }
 
     public static PlayerControl[] AllAlivePlayerControls

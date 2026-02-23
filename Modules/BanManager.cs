@@ -111,7 +111,7 @@ public static class BanManager
         string friendcode = player?.FriendCode;
 
         // Check file BanList.txt
-        if (Options.ApplyBanList.GetBool() && CheckBanList(friendcode, player?.GetHashedPuid()))
+        if (CheckBanList(friendcode, player?.GetHashedPuid()))
         {
             AmongUsClient.Instance.KickPlayer(player.Id, true);
             Logger.Info($"{player.PlayerName} was in the BanList and has been banned", "BanListBan");
@@ -164,7 +164,7 @@ public static class BanManager
     }
     public static bool IsPlayerInDenyName(ClientData client, string name)
     {
-        if (name == "" || !AmongUsClient.Instance.AmHost || !Options.ApplyDenyNameList.GetBool()) return false;
+        if (name == "" || !AmongUsClient.Instance.AmHost) return false;
 
         var deniedNames = File.ReadAllLines(DenyNameListPath);
 

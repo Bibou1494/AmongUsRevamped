@@ -39,7 +39,7 @@ class FixedUpdateInGamePatch
     public static void Postfix(PlayerControl __instance)
     {
         if (__instance == null || __instance.PlayerId == 255 || !AmongUsClient.Instance.AmHost) return;
-        
+
         int access = Utils.CheckAccessLevel(__instance.Data.FriendCode);
         string color = access switch
         {
@@ -53,11 +53,6 @@ class FixedUpdateInGamePatch
         {
             __instance.cosmetics.nameText.text = $"<color={color}>{__instance.Data.PlayerName}</color>";
         }
-        if (!Utils.IsLobby && __instance.cosmetics.nameText.text != __instance.Data.PlayerName)
-        {
-            __instance.cosmetics.nameText.text = __instance.Data.PlayerName;           
-        }
-        
 
         GameObject g = GameObject.Find("GameSettingsLabel");
 

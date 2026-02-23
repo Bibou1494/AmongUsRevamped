@@ -14,6 +14,7 @@ internal class CoStartGamePatch
 
         Logger.Info(" -------- GAME STARTED --------", "StartGame");
         Logger.Info($" Gamemode: {Options.Gamemode.GetValue()}", "StartGame");
+        Logger.Info($" Players: {PlayerControl.AllPlayerControls.Count}", "StartGame");
 
         if ((Options.Gamemode.GetValue() == 0 || Options.Gamemode.GetValue() == 1) && !Utils.isHideNSeek)
         {
