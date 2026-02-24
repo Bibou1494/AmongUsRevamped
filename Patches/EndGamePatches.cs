@@ -39,36 +39,41 @@ class NormalGameEndChecker
             ImpCheckComplete = true;
         }
 
-        CheckWinnerText("Default");
+        CheckWinnerText("");
 
         return true;
     }
-
+    public static bool canUpdateWinnerText;
+    public static string customRoles { get; set; }
     public static void CheckWinnerText(string Winner)
     {
-        var customRoles = CustomRoleManagement.PlayerToCustomRole();
         var impostorList = string.Join(", ", imps.Select(p => p.Data.PlayerName));
-
+        
+        if (!canUpdateWinnerText) return;
+        
         if (Winner == "Jester")
         {
             LastWinReason = $"Jester wins! (Voted)\n\nImpostors: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
+            canUpdateWinnerText = false;
+            return;
         }
 
-        if (Winner != "Default") return;
-
-        if (Utils.AliveImpostors == 0) 
+        if (Utils.AliveImpostors == 0 || Winner == "Crewmate") 
         {
             LastWinReason = $"Crewmates win!\n\nImpostors: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
+            canUpdateWinnerText = false;
         }
-        else if (Utils.AliveImpostors >= Utils.AliveCrewmates) 
+        else if (Utils.AliveImpostors >= Utils.AliveCrewmates || Winner == "Impostor") 
         {
             LastWinReason = $"Impostors win!\n\nImpostor: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
+            canUpdateWinnerText = false;
         }
-        else if (GameData.Instance != null && GameData.Instance.TotalTasks > 0 && GameData.Instance.CompletedTasks >= GameData.Instance.TotalTasks)
+        else if (GameData.Instance != null && GameData.Instance.TotalTasks > 0 && GameData.Instance.CompletedTasks >= GameData.Instance.TotalTasks || Winner == "CrewmateTasks")
         {
-            LastWinReason = $"Crewmates win! (Tasks)\n\nImpostors: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
+            LastWinReason = $"Crewmates win! ({Options.TaskPercentNeededToWin.GetInt()}% Tasks)\n\nImpostors: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
+            canUpdateWinnerText = false;
         }
-        else if (Options.Gamemode.GetValue() < 2)
+        else if (Options.Gamemode.GetValue() < 2 || Winner == "ImpostorSabotage")
         {
             LastWinReason = $"Impostors win! (Sabotage)\n\nImpostors: {impostorList}" + (string.IsNullOrEmpty(customRoles) ? "" : "\n\n" + customRoles);
         }

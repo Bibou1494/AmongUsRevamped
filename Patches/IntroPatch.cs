@@ -15,6 +15,7 @@ internal static class CoShowIntroPatch
 
         if (!AmongUsClient.Instance.AmHost) return;
 
+        NormalGameEndChecker.customRoles = CustomRoleManagement.PlayerToCustomRole();
         CustomRoleManagement.SendRoleMessages(new Dictionary<string, string>
         {
             { "Jester", Translator.Get("jesterPriv")},
@@ -24,6 +25,11 @@ internal static class CoShowIntroPatch
         foreach (var p in PlayerControl.AllPlayerControls)
         {
             p.cosmetics.nameText.text = p.Data.PlayerName;
+
+            MurderPlayerPatch.killCount[p.Data.PlayerId] = 0;
+            MurderPlayerPatch.misfireCount[p.Data.PlayerId] = 0;
+            PlayerControlCompleteTaskPatch.playerTasksCompleted[p] = 0;
+            PlayerControlCompleteTaskPatch.tasksPerPlayer[p] = 0;
         }
 
         if (Options.DisableAnnoyingMeetingCalls.GetBool())

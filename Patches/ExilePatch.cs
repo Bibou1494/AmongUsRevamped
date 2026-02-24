@@ -18,7 +18,22 @@ class ExileControllerWrapUpPatch
                 if (p.PlayerId == ejectedPlayer.PlayerId)
                 {
                     pc = p;
-                    break;
+                }
+
+                if (ejectedPlayer == PlayerControl.LocalPlayer.Data)
+                {
+                    if (p.Data.Role.IsImpostor)
+                    {
+                        p.cosmetics.nameText.text = $"{p.Data.PlayerName}<color=red><size=90%>({MurderPlayerPatch.killCount[p.Data.PlayerId]}†)";
+                    }
+                    else
+                    {
+                        if (!PlayerControlCompleteTaskPatch.playerTasksCompleted.ContainsKey(p))
+                        {
+                            PlayerControlCompleteTaskPatch.playerTasksCompleted[p] = 0;                
+                        }
+                        p.cosmetics.nameText.text = $"{p.Data.PlayerName}<color=green><size=90%>({PlayerControlCompleteTaskPatch.playerTasksCompleted[p]}/{PlayerControlCompleteTaskPatch.tasksPerPlayer[p]})";
+                    }
                 }
             }
 

@@ -60,21 +60,13 @@ internal static class MurderPlayerPatch
             {
                 foreach (var p in PlayerControl.AllPlayerControls)
                 {
-                    int totalTasks = p.Data.Tasks.Count;
-                    int tasksCompleted = 0;
-
-                    if (PlayerControlCompleteTaskPatch.playerTasksCompleted.ContainsKey(p))
-                    {
-                        tasksCompleted = PlayerControlCompleteTaskPatch.playerTasksCompleted[p];
-                    }
-
                     if (p.Data.Role.IsImpostor)
                     {
-                        p.cosmetics.nameText.text = $"{p.Data.PlayerName}<color=red>({killCount[__instance.Data.PlayerId]}†";
+                        p.cosmetics.nameText.text = $"{p.Data.PlayerName}<color=red><size=90%>({killCount[__instance.Data.PlayerId]}†)";
                     }
                     else
                     {
-                        p.cosmetics.nameText.text = $"{p.Data.PlayerName}<color=green>({tasksCompleted}/{totalTasks})";
+                        p.cosmetics.nameText.text = $"{p.Data.PlayerName}<color=green><size=90%>({PlayerControlCompleteTaskPatch.playerTasksCompleted[p]}/{PlayerControlCompleteTaskPatch.tasksPerPlayer[p]})";
                     }
                 }
             }
@@ -146,26 +138,68 @@ internal static class CheckShapeshiftPatch
 class PlayerControlCompleteTaskPatch
 {
     public static Dictionary<PlayerControl, int> playerTasksCompleted = new Dictionary<PlayerControl, int>();
+    public static Dictionary<PlayerControl, int> tasksPerPlayer = new Dictionary<PlayerControl, int>();
+    public static List<string> ignoredRoles = new List<string> {"Jester"};
+    public static int ignoredTasks;
+    public static int ignoredCompletedTasks;
+    public static bool tasksInitiated;
 
     public static void Postfix(PlayerControl __instance, uint idx)
     {
-        int totalTasks = 0;
-        int tasksCompleted = 0;
+        if (!AmongUsClient.Instance.AmHost) return;
 
-        foreach (var task in __instance.Data.Tasks)
+        foreach (var p in PlayerControl.AllPlayerControls)
         {
-            totalTasks++;
-            if (task.Complete) tasksCompleted++;
+            if (ignoredRoles.Contains(CustomRoleManagement.GetRole(p.PlayerId)) && !tasksInitiated)
+            {
+                ignoredTasks += p.Data.Tasks.Count;
+                tasksInitiated = true;
+            }
+
+            if (!playerTasksCompleted.ContainsKey(p))
+            {
+                playerTasksCompleted[p] = 0;                
+            }
+            tasksPerPlayer[p] = p.Data.Tasks.Count;
         }
 
-        playerTasksCompleted[__instance] = tasksCompleted;
+        playerTasksCompleted[__instance]++;
+
+        if (ignoredRoles.Contains(CustomRoleManagement.GetRole(__instance.PlayerId)))
+        {
+            ignoredCompletedTasks = playerTasksCompleted[__instance];
+        }
 
         Logger.Info($" {__instance.Data.PlayerName} completed {idx}", "TaskPatch");
 
-        if (!PlayerControl.LocalPlayer.Data.IsDead) return;
+        if (Options.Gamemode.GetValue() != 3) CalculateTaskWin();
 
-        TMP_Text nameText = __instance.cosmetics.nameText;
-        nameText.text = $"{__instance.Data.PlayerName}<color=green>({tasksCompleted}/{totalTasks})</color>";
+        if (PlayerControl.LocalPlayer.Data.IsDead)
+        {
+            TMP_Text nameText = __instance.cosmetics.nameText;
+            nameText.text = $"{__instance.Data.PlayerName}<color=green><size=90%>({playerTasksCompleted[__instance]}/{tasksPerPlayer[__instance]})</color>";
+        }
+    }
+    public static void CalculateTaskWin()
+    {
+        Logger.Info($" Checking if {GameData.Instance.CompletedTasks} - {ignoredCompletedTasks} >= ({GameData.Instance.TotalTasks} - {ignoredTasks}) * 0.01 * {Options.TaskPercentNeededToWin.GetInt()}", "TaskPatch");
 
+        if ((GameData.Instance.CompletedTasks - ignoredCompletedTasks) >= (GameData.Instance.TotalTasks - ignoredTasks)*0.01*Options.TaskPercentNeededToWin.GetInt())
+        {
+            Utils.ContinueEndGame((byte)GameOverReason.CrewmatesByVote);
+            NormalGameEndChecker.CheckWinnerText("CrewmateTasks");
+        }
+    }
+}
+
+[HarmonyPatch(typeof(PlayerControl), nameof(PlayerControl.CheckSporeTrigger))]
+public static class PlayerControlCheckSporeTriggerPatch
+{
+    public static bool Prefix(PlayerControl __instance, [HarmonyArgument(0)] Mushroom mushroom)
+    {
+        if (!AmongUsClient.Instance.AmHost) return true;
+
+        if (Options.DisableSporeTrigger.GetBool()) return false;
+        else return true;
     }
 }

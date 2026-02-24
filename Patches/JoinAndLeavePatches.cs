@@ -100,3 +100,15 @@ class OnPlayerJoinedPatch
         }
     }
 }
+
+[HarmonyPatch(typeof(AmongUsClient), nameof(AmongUsClient.OnPlayerLeft))]
+class OnPlayerLeftPatch
+{
+    static void Postfix([HarmonyArgument(0)] ClientData client)
+    {
+        if (!AmongUsClient.Instance.AmHost || !Utils.InGame) return;
+        {
+            PlayerControlCompleteTaskPatch.CalculateTaskWin();
+        }
+    }
+}

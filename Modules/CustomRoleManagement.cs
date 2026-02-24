@@ -11,6 +11,12 @@ public static class CustomRoleManagement
     public static Dictionary<byte, string> PlayerRoles = new Dictionary<byte, string>();
     private static readonly System.Random random = new System.Random();
 
+    public static string GetRole(byte playerId)
+    {
+        PlayerRoles.TryGetValue(playerId, out string role);
+        return role ?? "None";
+    }
+
     public static void AssignRoles()
     {
         // crewmateRoles = assigned with crewmate role base
@@ -108,7 +114,7 @@ public static class CustomRoleManagement
     private static int PendingRoleMessages = 0;
     public static void SendRoleMessages(Dictionary<string, string> roleMessages)
     {
-        if (PlayerRoles.Count == 0) return;
+        if (PlayerRoles.Count == 0 || PlayerControl.LocalPlayer.Data.IsDead) return;
 
         HashSet<string> sentRoles = new HashSet<string>();
 

@@ -85,6 +85,7 @@
   "decontaminationDoorOpenTimeOnMiraHQ": "Mira HQ Door Open Duration",
   "decontaminationTimeOnPolus": "Polus Decon Duration",
   "decontaminationDoorOpenTimeOnPolus": "Polus Door Open Duration",
+  "disableSporeTrigger": "Disable Spores On The Fungle",
 
   "disableDevices": "Disable Devices",
   "disableSkeldDevices": "Disable Skeld Devices",
@@ -109,6 +110,7 @@
   "tabGroupTasks": "Tasks",
   "allPlayersSameTasks": "Everyone has same tasks",
   "overrideTaskSettings": "Disable Tasks",
+  "taskPercentNeededToWin": "% Tasks completed for crewmates to win",
 
   "disableMiraTasks": "Disable Mira HQ Tasks",
   "disableBuyBeverage": "Disable Buy Beverage",
@@ -139,10 +141,10 @@
   "disablePutAwayPistols": "Disable Put Away Pistols",
   "disablePutAwayRifles": "Disable Put Away Rifles",
   "disableRewindTapes": "Disable Rewind Tapes",
-  "disableResetBreaker": "Disable Reset Breaker Task",
+  "disableResetBreaker": "Disable Reset Breakers",
   "disableSortRecords": "Disable Sort Records",
   "disableStartFans": "Disable Start Fans",
-  "disableUnlockSafe": "Disable Unlock Safe Task",
+  "disableUnlockSafe": "Disable Unlock Safe",
 
   "disableFungleTasks": "Disable Fungle Tasks",
   "disableBuildSandcastle": "Disable Build Sandcastle",
@@ -216,10 +218,10 @@
   "mayorVentToMeeting": "Can Vent To Call Meetings",
 
   "Jester": "Jester",
-  "jesterPublic": "Jester:\n\nThe Jester wins alone by getting voted. Their goal is to act as suspicious as possible.",
+  "jesterPublic": "Jester:\n\nThe Jester wins alone by getting voted. They must act as suspicious as possible.",
   "jesterPriv": "Your role is Jester!\nYou are NOT a crewmate!\n\nYou win by getting voted. Act as suspicious as possible.",
   "jesterCanVent": "Can Vent",
 
   "customRoleAnnouncement": "Custom Roles are enabled!\n\nIf you have a Custom Role, it will show in a message below this one.",
-  "roleDescriptionHelp": "Your Role can be seen at the start of meetings. It is shown by a private text, looking like the host."
+  "roleDescriptionHelp": "Your Custom Role can be seen at the start of meetings. It is shown by an obvious private text"
 }

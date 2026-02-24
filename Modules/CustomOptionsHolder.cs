@@ -54,7 +54,7 @@ namespace AmongUsRevamped
 
         public static readonly string[] gameModes =
         {
-            "None", "0 Kill Cooldown", "Shift And Seek", "Speedrun"
+            "Standard", "0 Kill Cooldown", "Shift And Seek", "Speedrun"
         };
 
         public static readonly string[] accessLevels =
@@ -123,6 +123,7 @@ namespace AmongUsRevamped
         public static OptionItem DecontaminationDoorOpenTimeOnMiraHQ;
         public static OptionItem DecontaminationTimeOnPolus;
         public static OptionItem DecontaminationDoorOpenTimeOnPolus;
+        public static OptionItem DisableSporeTrigger;
 
         public static OptionItem DisableDevices;
         private static OptionItem DisableSkeldDevices;
@@ -147,8 +148,8 @@ namespace AmongUsRevamped
 
         public static OptionItem TabGroupTasks;
         public static OptionItem OverrideTaskSettings;
-
         public static OptionItem AllPlayersSameTasks;
+        public static OptionItem TaskPercentNeededToWin;
 
         public static OptionItem DisableMiraTasks;
 
@@ -359,7 +360,7 @@ namespace AmongUsRevamped
             SlashKickCmd = StringOptionItem.Create(60405, Translator.Get("slashKickCmd"), accessLevels, 2, TabGroup.SystemSettings, false);
             SlashBanCmd = StringOptionItem.Create(60406, Translator.Get("slashBanCmd"), accessLevels, 2, TabGroup.SystemSettings, false);
             SlashEndMeetingCmd = StringOptionItem.Create(60407, Translator.Get("slashEndMeetingCmd"), accessLevels, 3, TabGroup.SystemSettings, false);
-            SlashStartAndEndGameCmd = StringOptionItem.Create(60403, Translator.Get("slashStartAndEndGameCmd"), accessLevels, 3, TabGroup.SystemSettings, false);
+            SlashStartAndEndGameCmd = StringOptionItem.Create(60408, Translator.Get("slashStartAndEndGameCmd"), accessLevels, 3, TabGroup.SystemSettings, false);
 
 
             // Custom role settings
@@ -388,7 +389,7 @@ namespace AmongUsRevamped
             // Gamemode Settings
             TabGroupStandard = TextOptionItem.Create(69998, Translator.Get("tabGroupStandard"), TabGroup.GamemodeSettings)
                 .SetColor(Color.white);
-            ChatBeforeFirstMeeting = BooleanOptionItem.Create(69999, Translator.Get("chatBeforeFirstMeeting"), true, TabGroup.GamemodeSettings, false);
+            ChatBeforeFirstMeeting = BooleanOptionItem.Create(69999, Translator.Get("chatBeforeFirstMeeting"), false, TabGroup.GamemodeSettings, false);
 
             TabGroupHNS = TextOptionItem.Create(70000, Translator.Get("tabGroupHNS"), TabGroup.GamemodeSettings)
                 .SetColor(Color.green);
@@ -489,6 +490,9 @@ namespace AmongUsRevamped
                 .SetValueFormat(OptionFormat.Seconds)
                 .SetColor(new Color32(19, 188, 233, byte.MaxValue));
 
+            DisableSporeTrigger = BooleanOptionItem.Create(60558, Translator.Get("disableSporeTrigger"), false, TabGroup.ModSettings, false)
+                .SetColor(new Color32(19, 188, 233, byte.MaxValue));
+
             DisableDevices = BooleanOptionItem.Create(22900, Translator.Get("disableDevices"), false, TabGroup.ModSettings, false)
                 .SetColor(Color.red);
 
@@ -541,99 +545,97 @@ namespace AmongUsRevamped
                 .SetParent(DisableAirshipDevices)
                 .SetColor(new Color32(255, 153, 153, byte.MaxValue));
 
-            DisableFungleDevices = BooleanOptionItem.Create(22925, "Disable Fungle Devices", false, TabGroup.ModSettings, false)
+            DisableFungleDevices = BooleanOptionItem.Create(22925, Translator.Get("disableFungleDevices"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableDevices)
                 .SetColor(new Color32(255, 153, 153, byte.MaxValue));
 
-            DisableFungleCamera = BooleanOptionItem.Create(22926, "Disable Fungle Camera", false, TabGroup.ModSettings, false)
+            DisableFungleCamera = BooleanOptionItem.Create(22926, Translator.Get("disableFungleCamera"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableFungleDevices)
                 .SetColor(new Color32(255, 153, 153, byte.MaxValue));
 
-            DisableFungleVital = BooleanOptionItem.Create(22927, "Disable Fungle Vitals", false, TabGroup.ModSettings, false)
+            DisableFungleVital = BooleanOptionItem.Create(22927, Translator.Get("disableFungleVital"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableFungleDevices)
                 .SetColor(new Color32(255, 153, 153, byte.MaxValue));
 
-
-            TabGroupTasks = TextOptionItem.Create(22997, "Tasks", TabGroup.ModSettings)
+            TabGroupTasks = TextOptionItem.Create(22995, Translator.Get("tabGroupTasks"), TabGroup.ModSettings)
                 .SetColor(Color.yellow);
-            AllPlayersSameTasks = BooleanOptionItem.Create(22998, "Everyone has same tasks", false, TabGroup.ModSettings, false)
+            TaskPercentNeededToWin = IntegerOptionItem.Create(22996, Translator.Get("taskPercentNeededToWin"), new(30, 100, 5), 100, TabGroup.ModSettings, false)
+                .SetColor(new Color32(255, 255, 153, byte.MaxValue))
+                .SetValueFormat(OptionFormat.Percent);
+            AllPlayersSameTasks = BooleanOptionItem.Create(22998, Translator.Get("allPlayersSameTasks"), false, TabGroup.ModSettings, false)
                 .SetColor(new Color32(255, 255, 153, byte.MaxValue));
-            OverrideTaskSettings = BooleanOptionItem.Create(22999, "<#ffd>Di<#ffb>sa<#ff9>bl<#ffb>e T<#ffd>as<#ffb>ks", false, TabGroup.ModSettings, false)
-                .SetColor(new Color32(239, 89, 175, byte.MaxValue));
+            OverrideTaskSettings = BooleanOptionItem.Create(22999, Translator.Get("overrideTaskSettings"), false, TabGroup.ModSettings, false)
+                .SetColor(new Color32(255, 255, 153, byte.MaxValue));
 
-            DisableMiraTasks = BooleanOptionItem.Create(23000, "Disable Mira HQ Tasks", false, TabGroup.ModSettings, false)
+            DisableMiraTasks = BooleanOptionItem.Create(23000, Translator.Get("disableMiraTasks"), false, TabGroup.ModSettings, false)
                 .SetColor(new Color32(173, 216, 230, byte.MaxValue))
                 .SetParent(OverrideTaskSettings);
 
-            DisableBuyBeverage = BooleanOptionItem.Create(23001, "Disable Buy Beverage", false, TabGroup.ModSettings, false)
+            DisableBuyBeverage = BooleanOptionItem.Create(23001, Translator.Get("disableBuyBeverage"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableMiraTasks);
-            DisableMeasureWeather = BooleanOptionItem.Create(23002, "Disable Measure Weather", false, TabGroup.ModSettings, false)
+            DisableMeasureWeather = BooleanOptionItem.Create(23002, Translator.Get("disableMeasureWeather"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableMiraTasks);
-            DisableProcessData = BooleanOptionItem.Create(23003, "Disable Process Data", false, TabGroup.ModSettings, false)
+            DisableProcessData = BooleanOptionItem.Create(23003, Translator.Get("disableProcessData"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableMiraTasks);
-            DisableRunDiagnostics = BooleanOptionItem.Create(23004, "Disable Run Diagnostics", false, TabGroup.ModSettings, false)
+            DisableRunDiagnostics = BooleanOptionItem.Create(23004, Translator.Get("disableRunDiagnostics"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableMiraTasks);
-            DisableSortSamples = BooleanOptionItem.Create(23005, "Disable Sort Samples", false, TabGroup.ModSettings, false)
+            DisableSortSamples = BooleanOptionItem.Create(23005, Translator.Get("disableSortSamples"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableMiraTasks);
 
-
-
-            DisablePolusTasks = BooleanOptionItem.Create(23100, "Disable Polus Tasks", false, TabGroup.ModSettings, false)
+            DisablePolusTasks = BooleanOptionItem.Create(23100, Translator.Get("disablePolusTasks"), false, TabGroup.ModSettings, false)
                 .SetColor(new Color32(173, 216, 230, byte.MaxValue))
                 .SetParent(OverrideTaskSettings);
 
-            DisableActivateWeatherNodes = BooleanOptionItem.Create(23101, "Disable Activate Weather Nodes", false, TabGroup.ModSettings, false)
+            DisableActivateWeatherNodes = BooleanOptionItem.Create(23101, Translator.Get("disableActivateWeatherNodes"), false, TabGroup.ModSettings, false)
                 .SetParent(DisablePolusTasks);
-            DisableAlignTelescope = BooleanOptionItem.Create(23102, "Disable Align Telescope", false, TabGroup.ModSettings, false)
+            DisableAlignTelescope = BooleanOptionItem.Create(23102, Translator.Get("disableAlignTelescope"), false, TabGroup.ModSettings, false)
                 .SetParent(DisablePolusTasks);
-            DisableFillCanisters = BooleanOptionItem.Create(23103, "Disable Fill Canisters", false, TabGroup.ModSettings, false)
+            DisableFillCanisters = BooleanOptionItem.Create(23103, Translator.Get("disableFillCanisters"), false, TabGroup.ModSettings, false)
                 .SetParent(DisablePolusTasks);
-            DisableInsertKeys = BooleanOptionItem.Create(23104, "Disable Insert Keys", false, TabGroup.ModSettings, false)
+            DisableInsertKeys = BooleanOptionItem.Create(23104, Translator.Get("disableInsertKeys"), false, TabGroup.ModSettings, false)
                 .SetParent(DisablePolusTasks);
-            DisableOpenWaterways = BooleanOptionItem.Create(23105, "Disable Open Waterways", false, TabGroup.ModSettings, false)
+            DisableOpenWaterways = BooleanOptionItem.Create(23105, Translator.Get("disableOpenWaterways"), false, TabGroup.ModSettings, false)
                 .SetParent(DisablePolusTasks);
-            DisableRebootWifi = BooleanOptionItem.Create(23106, "Disable Reboot Wifi", false, TabGroup.ModSettings, false)
+            DisableRebootWifi = BooleanOptionItem.Create(23106, Translator.Get("disableRebootWifi"), false, TabGroup.ModSettings, false)
                 .SetParent(DisablePolusTasks);
-            DisableRepairDrill = BooleanOptionItem.Create(23107, "Disable Repair Drill", false, TabGroup.ModSettings, false)
+            DisableRepairDrill = BooleanOptionItem.Create(23107, Translator.Get("disableRepairDrill"), false, TabGroup.ModSettings, false)
                 .SetParent(DisablePolusTasks);
-            DisableScanBoardingPass = BooleanOptionItem.Create(23108, "Disable Scan Boarding Pass", false, TabGroup.ModSettings, false)
+            DisableScanBoardingPass = BooleanOptionItem.Create(23108, Translator.Get("disableScanBoardingPass"), false, TabGroup.ModSettings, false)
                 .SetParent(DisablePolusTasks);
 
-
-
-            DisableAirshipTasks = BooleanOptionItem.Create(23200, "Disable Airship Tasks", false, TabGroup.ModSettings, false)
+            DisableAirshipTasks = BooleanOptionItem.Create(23200, Translator.Get("disableAirshipTasks"), false, TabGroup.ModSettings, false)
                 .SetColor(new Color32(173, 216, 230, byte.MaxValue))
                 .SetParent(OverrideTaskSettings);
 
-            DisableCleanToilet = BooleanOptionItem.Create(23201, "Disable Clean Toilet", false, TabGroup.ModSettings, false)
+            DisableCleanToilet = BooleanOptionItem.Create(23201, Translator.Get("disableCleanToilet"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableDecontaminate = BooleanOptionItem.Create(23202, "Disable Decontaminate", false, TabGroup.ModSettings, false)
+            DisableDecontaminate = BooleanOptionItem.Create(23202, Translator.Get("disableDecontaminate"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableDevelopPhotos = BooleanOptionItem.Create(23203, "Disable Develop Photos", false, TabGroup.ModSettings, false)
+            DisableDevelopPhotos = BooleanOptionItem.Create(23203, Translator.Get("disableDevelopPhotos"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableDressMannequin = BooleanOptionItem.Create(23204, "Disable Dress Mannequin", false, TabGroup.ModSettings, false)
+            DisableDressMannequin = BooleanOptionItem.Create(23204, Translator.Get("disableDressMannequin"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableFixShower = BooleanOptionItem.Create(23205, "Disable Fix Shower", false, TabGroup.ModSettings, false)
+            DisableFixShower = BooleanOptionItem.Create(23205, Translator.Get("disableFixShower"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableMakeBurger = BooleanOptionItem.Create(23206, "Disable Make Burger", false, TabGroup.ModSettings, false)
+            DisableMakeBurger = BooleanOptionItem.Create(23206, Translator.Get("disableMakeBurger"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisablePickUpTowels = BooleanOptionItem.Create(23207, "Disable Pick Up Towels", false, TabGroup.ModSettings, false)
+            DisablePickUpTowels = BooleanOptionItem.Create(23207, Translator.Get("disablePickUpTowels"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisablePolishRuby = BooleanOptionItem.Create(23208, "Disable Polish Ruby", false, TabGroup.ModSettings, false)
+            DisablePolishRuby = BooleanOptionItem.Create(23208, Translator.Get("disablePolishRuby"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisablePutAwayPistols = BooleanOptionItem.Create(23209, "Disable Put Away Pistols", false, TabGroup.ModSettings, false)
+            DisablePutAwayPistols = BooleanOptionItem.Create(23209, Translator.Get("disablePutAwayPistols"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisablePutAwayRifles = BooleanOptionItem.Create(23210, "Disable Put Away Rifles", false, TabGroup.ModSettings, false)
+            DisablePutAwayRifles = BooleanOptionItem.Create(23210, Translator.Get("disablePutAwayRifles"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableRewindTapes = BooleanOptionItem.Create(23211, "Disable Rewind Tapes", false, TabGroup.ModSettings, false)
+            DisableRewindTapes = BooleanOptionItem.Create(23211, Translator.Get("disableRewindTapes"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableResetBreaker = BooleanOptionItem.Create(23212, "Disable Reset Breaker Task", false, TabGroup.ModSettings, false)
+            DisableResetBreaker = BooleanOptionItem.Create(23212, Translator.Get("disableResetBreaker"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableSortRecords = BooleanOptionItem.Create(23213, "Disable Sort Records", false, TabGroup.ModSettings, false)
+            DisableSortRecords = BooleanOptionItem.Create(23213, Translator.Get("disableSortRecords"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableStartFans = BooleanOptionItem.Create(23214, "Disable Start Fans", false, TabGroup.ModSettings, false)
+            DisableStartFans = BooleanOptionItem.Create(23214, Translator.Get("disableStartFans"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
-            DisableUnlockSafe = BooleanOptionItem.Create(23215, "Disable Unlock Safe Task", false, TabGroup.ModSettings, false)
+            DisableUnlockSafe = BooleanOptionItem.Create(23215, Translator.Get("disableUnlockSafe"), false, TabGroup.ModSettings, false)
                 .SetParent(DisableAirshipTasks);
 
 

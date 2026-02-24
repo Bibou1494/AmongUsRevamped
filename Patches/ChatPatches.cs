@@ -328,6 +328,8 @@ public static class RPCHandlerPatch
                     }
                 }
 
+                BanManager.IsWordBanned(__instance, text);
+
                 bool col1 = text.StartsWith("/col ") || text.StartsWith("/cor ");
                 bool col2  = text.StartsWith("/color ");
                 bool col3 = text.StartsWith("/colour ");
@@ -485,6 +487,13 @@ public static class RPCHandlerPatch
 
                     }
                 }
+
+                if (text == "/r jester"){
+                    Utils.ModeratorChatCommand(Translator.Get("jesterPublic"), "", false);}
+
+                if (text == "/r mayor"){
+                    Utils.ModeratorChatCommand(Translator.Get("mayorPublic", Options.MayorExtraVoteCount.GetInt()), "", false);}
+
                 break;
             }
         }

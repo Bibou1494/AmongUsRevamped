@@ -204,14 +204,22 @@ public static class Utils
         HandlingGameEnd = false;
         OnGameJoinedPatch.AutoStartCheck = false;
         Main.GameTimer = 0f;
+        NormalGameEndChecker.canUpdateWinnerText = true;
         MurderPlayerPatch.misfireCount.Clear();
         MurderPlayerPatch.killCount.Clear();
+
         LateTask.Tasks.Clear(); 
         NormalGameEndChecker.ImpCheckComplete = false;
         CreateOptionsPickerPatch.SetDleks2 = false;
         CanCallMeetings = true;
+        CustomRoleManagement.HandlingRoleMessages = false;
         PlayerControlSetRolePatch.FirstAssign = true;
+
         PlayerControlCompleteTaskPatch.playerTasksCompleted.Clear();
+        PlayerControlCompleteTaskPatch.tasksPerPlayer.Clear();
+        PlayerControlCompleteTaskPatch.tasksInitiated = false;
+        PlayerControlCompleteTaskPatch.ignoredCompletedTasks = 0;
+        PlayerControlCompleteTaskPatch.ignoredTasks = 0;
     }
 
     public static PlayerControl[] AllAlivePlayerControls
@@ -465,7 +473,6 @@ public static class Utils
         AmongUsClient.Instance.FinishEndGame(writer);
         HandlingGameEnd = false;
         Logger.Info($"{gameOverReason}", "ContinueEndGame");
-        Logger.Info(" -------- GAME ENDED --------", "ContinueEndGame");
     }
 
     public static void DumpLog()

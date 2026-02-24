@@ -22,6 +22,7 @@ public static class BanManager
     public static string RemoveHtmlTags(this string str) => Regex.Replace(str, "<[^>]*?>", "");
     private static readonly string DenyNameListPath = $"{DataPath}/AUR-DATA/DenyNameList.txt";
     private static string BanListPath = $"{DataPath}/AUR-DATA/Banlist.txt";
+    private static string BanWordPath = $"{DataPath}/AUR-DATA/Bannedwords.txt";
     private static string VipListPath = $"{DataPath}/AUR-DATA/VIP.txt";
     private static string ModeratorListPath = $"{DataPath}/AUR-DATA/Moderator.txt";
     private static string AdminListPath = $"{DataPath}/AUR-DATA/Admin.txt";
@@ -41,6 +42,11 @@ public static class BanManager
             {
                 Logger.Warn("Creating a new Banlist.txt file", "BanManager");
                 File.Create(BanListPath).Close();
+            }
+            if (!File.Exists(BanWordPath))
+            {
+                Logger.Warn("Creating a new Banlist.txt file", "BanManager");
+                File.Create(BanWordPath).Close();
             }
             if (!File.Exists(VipListPath))
             {
@@ -172,22 +178,39 @@ public static class BanManager
         {
             AmongUsClient.Instance.KickPlayer(client.Id, false);    
             Logger.Info($" {name} was kicked because their name was in DenyNameList.txt", "Kick");      
-            Logger.SendInGame($" {name} was kicked because their name was in DenyNameList.txt");    
+            Logger.SendInGame($"{name} was kicked because their name was in DenyNameList.txt");    
             return true;
         }
         else return false;
     }
 
-}
-[HarmonyPatch(typeof(BanMenu), nameof(BanMenu.Select))]
-class BanMenuSelectPatch
-{
-    public static void Postfix(BanMenu __instance, int clientId)
+    public static bool IsWordBanned(PlayerControl player, string input)
     {
-        ClientData recentClient = AmongUsClient.Instance.GetRecentClient(clientId);
-        if (recentClient == null) return;
+        if (input == "" || !AmongUsClient.Instance.AmHost) return false;
 
-        if (!BanManager.CheckBanList(recentClient?.FriendCode, recentClient?.GetHashedPuid()))
-            __instance.BanButton.GetComponent<ButtonRolloverHandler>().SetEnabledColors();
+        var bannedWords = File.ReadAllLines(BanWordPath);
+
+        if (bannedWords.Where(code => !string.IsNullOrWhiteSpace(code)).Any(code => input.Contains(code, StringComparison.OrdinalIgnoreCase)))
+        {
+            AmongUsClient.Instance.KickPlayer(player.Data.ClientId, false);    
+            Logger.Info($" {player.Data.PlayerName} was kicked because they sent a banned word", "Kick");      
+            Logger.SendInGame($"{player.Data.PlayerName} was kicked because they sent a banned word");    
+            return true;
+        }
+        else return false;
+
+    }
+
+    [HarmonyPatch(typeof(BanMenu), nameof(BanMenu.Select))]
+    class BanMenuSelectPatch
+    {
+        public static void Postfix(BanMenu __instance, int clientId)
+        {
+            ClientData recentClient = AmongUsClient.Instance.GetRecentClient(clientId);
+            if (recentClient == null) return;
+
+            if (!BanManager.CheckBanList(recentClient?.FriendCode, recentClient?.GetHashedPuid()))
+                __instance.BanButton.GetComponent<ButtonRolloverHandler>().SetEnabledColors();
+        }
     }
 }
