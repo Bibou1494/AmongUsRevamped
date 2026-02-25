@@ -91,7 +91,7 @@ internal static class SendChatPatch
 
         if (!AmongUsClient.Instance.AmHost) return true;
 
-        if (text == "/reload" || text == "/translatereload" || text == "/reset" || text == "/translatereset")
+        if (text == "/reload")
         {
             HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{Translator.Get("translationReloaded")}");
             Translator.Reload();
@@ -107,7 +107,7 @@ internal static class SendChatPatch
             __instance.freeChatField.textArea.SetText(string.Empty);
             return false;
         }
-        if (text == "/h" || text == "/help" || text == "/cmd" || text == "/commands")
+        if (text == "/h" || text == "/help")
         {
             HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"{Translator.Get("allCommandsFull")}");
             __instance.freeChatField.textArea.Clear();
@@ -154,19 +154,19 @@ internal static class SendChatPatch
             Utils.ChatCommand(__instance, Translator.Get("mayorPublic", Options.MayorExtraVoteCount.GetInt()), "", false);
             return false;}
 
-        if (text == "/aur" || text == "/amongusrevamped" || text == "/socials" || text == "/github" || text == "/discord")
+        if (text == "/aur" || text == "/amongusrevamped" || text == "/socials")
         {
             Utils.ChatCommand(__instance, Translator.Get("socialsAll"), "", false);
             return false;
         }
 
-        if (text == "/0kc" || text == "/0kcd" || text == "/0killcooldown")
+        if (text == "/0kc" || text == "/0killcooldown")
         {
             Utils.ChatCommand(__instance, Translator.Get("noKcdMode"), "", false);
             return false;
         }
 
-        if (text == "/sns" || text == "/shiftandseek" || text == "/shift&seek")
+        if (text == "/sns" || text == "/shiftandseek")
         {
             Utils.ChatCommand(__instance, Translator.Get("SnSModeOne"), Translator.Get("SnSModeTwo", Options.CrewAutoWinsGameAfter.GetInt(), Options.CantKillTime.GetInt(), Options.MisfiresToSuicide.GetInt()), true);
             return false;
@@ -396,7 +396,7 @@ public static class RPCHandlerPatch
 
                 if (CustomRoleManagement.HandlingRoleMessages || OnGameJoinedPatch.WaitingForChat) return;
 
-                if (text == "/h" || text == "/help" || text == "/cmd" || text == "/commands")
+                if (text == "/h" || text == "/help")
                 {
                     if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashHelpAndAurCmd.GetValue()) return;
                     OnGameJoinedPatch.WaitingForChat = true;
@@ -417,7 +417,7 @@ public static class RPCHandlerPatch
                     }, 6.6f, "MHP3");
                 }
 
-                if (text == "/eg" || text == "/endgame" || text == "/finishgame" || text == "/stop")
+                if (text == "/eg" || text == "/endgame")
                 {
                     if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashStartAndEndGameCmd.GetValue()) return;
                     MessageWriter writer = AmongUsClient.Instance.StartEndGame();
@@ -425,7 +425,7 @@ public static class RPCHandlerPatch
                     AmongUsClient.Instance.FinishEndGame(writer);
                 }
 
-                if (text == "/em" || text == "/endmeeting" || text == "/finishmeeting" || text == "/stopmeeting")
+                if (text == "/em" || text == "/endmeeting")
                 {
                     if (Utils.IsMeeting)
                     {
@@ -434,7 +434,7 @@ public static class RPCHandlerPatch
                     }
                 }
 
-                if (text == "/s" || text == "/start" || text == "/startgame" || text == "/begin")
+                if (text == "/s" || text == "/start")
                 {
                     if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashStartAndEndGameCmd.GetValue()) return;
                     GameStartManager.Instance.BeginGame();
@@ -447,12 +447,12 @@ public static class RPCHandlerPatch
                     Utils.ModeratorChatCommand($"{NormalGameEndChecker.LastWinReason}", "", false);
                 }
 
-                if (text == "/0kc" || text == "/0kcd" || text == "/0killcooldown")
+                if (text == "/0kc" || text == "/0killcooldown")
                 {
                     if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashRolesAndGamemodeCmd.GetValue()) return;
                     Utils.ModeratorChatCommand(Translator.Get("noKcdMode"), "", false);
                 }
-                if (text == "/sns" || text == "/shiftandseek" || text == "/shift&seek")
+                if (text == "/sns" || text == "/shiftandseek")
                 {
                     if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashRolesAndGamemodeCmd.GetValue()) return;
                     Utils.ModeratorChatCommand(Translator.Get("SnSModeOne"), Translator.Get("SnSModeTwo", Options.CrewAutoWinsGameAfter.GetInt(), Options.CantKillTime.GetInt(), Options.MisfiresToSuicide.GetInt()), true);

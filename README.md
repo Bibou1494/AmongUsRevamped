@@ -29,7 +29,12 @@
 <img src="https://github.com/astra1dev/AUnlocker/assets/90265231/14226f03-a003-4efc-b27b-6df53fb394d6" width=410 height=240>****
 ‎ 
 
-# 🎮 Features (v1.6.0):
+# 🎮 Features (v1.6.2):
+## <b> 🌟 Custom Roles:</b>
+- Mayor (Crewmate)
+- The mayor has extra votes and can call meetings by venting, depending on settings.
+- Jester (Neutral)
+- The jester has to get voted to win alone and does not win with any other team.
 ## <b>♠️ Client Side settings:</b>
 - Game Master
 - Unlock FPS
@@ -40,14 +45,15 @@
 ## <b>⚙️ Technical settings:</b>
 - Kick/Ban players under a certain level
 - Kick/Ban invalid FriendCodes
-- Kick/Ban players who say "start" and conitions
-- DenyName system
-- Moderator system
+- Kick/Ban players who say "start"
+- Banword system
 - Banlist system
+- DenyName system
+- Multi layer moderator system
 - Enable No Game End
 - Custom starting countdown
 ## <b>♻️ Automation settings:</b>
-- Automatically start game and conditions for it
+- Automatically start game
 - Automatically rejoin lobby
 - Automatically send winner info
 ## <b>🔧 Gameplay Settings:</b>
@@ -58,6 +64,8 @@
 - Disable body reports
 - Disable devices (per map, individual)
 - Override decontamination time (per map)
+- Disable spore triggers on The Fungle
+- % Tasks completed for Crewmates to win
 - Enable/Disable any task
 - All players have same tasks
 - Hide and Seek: Custom Impostor count
@@ -72,9 +80,8 @@
 - Faster startup time
 - Custom anticheat system
 - Zoom out in lobby or when dead
-- Near unlimited default Option ranges
-- More accurate Option incrementing
-- Logging for useful information
+- See player kill/task count when dead
+- Higher and more accurate Option ranges
 - <b>🎉 And this all works in public lobbies!</b>
 
 ### Hotkeys
@@ -104,7 +111,8 @@
 | /endmeeting                                 | Instantly end an ongoing meeting                  |
 | /aur                                        | Sends AUR socials (GitHub, Discord)               |
 | /color                                      | Sets color. Can be used to bypass color limit     | 
-| /reload                                     | Resets the *Language*.JSON file to default        | 
+| /reload                                     | Resets the *Language*.JSON file to default        |
+| /start                                      | Starts game countdown                             |
 ‎
 
 **Credit to these mods and their developers for their code:**
