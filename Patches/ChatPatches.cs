@@ -208,7 +208,6 @@ internal static class SendChatPatch
         if (text == "/s" || text == "/start")
         {
             GameStartManager.Instance.BeginGame();
-            Utils.ModeratorChatCommand($"Game starting", "", false);
             __instance.freeChatField.textArea.Clear();
             __instance.freeChatField.textArea.SetText(string.Empty);
 
@@ -226,11 +225,6 @@ internal static class SendChatPatch
             if (Utils.TryGetColorId(argCol, out byte colId) && (col1 || col2 || col3))
             {
                 PlayerControl.LocalPlayer.RpcSetColor(colId);
-                HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"Your color has been changed to: {((Main.ColorToString)colId).ToString()}");
-                __instance.freeChatField.textArea.Clear();
-                __instance.freeChatField.textArea.SetText(string.Empty);
-            } else {
-                HudManager.Instance.Chat.AddChat(PlayerControl.LocalPlayer, $"Your color hasn't been changed: invalid color");
                 __instance.freeChatField.textArea.Clear();
                 __instance.freeChatField.textArea.SetText(string.Empty);
             }
@@ -359,9 +353,7 @@ public static class RPCHandlerPatch
                         {
                             if (colId > 17 && !Options.AllowFortegreen.GetBool()) return;
                             __instance.RpcSetColor(colId);
-                            Utils.SendPrivateMessage(__instance, $"Your color has been changed to: {((Main.ColorToString)colId).ToString()}");
                         } else {
-                            Utils.SendPrivateMessage(__instance, $"Your color hasn't been changed: invalid color");
                         }
                     }
                 }
@@ -456,7 +448,6 @@ public static class RPCHandlerPatch
                 {
                     if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashStartAndEndGameCmd.GetValue()) return;
                     GameStartManager.Instance.BeginGame();
-                    Utils.ModeratorChatCommand($"Game starting", "", false);
                 }
 
                 if (text == "/l" || text == "/lastgame" || text == "/win" || text == "/winner")
