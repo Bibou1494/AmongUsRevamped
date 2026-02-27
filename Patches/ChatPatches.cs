@@ -204,6 +204,16 @@ internal static class SendChatPatch
             __instance.freeChatField.textArea.SetText(string.Empty);
             return false;
         }
+
+        if (text == "/s" || text == "/start")
+        {
+            GameStartManager.Instance.BeginGame();
+            Utils.ModeratorChatCommand($"Game starting", "", false);
+            __instance.freeChatField.textArea.Clear();
+            __instance.freeChatField.textArea.SetText(string.Empty);
+
+            return false;
+        }
         
         bool col1 = text.StartsWith("/col ") || text.StartsWith("/cor ");
         bool col2  = text.StartsWith("/color ");
@@ -439,6 +449,7 @@ public static class RPCHandlerPatch
                 {
                     if (Utils.CheckAccessLevel(__instance.Data.FriendCode) < Options.SlashStartAndEndGameCmd.GetValue()) return;
                     GameStartManager.Instance.BeginGame();
+                    Utils.ModeratorChatCommand($"Game starting", "", false);
                 }
 
                 if (text == "/l" || text == "/lastgame" || text == "/win" || text == "/winner")
